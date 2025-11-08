@@ -1,0 +1,805 @@
+{
+  "version": "1.0.0",
+  "words": [
+    {
+      "id": "word-1",
+      "polish": "i",
+      "russian": "и",
+      "category": "Союзы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-2",
+      "polish": "w",
+      "russian": "в",
+      "category": "Предлоги",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-3",
+      "polish": "na",
+      "russian": "на",
+      "category": "Предлоги",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-4",
+      "polish": "z",
+      "russian": "с",
+      "category": "Предлоги",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-5",
+      "polish": "do",
+      "russian": "до, в",
+      "category": "Предлоги",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-6",
+      "polish": "że",
+      "russian": "что",
+      "category": "Союзы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-7",
+      "polish": "się",
+      "russian": "себя, себя",
+      "category": "Местоимения",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-8",
+      "polish": "nie",
+      "russian": "не",
+      "category": "Отрицание",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-9",
+      "polish": "to",
+      "russian": "это",
+      "category": "Местоимения",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-10",
+      "polish": "jest",
+      "russian": "есть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-11",
+      "polish": "być",
+      "russian": "быть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-12",
+      "polish": "mieć",
+      "russian": "иметь",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-13",
+      "polish": "móc",
+      "russian": "мочь",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-14",
+      "polish": "chcieć",
+      "russian": "хотеть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-15",
+      "polish": "robić",
+      "russian": "делать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-16",
+      "polish": "iść",
+      "russian": "идти",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-17",
+      "polish": "powiedzieć",
+      "russian": "сказать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-18",
+      "polish": "widzieć",
+      "russian": "видеть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-19",
+      "polish": "wiedzieć",
+      "russian": "знать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-20",
+      "polish": "dostać",
+      "russian": "получить",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-21",
+      "polish": "pracować",
+      "russian": "работать",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-22",
+      "polish": "uczyć",
+      "russian": "учить",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-23",
+      "polish": "mówić",
+      "russian": "говорить",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-24",
+      "polish": "słuchać",
+      "russian": "слушать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-25",
+      "polish": "czytać",
+      "russian": "читать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-26",
+      "polish": "pisać",
+      "russian": "писать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-27",
+      "polish": "jeść",
+      "russian": "есть",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-28",
+      "polish": "pić",
+      "russian": "пить",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-29",
+      "polish": "spać",
+      "russian": "спать",
+      "category": "Жизнь",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-30",
+      "polish": "żyć",
+      "russian": "жить",
+      "category": "Жизнь",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-31",
+      "polish": "kochać",
+      "russian": "любить",
+      "category": "Чувства",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-32",
+      "polish": "lubić",
+      "russian": "нравиться",
+      "category": "Чувства",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-33",
+      "polish": "myśleć",
+      "russian": "думать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-34",
+      "polish": "rozumieć",
+      "russian": "понимать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-35",
+      "polish": "znaleźć",
+      "russian": "найти",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-36",
+      "polish": "kupić",
+      "russian": "купить",
+      "category": "Покупки",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-37",
+      "polish": "sprzedać",
+      "russian": "продать",
+      "category": "Покупки",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-38",
+      "polish": "otworzyć",
+      "russian": "открыть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-39",
+      "polish": "zamknąć",
+      "russian": "закрыть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-40",
+      "polish": "zaczynać",
+      "russian": "начинать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-41",
+      "polish": "kończyć",
+      "russian": "заканчивать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-42",
+      "polish": "czekać",
+      "russian": "ждать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-43",
+      "polish": "spotkać",
+      "russian": "встретить",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-44",
+      "polish": "pomagać",
+      "russian": "помогать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-45",
+      "polish": "dawać",
+      "russian": "давать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-46",
+      "polish": "brać",
+      "russian": "брать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-47",
+      "polish": "zostawić",
+      "russian": "оставить",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-48",
+      "polish": "zobaczyć",
+      "russian": "увидеть",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-49",
+      "polish": "słyszeć",
+      "russian": "слышать",
+      "category": "Глаголы",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-50",
+      "polish": "czuć",
+      "russian": "чувствовать",
+      "category": "Чувства",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-51",
+      "polish": "człowiek",
+      "russian": "человек",
+      "category": "Люди",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-52",
+      "polish": "kobieta",
+      "russian": "женщина",
+      "category": "Люди",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-53",
+      "polish": "mężczyzna",
+      "russian": "мужчина",
+      "category": "Люди",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-54",
+      "polish": "dziecko",
+      "russian": "ребенок",
+      "category": "Люди",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-55",
+      "polish": "matka",
+      "russian": "мать",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-56",
+      "polish": "ojciec",
+      "russian": "отец",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-57",
+      "polish": "syn",
+      "russian": "сын",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-58",
+      "polish": "córka",
+      "russian": "дочь",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-59",
+      "polish": "brat",
+      "russian": "брат",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-60",
+      "polish": "siostra",
+      "russian": "сестра",
+      "category": "Семья",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-61",
+      "polish": "przyjaciel",
+      "russian": "друг",
+      "category": "Люди",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-62",
+      "polish": "dom",
+      "russian": "дом",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-63",
+      "polish": "mieszkanie",
+      "russian": "квартира",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-64",
+      "polish": "pokój",
+      "russian": "комната",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-65",
+      "polish": "kuchnia",
+      "russian": "кухня",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-66",
+      "polish": "łazienka",
+      "russian": "ванная",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-67",
+      "polish": "sypialnia",
+      "russian": "спальня",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-68",
+      "polish": "okno",
+      "russian": "окно",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-69",
+      "polish": "drzwi",
+      "russian": "дверь",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-70",
+      "polish": "stół",
+      "russian": "стол",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-71",
+      "polish": "krzesło",
+      "russian": "стул",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-72",
+      "polish": "łóżko",
+      "russian": "кровать",
+      "category": "Дом",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-73",
+      "polish": "telefon",
+      "russian": "телефон",
+      "category": "Техника",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-74",
+      "polish": "komputer",
+      "russian": "компьютер",
+      "category": "Техника",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-75",
+      "polish": "internet",
+      "russian": "интернет",
+      "category": "Техника",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-76",
+      "polish": "samochód",
+      "russian": "автомобиль",
+      "category": "Транспорт",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-77",
+      "polish": "autobus",
+      "russian": "автобус",
+      "category": "Транспорт",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-78",
+      "polish": "pociąg",
+      "russian": "поезд",
+      "category": "Транспорт",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-79",
+      "polish": "rower",
+      "russian": "велосипед",
+      "category": "Транспорт",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-80",
+      "polish": "lotnisko",
+      "russian": "аэропорт",
+      "category": "Транспорт",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-81",
+      "polish": "praca",
+      "russian": "работа",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-82",
+      "polish": "biuro",
+      "russian": "офис",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-83",
+      "polish": "szef",
+      "russian": "начальник",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-84",
+      "polish": "kolega",
+      "russian": "коллега",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-85",
+      "polish": "spotkanie",
+      "russian": "встреча",
+      "category": "Работа",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-86",
+      "polish": "szkoła",
+      "russian": "школа",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-87",
+      "polish": "uczeń",
+      "russian": "ученик",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-88",
+      "polish": "nauczyciel",
+      "russian": "учитель",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-89",
+      "polish": "lekcja",
+      "russian": "урок",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-90",
+      "polish": "książka",
+      "russian": "книга",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-91",
+      "polish": "język",
+      "russian": "язык",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-92",
+      "polish": "słowo",
+      "russian": "слово",
+      "category": "Образование",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-93",
+      "polish": "jedzenie",
+      "russian": "еда",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-94",
+      "polish": "chleb",
+      "russian": "хлеб",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-95",
+      "polish": "mleko",
+      "russian": "молоко",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-96",
+      "polish": "woda",
+      "russian": "вода",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-97",
+      "polish": "kawa",
+      "russian": "кофе",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-98",
+      "polish": "herbata",
+      "russian": "чай",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-99",
+      "polish": "mięso",
+      "russian": "мясо",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    },
+    {
+      "id": "word-100",
+      "polish": "ryba",
+      "russian": "рыба",
+      "category": "Еда",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false
+    }
+  ]
+}

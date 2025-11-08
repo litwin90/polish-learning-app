@@ -6,14 +6,16 @@ interface FlashCardProps {
   word: Word;
   onFlip?: () => void;
   onNext: () => void;
-  onMarkDifficulty: (difficulty: Word["difficulty"]) => void;
+  onMarkLevel: (knowsPlToRu: boolean, knowsRuToPl: boolean) => void;
+  mode?: "pl-to-ru" | "ru-to-pl"; // Режим обучения
 }
 
 export const FlashCard = ({
   word,
   onFlip,
   onNext,
-  onMarkDifficulty,
+  onMarkLevel,
+  mode = "pl-to-ru",
 }: FlashCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -28,8 +30,14 @@ export const FlashCard = ({
     }
   };
 
-  const handleDifficulty = (difficulty: Word["difficulty"]) => {
-    onMarkDifficulty(difficulty);
+  const getCurrentLevel = (): number => {
+    if (word.knowsPlToRu && word.knowsRuToPl) return 2;
+    if (word.knowsPlToRu) return 1;
+    return 0;
+  };
+
+  const handleLevel = (knowsPlToRu: boolean, knowsRuToPl: boolean) => {
+    onMarkLevel(knowsPlToRu, knowsRuToPl);
     setIsFlipped(false);
     setTimeout(() => {
       onNext();
@@ -88,25 +96,47 @@ export const FlashCard = ({
       </div>
 
       {isFlipped && (
-        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-          <button
-            className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all shadow-lg active:scale-95"
-            onClick={() => handleDifficulty("easy")}
-          >
-            Легко
-          </button>
-          <button
-            className="flex-1 px-6 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-all shadow-lg active:scale-95"
-            onClick={() => handleDifficulty("medium")}
-          >
-            Средне
-          </button>
-          <button
-            className="flex-1 px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all shadow-lg active:scale-95"
-            onClick={() => handleDifficulty("hard")}
-          >
-            Сложно
-          </button>
+        <div className="flex flex-col gap-3 w-full max-w-md">
+          <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg text-center">
+            <span className="text-sm text-gray-600">Текущий уровень: </span>
+            <span className="font-bold text-primary-600">
+              {getCurrentLevel() === 0 && "0 - Не знаю"}
+              {getCurrentLevel() === 1 && "1 - Знаю PL→RU"}
+              {getCurrentLevel() === 2 && "2 - Знаю оба направления"}
+            </span>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              className="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-all shadow-lg active:scale-95"
+              onClick={() => handleLevel(false, false)}
+            >
+              Не знаю (0)
+            </button>
+            {mode === "pl-to-ru" && (
+              <button
+                className="flex-1 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all shadow-lg active:scale-95"
+                onClick={() => handleLevel(true, word.knowsRuToPl)}
+              >
+                Знаю PL→RU
+              </button>
+            )}
+            {mode === "ru-to-pl" && (
+              <button
+                className="flex-1 px-6 py-3 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-all shadow-lg active:scale-95"
+                onClick={() => handleLevel(word.knowsPlToRu, true)}
+              >
+                Знаю RU→PL
+              </button>
+            )}
+            {(word.knowsPlToRu || word.knowsRuToPl) && (
+              <button
+                className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all shadow-lg active:scale-95"
+                onClick={() => handleLevel(true, true)}
+              >
+                Знаю оба (2)
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

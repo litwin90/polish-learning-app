@@ -1,93 +1,221 @@
-import { Word } from '../types';
+import wordsData from '../../data/WORDS.json';
+import { Word, WordsData } from '../types';
+import { db } from './db';
 
-const STORAGE_KEY = "polish-learning-words";
+const WORDS_DATA = wordsData as WordsData;
 
-export const saveWords = (words: Word[]): void => {
+/**
+ * Инициализация базы данных
+ * Проверяет версию и загружает данные из JSON, если версия изменилась
+ */
+export const initializeDatabase = async (): Promise<void> => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+    // Получаем текущую версию из metadata
+    const metadata = await db.metadata.get("version");
+    const currentVersion = metadata?.version;
+
+    // Если версии не совпадают или БД пустая - загружаем данные из JSON
+    if (currentVersion !== WORDS_DATA.version) {
+      console.log(
+        `Версия изменилась: ${currentVersion} -> ${WORDS_DATA.version}. Загружаем новые данные...`
+      );
+
+      // Очищаем старые данные
+      await db.words.clear();
+
+      // Загружаем слова из JSON
+      if (WORDS_DATA.words && WORDS_DATA.words.length > 0) {
+        await db.words.bulkAdd(WORDS_DATA.words);
+      }
+
+      // Сохраняем новую версию
+      await db.metadata.put({ id: "version", version: WORDS_DATA.version });
+
+      console.log(
+        `Загружено ${WORDS_DATA.words.length} слов из версии ${WORDS_DATA.version}`
+      );
+    } else {
+      console.log(`Версия данных актуальна: ${currentVersion}`);
+    }
   } catch (error) {
-    console.error("Ошибка при сохранении слов:", error);
+    console.error("Ошибка при инициализации базы данных:", error);
+    throw error;
   }
 };
 
-export const loadWords = (): Word[] => {
+/**
+ * Получить все слова из базы данных
+ */
+export const getWords = async (): Promise<Word[]> => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      return JSON.parse(stored);
-    }
+    return await db.words.toArray();
   } catch (error) {
     console.error("Ошибка при загрузке слов:", error);
-  }
-  return [];
-};
-
-export const addWord = (word: Omit<Word, "id" | "createdAt">): Word => {
-  const words = loadWords();
-  const newWord: Word = {
-    ...word,
-    id: Date.now().toString(),
-    createdAt: Date.now(),
-  };
-  words.push(newWord);
-  saveWords(words);
-  return newWord;
-};
-
-export const updateWord = (id: string, updates: Partial<Word>): void => {
-  const words = loadWords();
-  const index = words.findIndex((w) => w.id === id);
-  if (index !== -1) {
-    words[index] = { ...words[index], ...updates };
-    saveWords(words);
+    return [];
   }
 };
 
-export const deleteWord = (id: string): void => {
-  const words = loadWords();
-  const filtered = words.filter((w) => w.id !== id);
-  saveWords(filtered);
-};
-
-export const exportWords = (): string => {
-  const words = loadWords();
-  return JSON.stringify(words, null, 2);
-};
-
-export const importWords = (jsonData: string): { success: boolean; count: number; error?: string } => {
+/**
+ * Обновить прогресс изучения слова
+ */
+export const updateWordProgress = async (
+  id: string,
+  updates: { knowsPlToRu?: boolean; knowsRuToPl?: boolean }
+): Promise<void> => {
   try {
-    const imported = JSON.parse(jsonData);
-    if (!Array.isArray(imported)) {
-      return { success: false, count: 0, error: "Неверный формат данных. Ожидается массив слов." };
+    const word = await db.words.get(id);
+    if (!word) {
+      throw new Error(`Слово с id ${id} не найдено`);
     }
-    
+
+    const updatedWord: Partial<Word> = {
+      ...updates,
+      lastReviewed: Date.now(),
+    };
+
+    await db.words.update(id, updatedWord);
+  } catch (error) {
+    console.error("Ошибка при обновлении прогресса:", error);
+    throw error;
+  }
+};
+
+/**
+ * Экспорт прогресса для сохранения в воркспейс
+ * Возвращает данные в формате WORDS.json с текущим прогрессом
+ */
+export const exportProgress = async (): Promise<string> => {
+  try {
+    const words = await db.words.toArray();
+    const metadata = await db.metadata.get("version");
+    const version = metadata?.version || WORDS_DATA.version;
+
+    const exportData: WordsData = {
+      version,
+      words,
+    };
+
+    return JSON.stringify(exportData, null, 2);
+  } catch (error) {
+    console.error("Ошибка при экспорте прогресса:", error);
+    throw error;
+  }
+};
+
+/**
+ * Импорт прогресса из файла
+ * Используется для обновления WORDS.json в воркспейсе
+ */
+export const importProgress = async (
+  jsonData: string
+): Promise<{ success: boolean; count: number; error?: string }> => {
+  try {
+    const imported = JSON.parse(jsonData) as WordsData;
+
+    if (!imported.version || !Array.isArray(imported.words)) {
+      return {
+        success: false,
+        count: 0,
+        error:
+          "Неверный формат данных. Ожидается объект с полями version и words.",
+      };
+    }
+
     // Валидация структуры
-    const validWords = imported.filter((word) => {
-      return word && typeof word.polish === "string" && typeof word.russian === "string";
+    const validWords = imported.words.filter((word) => {
+      return (
+        word &&
+        typeof word.id === "string" &&
+        typeof word.polish === "string" &&
+        typeof word.russian === "string" &&
+        typeof word.knowsPlToRu === "boolean" &&
+        typeof word.knowsRuToPl === "boolean"
+      );
     });
 
     if (validWords.length === 0) {
-      return { success: false, count: 0, error: "Не найдено валидных слов в файле." };
+      return {
+        success: false,
+        count: 0,
+        error: "Не найдено валидных слов в файле.",
+      };
     }
 
-    // Объединяем с существующими словами (избегаем дубликатов по ID)
-    const existingWords = loadWords();
-    const existingIds = new Set(existingWords.map((w) => w.id));
-    const newWords = validWords.filter((w) => !existingIds.has(w.id));
-    
-    const merged = [...existingWords, ...newWords];
-    saveWords(merged);
-    
-    return { success: true, count: newWords.length };
+    // Очищаем старые данные и загружаем новые
+    await db.words.clear();
+    await db.words.bulkAdd(validWords);
+    await db.metadata.put({ id: "version", version: imported.version });
+
+    return { success: true, count: validWords.length };
   } catch (error) {
-    return { 
-      success: false, 
-      count: 0, 
-      error: error instanceof Error ? error.message : "Ошибка при импорте данных" 
+    return {
+      success: false,
+      count: 0,
+      error:
+        error instanceof Error ? error.message : "Ошибка при импорте данных",
     };
   }
 };
 
-export const clearAllWords = (): void => {
-  saveWords([]);
+/**
+ * Получить статистику по уровням
+ */
+export const getStats = async () => {
+  try {
+    const words = await db.words.toArray();
+    const now = Date.now();
+    const todayStart = new Date(now).setHours(0, 0, 0, 0);
+
+    const stats = {
+      totalWords: words.length,
+      level0Words: words.filter((w) => !w.knowsPlToRu && !w.knowsRuToPl).length,
+      level1Words: words.filter((w) => w.knowsPlToRu && !w.knowsRuToPl).length,
+      level2Words: words.filter((w) => w.knowsPlToRu && w.knowsRuToPl).length,
+      reviewedToday: words.filter(
+        (w) => w.lastReviewed && w.lastReviewed >= todayStart
+      ).length,
+    };
+
+    return stats;
+  } catch (error) {
+    console.error("Ошибка при получении статистики:", error);
+    return {
+      totalWords: 0,
+      level0Words: 0,
+      level1Words: 0,
+      level2Words: 0,
+      reviewedToday: 0,
+    };
+  }
+};
+
+/**
+ * Получить слова по уровню
+ */
+export const getWordsByLevel = async (level: 0 | 1 | 2): Promise<Word[]> => {
+  try {
+    const allWords = await db.words.toArray();
+
+    switch (level) {
+      case 0:
+        return allWords.filter((w) => !w.knowsPlToRu && !w.knowsRuToPl);
+      case 1:
+        return allWords.filter((w) => w.knowsPlToRu && !w.knowsRuToPl);
+      case 2:
+        return allWords.filter((w) => w.knowsPlToRu && w.knowsRuToPl);
+      default:
+        return [];
+    }
+  } catch (error) {
+    console.error("Ошибка при получении слов по уровню:", error);
+    return [];
+  }
+};
+
+/**
+ * Очистить все данные (для тестирования)
+ */
+export const clearAllWords = async (): Promise<void> => {
+  await db.words.clear();
+  await db.metadata.delete("version");
 };

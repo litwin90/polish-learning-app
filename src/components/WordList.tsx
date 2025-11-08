@@ -2,31 +2,46 @@ import { Word } from '../types';
 
 interface WordListProps {
   words: Word[];
-  onEdit: (word: Word) => void;
-  onDelete: (id: string) => void;
   onStartLearning: () => void;
   onExport: () => void;
   onImport: () => void;
-  onClearAll: () => void;
 }
 
 export const WordList = ({
   words,
-  onEdit,
-  onDelete,
   onStartLearning,
   onExport,
   onImport,
-  onClearAll,
 }: WordListProps) => {
-  const getDifficultyColor = (difficulty: Word["difficulty"]) => {
-    switch (difficulty) {
-      case "easy":
+  const getLevel = (word: Word): number => {
+    if (word.knowsPlToRu && word.knowsRuToPl) return 2;
+    if (word.knowsPlToRu) return 1;
+    return 0;
+  };
+
+  const getLevelColor = (level: number) => {
+    switch (level) {
+      case 0:
+        return "text-gray-600";
+      case 1:
+        return "text-blue-600";
+      case 2:
         return "text-green-600";
-      case "medium":
-        return "text-yellow-600";
-      case "hard":
-        return "text-red-600";
+      default:
+        return "text-gray-600";
+    }
+  };
+
+  const getLevelText = (level: number) => {
+    switch (level) {
+      case 0:
+        return "Уровень 0 - Не знаю";
+      case 1:
+        return "Уровень 1 - Знаю PL→RU";
+      case 2:
+        return "Уровень 2 - Знаю оба";
+      default:
+        return "Неизвестно";
     }
   };
 
@@ -84,18 +99,6 @@ export const WordList = ({
               другое устройство
             </p>
           </div>
-
-          <div className="border-t pt-4">
-            <h4 className="text-lg font-semibold text-red-600 mb-3">
-              Опасная зона
-            </h4>
-            <button
-              className="w-full px-4 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all shadow-md active:scale-95"
-              onClick={onClearAll}
-            >
-              🗑️ Удалить все слова
-            </button>
-          </div>
         </div>
       </div>
 
@@ -128,31 +131,13 @@ export const WordList = ({
                     </span>
                   )}
                   <span
-                    className={`text-sm font-semibold ${getDifficultyColor(
-                      word.difficulty
+                    className={`text-sm font-semibold ${getLevelColor(
+                      getLevel(word)
                     )}`}
                   >
-                    {word.difficulty === "easy" && "Легко"}
-                    {word.difficulty === "medium" && "Средне"}
-                    {word.difficulty === "hard" && "Сложно"}
+                    {getLevelText(getLevel(word))}
                   </span>
                 </div>
-              </div>
-              <div className="flex gap-2 self-end sm:self-center">
-                <button
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-xl"
-                  onClick={() => onEdit(word)}
-                  title="Редактировать"
-                >
-                  ✏️
-                </button>
-                <button
-                  className="p-2 hover:bg-red-50 rounded-lg transition-colors text-xl"
-                  onClick={() => onDelete(word.id)}
-                  title="Удалить"
-                >
-                  🗑️
-                </button>
               </div>
             </div>
           </div>

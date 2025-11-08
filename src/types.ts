@@ -4,15 +4,21 @@ export interface Word {
   russian: string;
   example?: string;
   category?: string;
-  createdAt: number;
+  knowsPlToRu: boolean; // Уровень 1: знаю PL→RU
+  knowsRuToPl: boolean; // Уровень 2: знаю RU→PL
   lastReviewed?: number;
-  difficulty: "easy" | "medium" | "hard";
+  createdAt?: number;
+}
+
+export interface WordsData {
+  version: string;
+  words: Word[];
 }
 
 export interface CardStats {
   totalWords: number;
-  easyWords: number;
-  mediumWords: number;
-  hardWords: number;
+  level0Words: number; // Не знаю (knowsPlToRu: false, knowsRuToPl: false)
+  level1Words: number; // Знаю PL→RU (knowsPlToRu: true, knowsRuToPl: false)
+  level2Words: number; // Знаю оба направления (knowsPlToRu: true, knowsRuToPl: true)
   reviewedToday: number;
 }
