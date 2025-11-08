@@ -4,8 +4,8 @@ import { FlashCard } from './components/FlashCard';
 import { WordList } from './components/WordList';
 import { Word } from './types';
 import {
-    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStats, getStats, getWords,
-    importProgress, initializeDatabase, updateWordProgress
+    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getStats, getWords, importProgress, initializeDatabase,
+    updateWordProgress
 } from './utils/storage';
 
 type View = "list" | "learning" | "words";
@@ -25,15 +25,6 @@ function App() {
     level1Words: 0,
     level2Words: 0,
     reviewedToday: 0,
-  });
-  const [languageLevelStats, setLanguageLevelStats] = useState({
-    A1: 0,
-    A2: 0,
-    B1: 0,
-    B2: 0,
-    C1: 0,
-    C2: 0,
-    withoutLevel: 0,
   });
   const [knowledgeBreakdown, setKnowledgeBreakdown] = useState({
     level0: {
@@ -69,8 +60,6 @@ function App() {
         setWords(loadedWords);
         const loadedStats = await getStats();
         setStats(loadedStats);
-        const loadedLanguageStats = await getLanguageLevelStats();
-        setLanguageLevelStats(loadedLanguageStats);
         const loadedBreakdown =
           await getKnowledgeLevelStatsWithLanguageBreakdown();
         setKnowledgeBreakdown(loadedBreakdown);
@@ -164,7 +153,6 @@ function App() {
         setCurrentView("list");
         // Обновляем статистику
         getStats().then(setStats);
-        getLanguageLevelStats().then(setLanguageLevelStats);
         getKnowledgeLevelStatsWithLanguageBreakdown().then(
           setKnowledgeBreakdown
         );
@@ -202,8 +190,6 @@ function App() {
         // Обновляем статистику
         const updatedStats = await getStats();
         setStats(updatedStats);
-        const updatedLanguageStats = await getLanguageLevelStats();
-        setLanguageLevelStats(updatedLanguageStats);
         const updatedBreakdown =
           await getKnowledgeLevelStatsWithLanguageBreakdown();
         setKnowledgeBreakdown(updatedBreakdown);
@@ -332,8 +318,6 @@ function App() {
             setWords(loadedWords);
             const loadedStats = await getStats();
             setStats(loadedStats);
-            const loadedLanguageStats = await getLanguageLevelStats();
-            setLanguageLevelStats(loadedLanguageStats);
             const loadedBreakdown =
               await getKnowledgeLevelStatsWithLanguageBreakdown();
             setKnowledgeBreakdown(loadedBreakdown);
@@ -409,7 +393,6 @@ function App() {
                   onClick={() => {
                     setCurrentView("list");
                     getStats().then(setStats);
-                    getLanguageLevelStats().then(setLanguageLevelStats);
                     getKnowledgeLevelStatsWithLanguageBreakdown().then(
                       setKnowledgeBreakdown
                     );
