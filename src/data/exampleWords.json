@@ -1,0 +1,58 @@
+[
+  {
+    "polish": "dom",
+    "russian": "дом",
+    "example": "Mój dom jest duży",
+    "category": "Дом",
+    "difficulty": "easy"
+  },
+  {
+    "polish": "samochód",
+    "russian": "автомобиль",
+    "example": "Kupiłem nowy samochód",
+    "category": "Транспорт",
+    "difficulty": "medium"
+  },
+  {
+    "polish": "książka",
+    "russian": "книга",
+    "example": "Czytam interesującą książkę",
+    "category": "Образование",
+    "difficulty": "easy"
+  },
+  {
+    "polish": "przyjaciel",
+    "russian": "друг",
+    "example": "Mam dobrego przyjaciela",
+    "category": "Люди",
+    "difficulty": "medium"
+  },
+  {
+    "polish": "praca",
+    "russian": "работа",
+    "example": "Idę do pracy",
+    "category": "Работа",
+    "difficulty": "easy"
+  },
+  {
+    "polish": "jedzenie",
+    "russian": "еда",
+    "example": "Lubię polskie jedzenie",
+    "category": "Еда",
+    "difficulty": "easy"
+  },
+  {
+    "polish": "szkoła",
+    "russian": "школа",
+    "example": "Chodzę do szkoły",
+    "category": "Образование",
+    "difficulty": "easy"
+  },
+  {
+    "polish": "miasto",
+    "russian": "город",
+    "example": "Kraków to piękne miasto",
+    "category": "Город",
+    "difficulty": "medium"
+  }
+]
