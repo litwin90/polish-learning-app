@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Word } from '../types';
 
@@ -33,8 +33,19 @@ export const FlashCard = ({
   const [swipeProgress, setSwipeProgress] = useState(0);
   const minSwipeDistance = 50;
 
+  // Сбрасываем состояние переворота при смене карточки
+  useEffect(() => {
+    setIsFlipped(false);
+    setSwipeDirection(null);
+    setSwipeProgress(0);
+    touchStartX.current = null;
+    touchEndX.current = null;
+  }, [word.id]);
+
   const handleFlip = () => {
     if (isAnimating) return;
+    // Предотвращаем переворот, если был свайп
+    if (swipeDirection !== null) return;
     setIsAnimating(true);
     setIsFlipped(!isFlipped);
     setTimeout(() => setIsAnimating(false), 300);
@@ -79,6 +90,7 @@ export const FlashCard = ({
 
   const onTouchMove = (e: React.TouchEvent) => {
     if (!touchStartX.current) return;
+    e.preventDefault(); // Предотвращаем скролл при свайпе
     touchEndX.current = e.targetTouches[0].clientX;
     const distance = touchStartX.current - touchEndX.current;
     const absDistance = Math.abs(distance);
@@ -95,18 +107,21 @@ export const FlashCard = ({
   };
 
   const onTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) {
+    if (!touchStartX.current) {
       setSwipeDirection(null);
       setSwipeProgress(0);
       return;
     }
 
-    const distance = touchStartX.current - touchEndX.current;
+    const endX = touchEndX.current ?? touchStartX.current;
+    const distance = touchStartX.current - endX;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
     setSwipeDirection(null);
     setSwipeProgress(0);
+    touchStartX.current = null;
+    touchEndX.current = null;
 
     if (isLeftSwipe) {
       // Свайп влево = следующая карточка
@@ -250,57 +265,63 @@ export const FlashCard = ({
           <div className="text-center text-sm text-gray-600 mb-2 md:hidden">
             Свайп влево = следующая | Свайп вправо = предыдущая
           </div>
-          <div className="hidden md:flex flex-col sm:flex-row gap-3">
-            <button
-              className="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-all shadow-lg active:scale-95"
-              onClick={() => handleLevel(false, false)}
-            >
-              Не знаю (0)
-            </button>
-            {mode === "pl-to-ru" && (
+          <div className="hidden md:flex flex-col gap-3">
+            <div className="flex gap-3">
               <button
-                className="flex-1 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all shadow-lg active:scale-95"
-                onClick={() => handleLevel(true, word.knowsRuToPl)}
+                className="flex-1 px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all shadow-lg active:scale-95"
+                onClick={() => handleLevel(false, false)}
               >
-                Знаю PL→RU
+                Не знаю
               </button>
-            )}
-            {mode === "ru-to-pl" && (
+              {mode === "pl-to-ru" && (
+                <button
+                  className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all shadow-lg active:scale-95"
+                  onClick={() => handleLevel(true, word.knowsRuToPl)}
+                >
+                  Знаю
+                </button>
+              )}
+              {mode === "ru-to-pl" && (
+                <button
+                  className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all shadow-lg active:scale-95"
+                  onClick={() => handleLevel(word.knowsPlToRu, true)}
+                >
+                  Знаю
+                </button>
+              )}
+              {onToggleUnsure && (
+                <button
+                  className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all shadow-lg active:scale-95 ${
+                    word.isUnsure
+                      ? "bg-gray-500 text-white hover:bg-gray-600"
+                      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                  }`}
+                  onClick={handleToggleUnsure}
+                >
+                  Сомневаюсь
+                </button>
+              )}
+            </div>
+            <div className="flex gap-3">
               <button
-                className="flex-1 px-6 py-3 bg-purple-500 text-white rounded-lg font-semibold hover:bg-purple-600 transition-all shadow-lg active:scale-95"
-                onClick={() => handleLevel(word.knowsPlToRu, true)}
+                className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                onClick={handleSkip}
               >
-                Знаю RU→PL
+                Пропустить
               </button>
-            )}
-            {(word.knowsPlToRu || word.knowsRuToPl) && (
-              <button
-                className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all shadow-lg active:scale-95"
-                onClick={() => handleLevel(true, true)}
-              >
-                Знаю оба (2)
-              </button>
-            )}
-          </div>
-          <div className="hidden md:flex gap-3">
-            <button
-              className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all shadow-lg active:scale-95"
-              onClick={handleSkip}
-            >
-              Пропустить
-            </button>
-            {onToggleNeedsReview && (
-              <button
-                className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all shadow-lg active:scale-95 ${
-                  word.needsReview
-                    ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                }`}
-                onClick={handleToggleNeedsReview}
-              >
-                {word.needsReview ? "✓ Требует проверки" : "Требует проверки"}
-              </button>
-            )}
+              {onToggleNeedsReview && (
+                <button
+                  className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all shadow-lg active:scale-95 ${
+                    word.needsReview
+                      ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                  }`}
+                  onClick={handleToggleNeedsReview}
+                >
+                  {word.needsReview ? "✓ Требует проверки" : "Требует проверки"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

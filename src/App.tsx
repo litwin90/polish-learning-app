@@ -368,56 +368,58 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-500 via-purple-600 to-pink-500">
       <header className="bg-white/95 backdrop-blur-sm shadow-md sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4">
-            <span className="md:hidden">🇵🇱</span>
-            <span className="hidden md:inline">
-              🇵🇱 Изучение польского языка
-            </span>
-          </h1>
-          <nav className="flex justify-center gap-2 flex-wrap">
-            {currentView === "list" && (
-              <>
-                <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
-                  Главная
-                </button>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-4">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+              <span className="md:hidden">🇵🇱</span>
+              <span className="hidden md:inline">
+                🇵🇱 Изучение польского языка
+              </span>
+            </h1>
+            <nav className="flex gap-2 flex-wrap">
+              {currentView === "list" && (
+                <>
+                  <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
+                    Главная
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                    onClick={() => setCurrentView("words")}
+                  >
+                    Все слова
+                  </button>
+                </>
+              )}
+              {currentView === "words" && (
+                <>
+                  <button
+                    className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                    onClick={() => setCurrentView("list")}
+                  >
+                    Главная
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
+                    Все слова
+                  </button>
+                </>
+              )}
+              {currentView === "learning" && (
                 <button
                   className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
-                  onClick={() => setCurrentView("words")}
+                  onClick={() => {
+                    setCurrentView("list");
+                    getStats().then(setStats);
+                    getLanguageLevelStats().then(setLanguageLevelStats);
+                    getKnowledgeLevelStatsWithLanguageBreakdown().then(
+                      setKnowledgeBreakdown
+                    );
+                  }}
                 >
-                  Все слова
+                  ← Вернуться
                 </button>
-              </>
-            )}
-            {currentView === "words" && (
-              <>
-                <button
-                  className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
-                  onClick={() => setCurrentView("list")}
-                >
-                  Главная
-                </button>
-                <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
-                  Все слова
-                </button>
-              </>
-            )}
-            {currentView === "learning" && (
-              <button
-                className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
-                onClick={() => {
-                  setCurrentView("list");
-                  getStats().then(setStats);
-                  getLanguageLevelStats().then(setLanguageLevelStats);
-                  getKnowledgeLevelStatsWithLanguageBreakdown().then(
-                    setKnowledgeBreakdown
-                  );
-                }}
-              >
-                ← Вернуться
-              </button>
-            )}
-          </nav>
+              )}
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -428,40 +430,31 @@ function App() {
             <div className="bg-white rounded-xl p-6 shadow-xl">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-gray-800">Статистика</h2>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-gray-600">Инверсия:</span>
                   <button
-                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
-                      statsViewMode === "knowledge"
-                        ? "bg-primary-500 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                    onClick={() => setStatsViewMode("knowledge")}
-                  >
-                    По уровню знания
-                  </button>
-                  <button
-                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
-                      statsViewMode === "language"
-                        ? "bg-primary-500 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                    onClick={() => setStatsViewMode("language")}
-                  >
-                    По уровню языка
-                  </button>
-                  <button
-                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                       statsViewMode === "inverted"
-                        ? "bg-primary-500 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        ? "bg-primary-500"
+                        : "bg-gray-300"
                     }`}
-                    onClick={() => setStatsViewMode("inverted")}
+                    onClick={() =>
+                      setStatsViewMode(
+                        statsViewMode === "inverted" ? "knowledge" : "inverted"
+                      )
+                    }
                   >
-                    Инвертированный
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        statsViewMode === "inverted"
+                          ? "translate-x-6"
+                          : "translate-x-1"
+                      }`}
+                    />
                   </button>
                 </div>
               </div>
-              {statsViewMode === "knowledge" ? (
+              {statsViewMode === "knowledge" || statsViewMode === "inverted" ? (
                 <div className="space-y-4">
                   <div className="text-center mb-4">
                     <div className="text-2xl font-bold text-primary-600">
@@ -593,7 +586,7 @@ function App() {
                     </div>
                   </div>
                 </div>
-              ) : statsViewMode === "inverted" ? (
+              ) : (
                 <div className="space-y-4">
                   <div className="text-center mb-4">
                     <div className="text-2xl font-bold text-primary-600">
@@ -726,51 +719,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary-600">
-                      {stats.totalWords}
-                    </div>
-                    <div className="text-sm text-gray-600">Всего слов</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">
-                      {languageLevelStats.A1}
-                    </div>
-                    <div className="text-sm text-gray-600">A1</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">
-                      {languageLevelStats.A2}
-                    </div>
-                    <div className="text-sm text-gray-600">A2</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {languageLevelStats.B1}
-                    </div>
-                    <div className="text-sm text-gray-600">B1</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {languageLevelStats.B2}
-                    </div>
-                    <div className="text-sm text-gray-600">B2</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-600">
-                      {languageLevelStats.C1 + languageLevelStats.C2}
-                    </div>
-                    <div className="text-sm text-gray-600">C1-C2</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">
-                      {languageLevelStats.withoutLevel}
-                    </div>
-                    <div className="text-sm text-gray-600">Без уровня</div>
-                  </div>
-                </div>
               )}
             </div>
           </div>
@@ -815,7 +763,6 @@ function App() {
             onImport={handleImport}
             onToggleNeedsReview={handleToggleNeedsReview}
             onMarkKnowsPl={handleMarkKnowsPl}
-            onBack={() => setCurrentView("list")}
           />
         )}
 

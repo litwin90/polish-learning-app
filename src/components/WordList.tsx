@@ -14,7 +14,6 @@ interface WordListProps {
   onImport: () => void;
   onToggleNeedsReview?: (id: string, needsReview: boolean) => void;
   onMarkKnowsPl?: (id: string) => void;
-  onBack?: () => void;
 }
 
 export const WordList = ({
@@ -24,7 +23,6 @@ export const WordList = ({
   onImport,
   onToggleNeedsReview,
   onMarkKnowsPl,
-  onBack,
 }: WordListProps) => {
   const currentVersion = getCurrentVersion();
   const storageKey = `wordListFilters_v${currentVersion}`;
@@ -84,6 +82,8 @@ export const WordList = ({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">(
     initialFilters.sortOrder
   );
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showFiltersMenu, setShowFiltersMenu] = useState(false);
 
   // Сохранение фильтров в localStorage при изменении
   useEffect(() => {
@@ -243,29 +243,63 @@ export const WordList = ({
       {/* Заголовок и навигация */}
       <div className="bg-white rounded-xl p-4 md:p-6 shadow-xl">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div className="flex items-center gap-4">
-            {onBack && (
+          <h3 className="text-2xl font-bold text-gray-800">
+            Все слова ({filteredAndSortedWords.length} из {words.length})
+          </h3>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button
+              className="flex-1 sm:flex-none px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md active:scale-95"
+              onClick={handleStartLearning}
+            >
+              Начать изучение
+            </button>
+            {/* Меню для мобильных */}
+            <div className="md:hidden relative">
               <button
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
-                onClick={onBack}
+                className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
               >
-                ← Назад
+                ☰
               </button>
-            )}
-            <h3 className="text-2xl font-bold text-gray-800">
-              Все слова ({filteredAndSortedWords.length} из {words.length})
-            </h3>
+              {showMobileMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                  <div className="py-2">
+                    <button
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+                      onClick={() => {
+                        onExport();
+                        setShowMobileMenu(false);
+                      }}
+                    >
+                      📥 Экспорт
+                    </button>
+                    <button
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+                      onClick={() => {
+                        onImport();
+                        setShowMobileMenu(false);
+                      }}
+                    >
+                      📤 Импорт
+                    </button>
+                    <div className="border-t my-1"></div>
+                    <button
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+                      onClick={() => {
+                        setShowFiltersMenu(!showFiltersMenu);
+                      }}
+                    >
+                      🔍 Фильтры и сортировка
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <button
-            className="w-full sm:w-auto px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md active:scale-95"
-            onClick={handleStartLearning}
-          >
-            Начать изучение
-          </button>
         </div>
 
-        {/* Резервное копирование */}
-        <div className="border-b pb-4 mb-6">
+        {/* Резервное копирование - только для десктопа */}
+        <div className="hidden md:block border-b pb-4 mb-6">
           <h4 className="text-lg font-semibold text-gray-800 mb-3">
             Резервное копирование
           </h4>
@@ -291,8 +325,162 @@ export const WordList = ({
           </p>
         </div>
 
-        {/* Фильтрация и сортировка */}
-        <div className="space-y-4">
+        {/* Фильтрация и сортировка - меню для мобильных */}
+        {showFiltersMenu && (
+          <div className="md:hidden bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-lg font-semibold text-gray-800">
+                Фильтры и сортировка
+              </h4>
+              <button
+                className="text-gray-600 hover:text-gray-800"
+                onClick={() => setShowFiltersMenu(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Фильтр по уровню знания:
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filterLevels.has(0)}
+                      onChange={() => toggleFilterLevel(0)}
+                      className="w-5 h-5 text-gray-600 rounded"
+                    />
+                    <span className="text-gray-600 font-medium">Уровень 0</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filterLevels.has(1)}
+                      onChange={() => toggleFilterLevel(1)}
+                      className="w-5 h-5 text-blue-600 rounded"
+                    />
+                    <span className="text-blue-600 font-medium">Уровень 1</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filterLevels.has(2)}
+                      onChange={() => toggleFilterLevel(2)}
+                      className="w-5 h-5 text-green-600 rounded"
+                    />
+                    <span className="text-green-600 font-medium">
+                      Уровень 2
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Фильтр по уровню языка (CEFR):
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  {(["A1", "A2", "B1", "B2", "C1", "C2"] as const).map(
+                    (level) => (
+                      <label
+                        key={level}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={filterLanguageLevels.has(level)}
+                          onChange={() => toggleFilterLanguageLevel(level)}
+                          className="w-5 h-5 text-primary-600 rounded"
+                        />
+                        <span className="text-gray-700 font-medium">
+                          {level}
+                        </span>
+                      </label>
+                    )
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Фильтр по статусу проверки:
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="needsReview"
+                      checked={filterNeedsReview === null}
+                      onChange={() => setFilterNeedsReview(null)}
+                      className="w-5 h-5 text-primary-600"
+                    />
+                    <span className="text-gray-700 font-medium">Все</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="needsReview"
+                      checked={filterNeedsReview === true}
+                      onChange={() => setFilterNeedsReview(true)}
+                      className="w-5 h-5 text-yellow-600"
+                    />
+                    <span className="text-yellow-700 font-medium">
+                      Требуют проверки
+                    </span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="needsReview"
+                      checked={filterNeedsReview === false}
+                      onChange={() => setFilterNeedsReview(false)}
+                      className="w-5 h-5 text-gray-600"
+                    />
+                    <span className="text-gray-700 font-medium">
+                      Не требуют проверки
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Сортировка:
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) =>
+                      setSortBy(e.target.value as "level" | "lastReviewed")
+                    }
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 transition-colors"
+                  >
+                    <option value="level">По уровню</option>
+                    <option value="lastReviewed">
+                      По дате последнего просмотра
+                    </option>
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    onClick={() =>
+                      setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                    }
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                    title="Изменить порядок сортировки"
+                  >
+                    {sortOrder === "asc" ? "↑" : "↓"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Фильтрация и сортировка - только для десктопа */}
+        <div className="hidden md:block space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Фильтр по уровню знания:
