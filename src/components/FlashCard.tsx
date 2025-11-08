@@ -67,7 +67,12 @@ export const FlashCard = ({
                   {word.category}
                 </span>
               )}
-              {word.example && !isFlipped && (
+              {word.examples?.pl && !isFlipped && (
+                <p className="text-lg md:text-xl italic mt-4 opacity-90">
+                  Пример: {word.examples.pl}
+                </p>
+              )}
+              {!word.examples?.pl && word.example && !isFlipped && (
                 <p className="text-lg md:text-xl italic mt-4 opacity-90">
                   Пример: {word.example}
                 </p>
@@ -84,7 +89,12 @@ export const FlashCard = ({
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 {word.russian}
               </h2>
-              {word.example && (
+              {word.examples?.ru && (
+                <p className="text-lg md:text-xl italic mt-4 opacity-90">
+                  Пример: {word.examples.ru}
+                </p>
+              )}
+              {!word.examples?.ru && word.example && (
                 <p className="text-lg md:text-xl italic mt-4 opacity-90">
                   Пример: {word.example}
                 </p>

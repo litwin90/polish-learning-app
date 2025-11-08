@@ -22,8 +22,9 @@
       "polish": "ryba",
       "russian": "рыба",
       "category": "Еда",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627549189
     },
     {
       "id": "word-11",
@@ -64,7 +65,7 @@
       "category": "Глаголы",
       "knowsPlToRu": true,
       "knowsRuToPl": false,
-      "lastReviewed": 1762624625327
+      "lastReviewed": 1762627522323
     },
     {
       "id": "word-16",
@@ -107,8 +108,9 @@
       "polish": "w",
       "russian": "в",
       "category": "Предлоги",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627486607
     },
     {
       "id": "word-20",
@@ -125,7 +127,7 @@
       "category": "Работа",
       "knowsPlToRu": true,
       "knowsRuToPl": false,
-      "lastReviewed": 1762624643227
+      "lastReviewed": 1762627543833
     },
     {
       "id": "word-22",
@@ -142,7 +144,7 @@
       "category": "Глаголы",
       "knowsPlToRu": true,
       "knowsRuToPl": false,
-      "lastReviewed": 1762624637347
+      "lastReviewed": 1762627482603
     },
     {
       "id": "word-24",
@@ -338,8 +340,9 @@
       "polish": "dawać",
       "russian": "давать",
       "category": "Глаголы",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627464340
     },
     {
       "id": "word-46",
@@ -387,8 +390,9 @@
       "polish": "czuć",
       "russian": "чувствовать",
       "category": "Чувства",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627508063
     },
     {
       "id": "word-51",
@@ -403,8 +407,9 @@
       "polish": "kobieta",
       "russian": "женщина",
       "category": "Люди",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627461326
     },
     {
       "id": "word-53",
@@ -526,7 +531,8 @@
       "russian": "ванная",
       "category": "Дом",
       "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627468717
     },
     {
       "id": "word-67",
@@ -565,16 +571,18 @@
       "polish": "stół",
       "russian": "стол",
       "category": "Дом",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627474053
     },
     {
       "id": "word-71",
       "polish": "krzesło",
       "russian": "стул",
       "category": "Дом",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627534805
     },
     {
       "id": "word-72",
@@ -589,8 +597,9 @@
       "polish": "telefon",
       "russian": "телефон",
       "category": "Техника",
-      "knowsPlToRu": false,
-      "knowsRuToPl": false
+      "knowsPlToRu": true,
+      "knowsRuToPl": false,
+      "lastReviewed": 1762627458042
     },
     {
       "id": "word-74",

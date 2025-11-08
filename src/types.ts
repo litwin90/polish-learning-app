@@ -2,7 +2,8 @@ export interface Word {
   id: string;
   polish: string;
   russian: string;
-  example?: string;
+  example?: string; // Старое поле для обратной совместимости
+  examples?: { pl: string; ru: string }; // Новое поле с примерами для обоих языков
   category?: string;
   knowsPlToRu: boolean; // Уровень 1: знаю PL→RU
   knowsRuToPl: boolean; // Уровень 2: знаю RU→PL

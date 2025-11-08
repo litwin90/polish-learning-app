@@ -81,21 +81,54 @@ export const updateWordProgress = async (
 };
 
 /**
+ * Инкрементирует patch версию (1.0.0 → 1.0.1)
+ */
+const incrementVersion = (version: string): string => {
+  const parts = version.split(".");
+  if (parts.length !== 3) {
+    // Если формат неверный, возвращаем исходную версию
+    return version;
+  }
+  const major = parseInt(parts[0], 10);
+  const minor = parseInt(parts[1], 10);
+  const patch = parseInt(parts[2], 10);
+
+  if (isNaN(major) || isNaN(minor) || isNaN(patch)) {
+    return version;
+  }
+
+  return `${major}.${minor}.${patch + 1}`;
+};
+
+/**
  * Экспорт прогресса для сохранения в воркспейс
  * Возвращает данные в формате WORDS.json с текущим прогрессом
+ * Автоматически инкрементирует patch версию при экспорте
  */
-export const exportProgress = async (): Promise<string> => {
+export const exportProgress = async (): Promise<{
+  data: string;
+  version: string;
+}> => {
   try {
     const words = await db.words.toArray();
     const metadata = await db.metadata.get("version");
-    const version = metadata?.version || WORDS_DATA.version;
+    const currentVersion = metadata?.version || WORDS_DATA.version;
+
+    // Инкрементируем patch версию
+    const newVersion = incrementVersion(currentVersion);
+
+    // Сохраняем новую версию в metadata
+    await db.metadata.put({ id: "version", version: newVersion });
 
     const exportData: WordsData = {
-      version,
+      version: newVersion,
       words,
     };
 
-    return JSON.stringify(exportData, null, 2);
+    return {
+      data: JSON.stringify(exportData, null, 2),
+      version: newVersion,
+    };
   } catch (error) {
     console.error("Ошибка при экспорте прогресса:", error);
     throw error;

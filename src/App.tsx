@@ -7,7 +7,7 @@ import {
     exportProgress, getStats, getWords, importProgress, initializeDatabase, updateWordProgress
 } from './utils/storage';
 
-type View = "list" | "learning";
+type View = "list" | "learning" | "words";
 
 function App() {
   const [words, setWords] = useState<Word[]>([]);
@@ -104,20 +104,23 @@ function App() {
 
   const handleExport = async () => {
     try {
-      const jsonData = await exportProgress();
+      const { data: jsonData, version } = await exportProgress();
       const blob = new Blob([jsonData], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `polish-words-progress-${
-        new Date().toISOString().split("T")[0]
-      }.json`;
+      // Формат: polish-words-progress-YYYY-MM-DD_HH-MM-SS.json
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/:/g, "-")
+        .split(".")[0];
+      a.download = `polish-words-progress-${timestamp}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       alert(
-        `Экспортировано ${words.length} слов(а) с прогрессом.\n\nСохраните этот файл в воркспейс как polish-learning-app/data/WORDS.json для обновления основной версии.`
+        `Экспортировано ${words.length} слов(а) с прогрессом.\nВерсия: ${version}\n\nСохраните этот файл в воркспейс как polish-learning-app/data/WORDS.json для обновления основной версии.`
       );
     } catch (error) {
       console.error("Ошибка при экспорте:", error);
@@ -179,17 +182,31 @@ function App() {
             🇵🇱 Изучение польского языка
           </h1>
           <nav className="flex justify-center gap-2 flex-wrap">
-            {currentView !== "learning" && (
-              <button
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                  currentView === "list"
-                    ? "bg-primary-500 text-white shadow-lg"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-                onClick={() => setCurrentView("list")}
-              >
-                Список слов
-              </button>
+            {currentView === "list" && (
+              <>
+                <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
+                  Главная
+                </button>
+                <button
+                  className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                  onClick={() => setCurrentView("words")}
+                >
+                  Все слова
+                </button>
+              </>
+            )}
+            {currentView === "words" && (
+              <>
+                <button
+                  className="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                  onClick={() => setCurrentView("list")}
+                >
+                  Главная
+                </button>
+                <button className="px-4 py-2 rounded-lg font-semibold bg-primary-500 text-white shadow-lg transition-all">
+                  Все слова
+                </button>
+              </>
             )}
             {currentView === "learning" && (
               <button
@@ -199,7 +216,7 @@ function App() {
                   getStats().then(setStats);
                 }}
               >
-                ← Вернуться к списку
+                ← Вернуться
               </button>
             )}
           </nav>
@@ -277,12 +294,19 @@ function App() {
               </div>
             </div>
 
-            <WordList
-              words={words}
-              onStartLearning={handleStartLearning}
-              onExport={handleExport}
-              onImport={handleImport}
-            />
+            <div className="bg-white rounded-xl p-6 shadow-xl">
+              <div className="text-center space-y-4">
+                <p className="text-gray-600 text-lg">
+                  Просмотрите все слова, отсортируйте и отфильтруйте их
+                </p>
+                <button
+                  className="px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md active:scale-95"
+                  onClick={() => setCurrentView("words")}
+                >
+                  Перейти к списку слов
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -309,9 +333,19 @@ function App() {
               className="px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md"
               onClick={() => setCurrentView("list")}
             >
-              Вернуться к списку
+              Вернуться
             </button>
           </div>
+        )}
+
+        {currentView === "words" && (
+          <WordList
+            words={words}
+            onStartLearning={handleStartLearning}
+            onExport={handleExport}
+            onImport={handleImport}
+            onBack={() => setCurrentView("list")}
+          />
         )}
       </main>
 

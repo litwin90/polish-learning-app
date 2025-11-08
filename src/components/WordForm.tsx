@@ -15,16 +15,25 @@ export const WordForm = ({
 }: WordFormProps) => {
   const [polish, setPolish] = useState(initialWord?.polish || "");
   const [russian, setRussian] = useState(initialWord?.russian || "");
-  const [example, setExample] = useState(initialWord?.example || "");
+  const [examplePl, setExamplePl] = useState(initialWord?.examples?.pl || "");
+  const [exampleRu, setExampleRu] = useState(initialWord?.examples?.ru || "");
   const [category, setCategory] = useState(initialWord?.category || "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (polish.trim() && russian.trim()) {
+      const examples =
+        examplePl.trim() || exampleRu.trim()
+          ? {
+              pl: examplePl.trim() || "",
+              ru: exampleRu.trim() || "",
+            }
+          : undefined;
+
       onSubmit({
         polish: polish.trim(),
         russian: russian.trim(),
-        example: example.trim() || undefined,
+        examples,
         category: category.trim() || undefined,
         knowsPlToRu: initialWord?.knowsPlToRu || false,
         knowsRuToPl: initialWord?.knowsRuToPl || false,
@@ -33,7 +42,8 @@ export const WordForm = ({
       if (!initialWord) {
         setPolish("");
         setRussian("");
-        setExample("");
+        setExamplePl("");
+        setExampleRu("");
         setCategory("");
       }
     }
@@ -86,17 +96,34 @@ export const WordForm = ({
 
       <div className="mb-5">
         <label
-          htmlFor="example"
+          htmlFor="examplePl"
           className="block mb-2 text-gray-700 font-medium"
         >
-          Пример использования
+          Пример на польском
         </label>
         <input
-          id="example"
+          id="examplePl"
           type="text"
-          value={example}
-          onChange={(e) => setExample(e.target.value)}
+          value={examplePl}
+          onChange={(e) => setExamplePl(e.target.value)}
           placeholder="np. Mój dom jest duży"
+          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 transition-colors text-base"
+        />
+      </div>
+
+      <div className="mb-5">
+        <label
+          htmlFor="exampleRu"
+          className="block mb-2 text-gray-700 font-medium"
+        >
+          Пример на русском
+        </label>
+        <input
+          id="exampleRu"
+          type="text"
+          value={exampleRu}
+          onChange={(e) => setExampleRu(e.target.value)}
+          placeholder="np. Мой дом большой"
           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 transition-colors text-base"
         />
       </div>
