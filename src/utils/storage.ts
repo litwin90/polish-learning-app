@@ -256,6 +256,38 @@ export const getWordsByLevel = async (level: 0 | 1 | 2): Promise<Word[]> => {
 };
 
 /**
+ * Получить статистику по уровням языка (CEFR)
+ */
+export const getLanguageLevelStats = async () => {
+  try {
+    const words = await db.words.toArray();
+
+    const stats = {
+      A1: words.filter((w) => w.level === "A1").length,
+      A2: words.filter((w) => w.level === "A2").length,
+      B1: words.filter((w) => w.level === "B1").length,
+      B2: words.filter((w) => w.level === "B2").length,
+      C1: words.filter((w) => w.level === "C1").length,
+      C2: words.filter((w) => w.level === "C2").length,
+      withoutLevel: words.filter((w) => !w.level).length,
+    };
+
+    return stats;
+  } catch (error) {
+    console.error("Ошибка при получении статистики по уровням языка:", error);
+    return {
+      A1: 0,
+      A2: 0,
+      B1: 0,
+      B2: 0,
+      C1: 0,
+      C2: 0,
+      withoutLevel: 0,
+    };
+  }
+};
+
+/**
  * Очистить все данные (для тестирования)
  */
 export const clearAllWords = async (): Promise<void> => {

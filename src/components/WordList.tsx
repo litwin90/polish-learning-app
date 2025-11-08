@@ -7,6 +7,7 @@ interface WordListProps {
   onStartLearning: (filters: {
     filterLevels: Set<0 | 1 | 2>;
     filterLanguageLevels: Set<string>;
+    filterNeedsReview?: boolean | null;
   }) => void;
   onExport: () => void;
   onImport: () => void;
@@ -27,6 +28,9 @@ export const WordList = ({
   );
   const [filterLanguageLevels, setFilterLanguageLevels] = useState<Set<string>>(
     new Set(["A1", "A2", "B1", "B2", "C1", "C2"])
+  );
+  const [filterNeedsReview, setFilterNeedsReview] = useState<boolean | null>(
+    null
   );
   const [sortBy, setSortBy] = useState<"level" | "lastReviewed">("level");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -87,6 +91,8 @@ export const WordList = ({
     onStartLearning({
       filterLevels,
       filterLanguageLevels,
+      filterNeedsReview:
+        filterNeedsReview === null ? undefined : filterNeedsReview,
     });
   };
 
@@ -108,6 +114,15 @@ export const WordList = ({
       });
     }
 
+    // Фильтрация по needsReview
+    if (filterNeedsReview !== null) {
+      filtered = filtered.filter((word) => {
+        return filterNeedsReview
+          ? word.needsReview === true
+          : word.needsReview !== true;
+      });
+    }
+
     // Сортировка
     const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
@@ -126,7 +141,14 @@ export const WordList = ({
     });
 
     return sorted;
-  }, [words, filterLevels, filterLanguageLevels, sortBy, sortOrder]);
+  }, [
+    words,
+    filterLevels,
+    filterLanguageLevels,
+    filterNeedsReview,
+    sortBy,
+    sortOrder,
+  ]);
 
   if (words.length === 0) {
     return (
@@ -255,6 +277,48 @@ export const WordList = ({
             </div>
           </div>
 
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Фильтр по статусу проверки:
+            </label>
+            <div className="flex flex-wrap gap-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="needsReview"
+                  checked={filterNeedsReview === null}
+                  onChange={() => setFilterNeedsReview(null)}
+                  className="w-5 h-5 text-primary-600"
+                />
+                <span className="text-gray-700 font-medium">Все</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="needsReview"
+                  checked={filterNeedsReview === true}
+                  onChange={() => setFilterNeedsReview(true)}
+                  className="w-5 h-5 text-yellow-600"
+                />
+                <span className="text-yellow-700 font-medium">
+                  Требуют проверки
+                </span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="needsReview"
+                  checked={filterNeedsReview === false}
+                  onChange={() => setFilterNeedsReview(false)}
+                  className="w-5 h-5 text-gray-600"
+                />
+                <span className="text-gray-700 font-medium">
+                  Не требуют проверки
+                </span>
+              </label>
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -293,7 +357,11 @@ export const WordList = ({
         {filteredAndSortedWords.map((word) => (
           <div
             key={word.id}
-            className="bg-white rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-shadow"
+            className={`rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-shadow ${
+              word.needsReview
+                ? "bg-yellow-50 border-2 border-yellow-300"
+                : "bg-white"
+            }`}
           >
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1">

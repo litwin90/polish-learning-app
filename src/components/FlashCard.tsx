@@ -23,6 +23,10 @@ export const FlashCard = ({
   const [isAnimating, setIsAnimating] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
+    null
+  );
+  const [swipeProgress, setSwipeProgress] = useState(0);
   const minSwipeDistance = 50;
 
   const handleFlip = () => {
@@ -63,21 +67,44 @@ export const FlashCard = ({
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
+    if (!isFlipped) return; // Свайпы работают только когда карточка перевернута
     touchEndX.current = null;
     touchStartX.current = e.targetTouches[0].clientX;
+    setSwipeDirection(null);
+    setSwipeProgress(0);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
+    if (!isFlipped || !touchStartX.current) return;
     touchEndX.current = e.targetTouches[0].clientX;
+    const distance = touchStartX.current - touchEndX.current;
+    const absDistance = Math.abs(distance);
+
+    if (absDistance > 10) {
+      if (distance > 0) {
+        setSwipeDirection("left");
+      } else {
+        setSwipeDirection("right");
+      }
+      // Прогресс от 0 до 1, максимум при 100px
+      setSwipeProgress(Math.min(absDistance / 100, 1));
+    }
   };
 
   const onTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return;
+    if (!touchStartX.current || !touchEndX.current) {
+      setSwipeDirection(null);
+      setSwipeProgress(0);
+      return;
+    }
     if (!isFlipped) return; // Свайпы работают только когда карточка перевернута
 
     const distance = touchStartX.current - touchEndX.current;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
+
+    setSwipeDirection(null);
+    setSwipeProgress(0);
 
     if (isLeftSwipe) {
       // Свайп влево = "знаю"
@@ -96,13 +123,63 @@ export const FlashCard = ({
     }
   };
 
+  // Определяем цвет карточки в зависимости от свайпа
+  const getCardColor = (isBack: boolean) => {
+    if (!isFlipped) {
+      return isBack
+        ? "from-indigo-500 to-blue-600"
+        : "from-primary-500 to-purple-600";
+    }
+    if (swipeDirection === "left") {
+      // Зеленый для "знаю"
+      return `from-green-500 to-emerald-600`;
+    } else if (swipeDirection === "right") {
+      // Красный для "не знаю"
+      return `from-red-500 to-rose-600`;
+    }
+    return isBack
+      ? "from-indigo-500 to-blue-600"
+      : "from-primary-500 to-purple-600";
+  };
+
   return (
-    <div className="flex flex-col items-center gap-8 p-4 w-full">
+    <div className="flex flex-col items-center gap-4 md:gap-8 p-4 w-full relative">
       {word.needsReview && (
         <div className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold shadow-lg">
           ⚠️ Требует проверки
         </div>
       )}
+
+      {/* Индикаторы свайпов */}
+      {isFlipped && (
+        <>
+          <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 pointer-events-none">
+            <div
+              className={`flex flex-col items-center gap-2 transition-opacity duration-200 ${
+                swipeDirection === "left" ? "opacity-100" : "opacity-50"
+              }`}
+            >
+              <div className="bg-green-500 text-white px-3 py-2 rounded-lg font-semibold shadow-lg text-sm md:text-base">
+                ✓ Знаю
+              </div>
+              <div className="text-green-500 text-2xl md:text-4xl">←</div>
+            </div>
+          </div>
+          <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 pointer-events-none">
+            <div
+              className={`flex flex-col items-center gap-2 transition-opacity duration-200 ${
+                swipeDirection === "right" ? "opacity-100" : "opacity-50"
+              }`}
+            >
+              <div className="bg-red-500 text-white px-3 py-2 rounded-lg font-semibold shadow-lg text-sm md:text-base">
+                ✗ Не знаю
+              </div>
+              <div className="text-red-500 text-2xl md:text-4xl">→</div>
+            </div>
+          </div>
+        </>
+      )}
+
       <div
         className="relative w-full max-w-md h-80 md:h-96 cursor-pointer"
         style={{ perspective: "1000px" }}
@@ -112,12 +189,26 @@ export const FlashCard = ({
         onTouchEnd={onTouchEnd}
       >
         <div
-          className={`relative w-full h-full transition-transform duration-300 transform-style-preserve-3d ${
+          className={`relative w-full h-full transition-all duration-300 transform-style-preserve-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
+          style={{
+            transform: swipeDirection
+              ? `rotateY(${isFlipped ? 180 : 0}deg) translateX(${
+                  swipeDirection === "left"
+                    ? -swipeProgress * 20
+                    : swipeProgress * 20
+                }px)`
+              : undefined,
+            transition: swipeDirection ? "none" : "transform 0.3s",
+          }}
         >
           {/* Front side */}
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl shadow-2xl flex items-center justify-center p-6 backface-hidden text-white">
+          <div
+            className={`absolute inset-0 w-full h-full bg-gradient-to-br ${getCardColor(
+              false
+            )} rounded-2xl shadow-2xl flex items-center justify-center p-6 backface-hidden text-white transition-colors duration-200`}
+          >
             <div className="text-center w-full">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 {word.polish}
@@ -134,7 +225,11 @@ export const FlashCard = ({
           </div>
 
           {/* Back side */}
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl shadow-2xl flex items-center justify-center p-6 backface-hidden text-white rotate-y-180">
+          <div
+            className={`absolute inset-0 w-full h-full bg-gradient-to-br ${getCardColor(
+              true
+            )} rounded-2xl shadow-2xl flex items-center justify-center p-6 backface-hidden text-white rotate-y-180 transition-colors duration-200`}
+          >
             <div className="text-center w-full">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 {word.russian}
@@ -160,10 +255,10 @@ export const FlashCard = ({
               {getCurrentLevel() === 2 && "2 - Знаю оба направления"}
             </span>
           </div>
-          <div className="text-center text-sm text-gray-600 mb-2">
+          <div className="text-center text-sm text-gray-600 mb-2 md:hidden">
             Свайп влево = знаю | Свайп вправо = не знаю
           </div>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="hidden md:flex flex-col sm:flex-row gap-3">
             <button
               className="flex-1 px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-all shadow-lg active:scale-95"
               onClick={() => handleLevel(false, false)}
@@ -195,7 +290,7 @@ export const FlashCard = ({
               </button>
             )}
           </div>
-          <div className="flex gap-3">
+          <div className="hidden md:flex gap-3">
             <button
               className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all shadow-lg active:scale-95"
               onClick={handleSkip}

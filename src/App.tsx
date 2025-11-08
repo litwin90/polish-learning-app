@@ -4,7 +4,7 @@ import { FlashCard } from './components/FlashCard';
 import { WordList } from './components/WordList';
 import { Word } from './types';
 import {
-    exportProgress, getStats, getWords, importProgress, initializeDatabase, updateWordProgress
+    exportProgress, getLanguageLevelStats, getStats, getWords, importProgress, initializeDatabase, updateWordProgress
 } from './utils/storage';
 
 type View = "list" | "learning" | "words";
@@ -25,6 +25,24 @@ function App() {
     level2Words: 0,
     reviewedToday: 0,
   });
+  const [languageLevelStats, setLanguageLevelStats] = useState({
+    A1: 0,
+    A2: 0,
+    B1: 0,
+    B2: 0,
+    C1: 0,
+    C2: 0,
+    withoutLevel: 0,
+  });
+  const [statsViewMode, setStatsViewMode] = useState<"knowledge" | "language">(
+    "knowledge"
+  );
+  const [showModeSelector, setShowModeSelector] = useState(false);
+  const [pendingFilters, setPendingFilters] = useState<{
+    filterLevels: Set<0 | 1 | 2>;
+    filterLanguageLevels: Set<string>;
+    filterNeedsReview?: boolean | null;
+  } | null>(null);
 
   // Инициализация базы данных при загрузке
   useEffect(() => {
@@ -36,6 +54,8 @@ function App() {
         setWords(loadedWords);
         const loadedStats = await getStats();
         setStats(loadedStats);
+        const loadedLanguageStats = await getLanguageLevelStats();
+        setLanguageLevelStats(loadedLanguageStats);
       } catch (error) {
         console.error("Ошибка при инициализации:", error);
         alert("Ошибка при загрузке данных. Пожалуйста, обновите страницу.");
@@ -49,36 +69,59 @@ function App() {
   const handleStartLearning = (filters?: {
     filterLevels: Set<0 | 1 | 2>;
     filterLanguageLevels: Set<string>;
+    filterNeedsReview?: boolean | null;
   }) => {
     if (words.length === 0) return;
 
+    // Сохраняем фильтры и показываем выбор режима
+    setPendingFilters(filters || null);
+    setShowModeSelector(true);
+  };
+
+  const confirmStartLearning = () => {
+    if (!pendingFilters) return;
+
     let filteredWords = [...words];
 
-    // Применяем фильтры, если они переданы
-    if (filters) {
-      // Фильтр по уровню знания
-      if (filters.filterLevels.size > 0 && filters.filterLevels.size < 3) {
-        filteredWords = filteredWords.filter((word) => {
-          const level =
-            word.knowsPlToRu && word.knowsRuToPl ? 2 : word.knowsPlToRu ? 1 : 0;
-          return filters.filterLevels.has(level as 0 | 1 | 2);
-        });
-      }
+    // Фильтр по уровню знания
+    if (
+      pendingFilters.filterLevels.size > 0 &&
+      pendingFilters.filterLevels.size < 3
+    ) {
+      filteredWords = filteredWords.filter((word) => {
+        const level =
+          word.knowsPlToRu && word.knowsRuToPl ? 2 : word.knowsPlToRu ? 1 : 0;
+        return pendingFilters.filterLevels.has(level as 0 | 1 | 2);
+      });
+    }
 
-      // Фильтр по уровню языка
-      if (
-        filters.filterLanguageLevels.size > 0 &&
-        filters.filterLanguageLevels.size < 6
-      ) {
-        filteredWords = filteredWords.filter((word) => {
-          if (!word.level) return false;
-          return filters.filterLanguageLevels.has(word.level);
-        });
-      }
+    // Фильтр по уровню языка
+    if (
+      pendingFilters.filterLanguageLevels.size > 0 &&
+      pendingFilters.filterLanguageLevels.size < 6
+    ) {
+      filteredWords = filteredWords.filter((word) => {
+        if (!word.level) return false;
+        return pendingFilters.filterLanguageLevels.has(word.level);
+      });
+    }
+
+    // Фильтр по needsReview
+    if (
+      pendingFilters.filterNeedsReview !== undefined &&
+      pendingFilters.filterNeedsReview !== null
+    ) {
+      filteredWords = filteredWords.filter((word) => {
+        return pendingFilters.filterNeedsReview
+          ? word.needsReview === true
+          : word.needsReview !== true;
+      });
     }
 
     if (filteredWords.length === 0) {
       alert("Нет слов, соответствующих выбранным фильтрам");
+      setShowModeSelector(false);
+      setPendingFilters(null);
       return;
     }
 
@@ -86,6 +129,8 @@ function App() {
     setShuffledWords(shuffled);
     setCurrentWordIndex(0);
     setCurrentView("learning");
+    setShowModeSelector(false);
+    setPendingFilters(null);
   };
 
   const handleNextCard = () => {
@@ -101,6 +146,7 @@ function App() {
         setCurrentView("list");
         // Обновляем статистику
         getStats().then(setStats);
+        getLanguageLevelStats().then(setLanguageLevelStats);
       }
     }
   };
@@ -129,6 +175,8 @@ function App() {
         // Обновляем статистику
         const updatedStats = await getStats();
         setStats(updatedStats);
+        const updatedLanguageStats = await getLanguageLevelStats();
+        setLanguageLevelStats(updatedLanguageStats);
       } catch (error) {
         console.error("Ошибка при обновлении прогресса:", error);
         alert("Ошибка при сохранении прогресса");
@@ -202,6 +250,8 @@ function App() {
             setWords(loadedWords);
             const loadedStats = await getStats();
             setStats(loadedStats);
+            const loadedLanguageStats = await getLanguageLevelStats();
+            setLanguageLevelStats(loadedLanguageStats);
             alert(
               `Импортировано ${result.count} слов(а). Всего слов: ${loadedWords.length}`
             );
@@ -270,6 +320,7 @@ function App() {
                 onClick={() => {
                   setCurrentView("list");
                   getStats().then(setStats);
+                  getLanguageLevelStats().then(setLanguageLevelStats);
                 }}
               >
                 ← Вернуться
@@ -284,70 +335,110 @@ function App() {
           <div className="space-y-6">
             {/* Статистика */}
             <div className="bg-white rounded-xl p-6 shadow-xl">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
-                Статистика
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-600">
-                    {stats.totalWords}
-                  </div>
-                  <div className="text-sm text-gray-600">Всего слов</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-600">
-                    {stats.level0Words}
-                  </div>
-                  <div className="text-sm text-gray-600">Уровень 0</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {stats.level1Words}
-                  </div>
-                  <div className="text-sm text-gray-600">Уровень 1</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
-                    {stats.level2Words}
-                  </div>
-                  <div className="text-sm text-gray-600">Уровень 2</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
-                    {stats.reviewedToday}
-                  </div>
-                  <div className="text-sm text-gray-600">Сегодня</div>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-800">Статистика</h2>
+                <div className="flex gap-2">
+                  <button
+                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                      statsViewMode === "knowledge"
+                        ? "bg-primary-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                    onClick={() => setStatsViewMode("knowledge")}
+                  >
+                    По уровню знания
+                  </button>
+                  <button
+                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                      statsViewMode === "language"
+                        ? "bg-primary-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                    onClick={() => setStatsViewMode("language")}
+                  >
+                    По уровню языка
+                  </button>
                 </div>
               </div>
-            </div>
-
-            {/* Выбор режима обучения */}
-            <div className="bg-white rounded-xl p-4 shadow-xl">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Режим обучения:
-              </label>
-              <div className="flex gap-2">
-                <button
-                  className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all ${
-                    learningMode === "pl-to-ru"
-                      ? "bg-blue-500 text-white shadow-lg"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                  onClick={() => setLearningMode("pl-to-ru")}
-                >
-                  PL → RU
-                </button>
-                <button
-                  className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-all ${
-                    learningMode === "ru-to-pl"
-                      ? "bg-purple-500 text-white shadow-lg"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                  onClick={() => setLearningMode("ru-to-pl")}
-                >
-                  RU → PL
-                </button>
-              </div>
+              {statsViewMode === "knowledge" ? (
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary-600">
+                      {stats.totalWords}
+                    </div>
+                    <div className="text-sm text-gray-600">Всего слов</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-600">
+                      {stats.level0Words}
+                    </div>
+                    <div className="text-sm text-gray-600">Уровень 0</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {stats.level1Words}
+                    </div>
+                    <div className="text-sm text-gray-600">Уровень 1</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">
+                      {stats.level2Words}
+                    </div>
+                    <div className="text-sm text-gray-600">Уровень 2</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">
+                      {stats.reviewedToday}
+                    </div>
+                    <div className="text-sm text-gray-600">Сегодня</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary-600">
+                      {stats.totalWords}
+                    </div>
+                    <div className="text-sm text-gray-600">Всего слов</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {languageLevelStats.A1}
+                    </div>
+                    <div className="text-sm text-gray-600">A1</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {languageLevelStats.A2}
+                    </div>
+                    <div className="text-sm text-gray-600">A2</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">
+                      {languageLevelStats.B1}
+                    </div>
+                    <div className="text-sm text-gray-600">B1</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">
+                      {languageLevelStats.B2}
+                    </div>
+                    <div className="text-sm text-gray-600">B2</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">
+                      {languageLevelStats.C1 + languageLevelStats.C2}
+                    </div>
+                    <div className="text-sm text-gray-600">C1-C2</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-600">
+                      {languageLevelStats.withoutLevel}
+                    </div>
+                    <div className="text-sm text-gray-600">Без уровня</div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-xl">
@@ -404,6 +495,56 @@ function App() {
             onToggleNeedsReview={handleToggleNeedsReview}
             onBack={() => setCurrentView("list")}
           />
+        )}
+
+        {/* Модальное окно выбора режима обучения */}
+        {showModeSelector && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl p-6 shadow-xl max-w-md w-full">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Выберите режим обучения
+              </h3>
+              <div className="space-y-3 mb-6">
+                <button
+                  className={`w-full px-4 py-3 rounded-lg font-semibold transition-all ${
+                    learningMode === "pl-to-ru"
+                      ? "bg-blue-500 text-white shadow-lg"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                  onClick={() => setLearningMode("pl-to-ru")}
+                >
+                  PL → RU (Польский → Русский)
+                </button>
+                <button
+                  className={`w-full px-4 py-3 rounded-lg font-semibold transition-all ${
+                    learningMode === "ru-to-pl"
+                      ? "bg-purple-500 text-white shadow-lg"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                  onClick={() => setLearningMode("ru-to-pl")}
+                >
+                  RU → PL (Русский → Польский)
+                </button>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                  onClick={() => {
+                    setShowModeSelector(false);
+                    setPendingFilters(null);
+                  }}
+                >
+                  Отмена
+                </button>
+                <button
+                  className="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all"
+                  onClick={confirmStartLearning}
+                >
+                  Начать
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </main>
 
