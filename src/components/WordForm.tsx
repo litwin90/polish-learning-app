@@ -17,9 +17,6 @@ export const WordForm = ({
   const [russian, setRussian] = useState(initialWord?.russian || "");
   const [example, setExample] = useState(initialWord?.example || "");
   const [category, setCategory] = useState(initialWord?.category || "");
-  const [difficulty, setDifficulty] = useState<Word["difficulty"]>(
-    initialWord?.difficulty || "medium"
-  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +26,8 @@ export const WordForm = ({
         russian: russian.trim(),
         example: example.trim() || undefined,
         category: category.trim() || undefined,
-        difficulty,
+        knowsPlToRu: initialWord?.knowsPlToRu || false,
+        knowsRuToPl: initialWord?.knowsRuToPl || false,
       });
       // Сброс формы
       if (!initialWord) {
@@ -37,7 +35,6 @@ export const WordForm = ({
         setRussian("");
         setExample("");
         setCategory("");
-        setDifficulty("medium");
       }
     }
   };
@@ -119,25 +116,6 @@ export const WordForm = ({
           placeholder="np. Дом, Еда, Работа"
           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 transition-colors text-base"
         />
-      </div>
-
-      <div className="mb-6">
-        <label
-          htmlFor="difficulty"
-          className="block mb-2 text-gray-700 font-medium"
-        >
-          Сложность
-        </label>
-        <select
-          id="difficulty"
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value as Word["difficulty"])}
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 transition-colors text-base bg-white"
-        >
-          <option value="easy">Легко</option>
-          <option value="medium">Средне</option>
-          <option value="hard">Сложно</option>
-        </select>
       </div>
 
       <div className="flex gap-3">
