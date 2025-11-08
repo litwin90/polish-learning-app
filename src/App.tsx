@@ -4,8 +4,8 @@ import { FlashCard } from './components/FlashCard';
 import { WordList } from './components/WordList';
 import { Word } from './types';
 import {
-    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getStats, getWords, importProgress, initializeDatabase,
-    updateWordProgress
+    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStatsWithKnowledgeBreakdown, getStats,
+    getWords, importProgress, initializeDatabase, updateWordProgress
 } from './utils/storage';
 
 type View = "list" | "learning" | "words";
@@ -40,6 +40,18 @@ function App() {
       byLanguage: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0, withoutLevel: 0 },
     },
   });
+  const [languageBreakdown, setLanguageBreakdown] = useState({
+    A1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    A2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    B1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    B2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    C1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    C2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+    withoutLevel: {
+      total: 0,
+      byKnowledge: { level0: 0, level1: 0, level2: 0 },
+    },
+  });
   const [statsViewMode, setStatsViewMode] = useState<
     "knowledge" | "language" | "inverted"
   >("knowledge");
@@ -63,6 +75,9 @@ function App() {
         const loadedBreakdown =
           await getKnowledgeLevelStatsWithLanguageBreakdown();
         setKnowledgeBreakdown(loadedBreakdown);
+        const loadedLanguageBreakdown =
+          await getLanguageLevelStatsWithKnowledgeBreakdown();
+        setLanguageBreakdown(loadedLanguageBreakdown);
       } catch (error) {
         console.error("Ошибка при инициализации:", error);
         alert("Ошибка при загрузке данных. Пожалуйста, обновите страницу.");
@@ -156,6 +171,9 @@ function App() {
         getKnowledgeLevelStatsWithLanguageBreakdown().then(
           setKnowledgeBreakdown
         );
+        getLanguageLevelStatsWithKnowledgeBreakdown().then(
+          setLanguageBreakdown
+        );
       }
     }
   };
@@ -193,6 +211,9 @@ function App() {
         const updatedBreakdown =
           await getKnowledgeLevelStatsWithLanguageBreakdown();
         setKnowledgeBreakdown(updatedBreakdown);
+        const updatedLanguageBreakdown =
+          await getLanguageLevelStatsWithKnowledgeBreakdown();
+        setLanguageBreakdown(updatedLanguageBreakdown);
       } catch (error) {
         console.error("Ошибка при обновлении прогресса:", error);
         alert("Ошибка при сохранении прогресса");
@@ -222,6 +243,9 @@ function App() {
       const updatedBreakdown =
         await getKnowledgeLevelStatsWithLanguageBreakdown();
       setKnowledgeBreakdown(updatedBreakdown);
+      const updatedLanguageBreakdown =
+        await getLanguageLevelStatsWithKnowledgeBreakdown();
+      setLanguageBreakdown(updatedLanguageBreakdown);
     } catch (error) {
       console.error("Ошибка при обновлении статуса проверки:", error);
       alert("Ошибка при сохранении статуса проверки");
@@ -267,6 +291,9 @@ function App() {
         const updatedBreakdown =
           await getKnowledgeLevelStatsWithLanguageBreakdown();
         setKnowledgeBreakdown(updatedBreakdown);
+        const updatedLanguageBreakdown =
+          await getLanguageLevelStatsWithKnowledgeBreakdown();
+        setLanguageBreakdown(updatedLanguageBreakdown);
       }
     } catch (error) {
       console.error("Ошибка при обновлении прогресса:", error);
@@ -321,6 +348,9 @@ function App() {
             const loadedBreakdown =
               await getKnowledgeLevelStatsWithLanguageBreakdown();
             setKnowledgeBreakdown(loadedBreakdown);
+            const loadedLanguageBreakdown =
+              await getLanguageLevelStatsWithKnowledgeBreakdown();
+            setLanguageBreakdown(loadedLanguageBreakdown);
             alert(
               `Импортировано ${result.count} слов(а). Всего слов: ${loadedWords.length}`
             );
@@ -396,6 +426,9 @@ function App() {
                     getKnowledgeLevelStatsWithLanguageBreakdown().then(
                       setKnowledgeBreakdown
                     );
+                    getLanguageLevelStatsWithKnowledgeBreakdown().then(
+                      setLanguageBreakdown
+                    );
                   }}
                 >
                   ← Вернуться
@@ -437,7 +470,7 @@ function App() {
                   </button>
                 </div>
               </div>
-              {statsViewMode === "knowledge" || statsViewMode === "inverted" ? (
+              {statsViewMode === "knowledge" ? (
                 <div className="space-y-4">
                   <div className="text-center mb-4">
                     <div className="text-2xl font-bold text-primary-600">
@@ -569,7 +602,7 @@ function App() {
                     </div>
                   </div>
                 </div>
-              ) : (
+              ) : statsViewMode === "inverted" ? (
                 <div className="space-y-4">
                   <div className="text-center mb-4">
                     <div className="text-2xl font-bold text-primary-600">
@@ -579,25 +612,49 @@ function App() {
                   </div>
                   {[
                     {
-                      level: 2,
-                      label: "Уровень 2 - Знаю оба",
-                      color: "green",
-                      data: knowledgeBreakdown.level2,
-                    },
-                    {
-                      level: 1,
-                      label: "Уровень 1 - Знаю PL→RU",
+                      key: "A1",
+                      label: "A1",
                       color: "blue",
-                      data: knowledgeBreakdown.level1,
+                      data: languageBreakdown.A1,
                     },
                     {
-                      level: 0,
-                      label: "Уровень 0 - Не знаю",
-                      color: "gray",
-                      data: knowledgeBreakdown.level0,
+                      key: "A2",
+                      label: "A2",
+                      color: "blue",
+                      data: languageBreakdown.A2,
                     },
-                  ].map(({ level, label, color, data }) => (
-                    <div key={level} className="space-y-2">
+                    {
+                      key: "B1",
+                      label: "B1",
+                      color: "green",
+                      data: languageBreakdown.B1,
+                    },
+                    {
+                      key: "B2",
+                      label: "B2",
+                      color: "green",
+                      data: languageBreakdown.B2,
+                    },
+                    {
+                      key: "C1",
+                      label: "C1",
+                      color: "purple",
+                      data: languageBreakdown.C1,
+                    },
+                    {
+                      key: "C2",
+                      label: "C2",
+                      color: "purple",
+                      data: languageBreakdown.C2,
+                    },
+                    {
+                      key: "withoutLevel",
+                      label: "Без уровня",
+                      color: "gray",
+                      data: languageBreakdown.withoutLevel,
+                    },
+                  ].map(({ key, label, color, data }) => (
+                    <div key={key} className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="font-semibold text-gray-700">
                           {label}
@@ -608,49 +665,31 @@ function App() {
                               ? "text-gray-600"
                               : color === "blue"
                               ? "text-blue-600"
-                              : "text-green-600"
+                              : color === "green"
+                              ? "text-green-600"
+                              : "text-purple-600"
                           }`}
                         >
                           {data.total}
                         </span>
                       </div>
                       {data.total > 0 && (
-                        <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden flex flex-row-reverse">
+                        <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden flex">
                           {[
                             {
-                              key: "Без уровня",
-                              count: data.byLanguage.withoutLevel,
-                              color: "bg-gray-400",
+                              key: "Уровень 0",
+                              count: data.byKnowledge.level0,
+                              color: "bg-gray-500",
                             },
                             {
-                              key: "C2",
-                              count: data.byLanguage.C2,
-                              color: "bg-purple-500",
-                            },
-                            {
-                              key: "C1",
-                              count: data.byLanguage.C1,
-                              color: "bg-purple-400",
-                            },
-                            {
-                              key: "B2",
-                              count: data.byLanguage.B2,
-                              color: "bg-green-500",
-                            },
-                            {
-                              key: "B1",
-                              count: data.byLanguage.B1,
-                              color: "bg-green-400",
-                            },
-                            {
-                              key: "A2",
-                              count: data.byLanguage.A2,
+                              key: "Уровень 1",
+                              count: data.byKnowledge.level1,
                               color: "bg-blue-500",
                             },
                             {
-                              key: "A1",
-                              count: data.byLanguage.A1,
-                              color: "bg-blue-400",
+                              key: "Уровень 2",
+                              count: data.byKnowledge.level2,
+                              color: "bg-green-500",
                             },
                           ]
                             .filter((item) => item.count > 0)
@@ -670,21 +709,22 @@ function App() {
                             ))}
                         </div>
                       )}
-                      <div className="flex flex-wrap gap-2 text-xs text-gray-600 justify-end">
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-600">
                         {[
                           {
-                            key: "Без уровня",
-                            count: data.byLanguage.withoutLevel,
+                            key: "Уровень 0",
+                            count: data.byKnowledge.level0,
                           },
-                          { key: "C2", count: data.byLanguage.C2 },
-                          { key: "C1", count: data.byLanguage.C1 },
-                          { key: "B2", count: data.byLanguage.B2 },
-                          { key: "B1", count: data.byLanguage.B1 },
-                          { key: "A2", count: data.byLanguage.A2 },
-                          { key: "A1", count: data.byLanguage.A1 },
+                          {
+                            key: "Уровень 1",
+                            count: data.byKnowledge.level1,
+                          },
+                          {
+                            key: "Уровень 2",
+                            count: data.byKnowledge.level2,
+                          },
                         ]
                           .filter((item) => item.count > 0)
-                          .reverse()
                           .map((item) => (
                             <span key={item.key}>
                               {item.key}: {item.count}
@@ -702,7 +742,7 @@ function App() {
                     </div>
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         )}

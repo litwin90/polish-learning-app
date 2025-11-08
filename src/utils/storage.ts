@@ -290,6 +290,135 @@ export const getLanguageLevelStats = async () => {
 };
 
 /**
+ * Получить статистику по уровням языка с разбивкой по уровням знания
+ */
+export const getLanguageLevelStatsWithKnowledgeBreakdown = async () => {
+  try {
+    const words = await db.words.toArray();
+
+    const getKnowledgeLevel = (word: Word): 0 | 1 | 2 => {
+      if (word.knowsPlToRu && word.knowsRuToPl) return 2;
+      if (word.knowsPlToRu) return 1;
+      return 0;
+    };
+
+    const breakdown = {
+      A1: {
+        total: words.filter((w) => w.level === "A1").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "A1" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "A1" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "A1" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      A2: {
+        total: words.filter((w) => w.level === "A2").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "A2" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "A2" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "A2" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      B1: {
+        total: words.filter((w) => w.level === "B1").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "B1" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "B1" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "B1" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      B2: {
+        total: words.filter((w) => w.level === "B2").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "B2" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "B2" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "B2" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      C1: {
+        total: words.filter((w) => w.level === "C1").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "C1" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "C1" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "C1" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      C2: {
+        total: words.filter((w) => w.level === "C2").length,
+        byKnowledge: {
+          level0: words.filter(
+            (w) => w.level === "C2" && getKnowledgeLevel(w) === 0
+          ).length,
+          level1: words.filter(
+            (w) => w.level === "C2" && getKnowledgeLevel(w) === 1
+          ).length,
+          level2: words.filter(
+            (w) => w.level === "C2" && getKnowledgeLevel(w) === 2
+          ).length,
+        },
+      },
+      withoutLevel: {
+        total: words.filter((w) => !w.level).length,
+        byKnowledge: {
+          level0: words.filter((w) => !w.level && getKnowledgeLevel(w) === 0)
+            .length,
+          level1: words.filter((w) => !w.level && getKnowledgeLevel(w) === 1)
+            .length,
+          level2: words.filter((w) => !w.level && getKnowledgeLevel(w) === 2)
+            .length,
+        },
+      },
+    };
+
+    return breakdown;
+  } catch (error) {
+    console.error("Ошибка при получении статистики с разбивкой:", error);
+    return {
+      A1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      A2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      B1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      B2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      C1: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      C2: { total: 0, byKnowledge: { level0: 0, level1: 0, level2: 0 } },
+      withoutLevel: {
+        total: 0,
+        byKnowledge: { level0: 0, level1: 0, level2: 0 },
+      },
+    };
+  }
+};
+
+/**
  * Получить статистику по уровням знания с разбивкой по уровням языка
  */
 export const getKnowledgeLevelStatsWithLanguageBreakdown = async () => {
