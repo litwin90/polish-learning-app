@@ -2,9 +2,9 @@ export interface Word {
   id: string;
   polish: string;
   russian: string;
-  example?: string; // Старое поле для обратной совместимости
-  examples?: { pl: string; ru: string }; // Новое поле с примерами для обоих языков
+  examples: { pl: string; ru: string }; // Примеры для обоих языков (обязательное поле)
   category?: string;
+  level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2"; // Уровень CEFR
   knowsPlToRu: boolean; // Уровень 1: знаю PL→RU
   knowsRuToPl: boolean; // Уровень 2: знаю RU→PL
   lastReviewed?: number;

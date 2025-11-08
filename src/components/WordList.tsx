@@ -260,7 +260,7 @@ export const WordList = ({
                     {word.russian}
                   </span>
                 </div>
-                {(word.examples?.pl || word.examples?.ru || word.example) && (
+                {(word.examples?.pl || word.examples?.ru) && (
                   <div className="mb-3 space-y-1">
                     {word.examples?.pl && (
                       <p className="text-gray-600 italic text-sm md:text-base">
@@ -270,11 +270,6 @@ export const WordList = ({
                     {word.examples?.ru && (
                       <p className="text-gray-600 italic text-sm md:text-base">
                         RU: {word.examples.ru}
-                      </p>
-                    )}
-                    {!word.examples && word.example && (
-                      <p className="text-gray-600 italic text-sm md:text-base">
-                        {word.example}
                       </p>
                     )}
                   </div>

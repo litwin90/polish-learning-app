@@ -161,6 +161,10 @@ export const importProgress = async (
         typeof word.id === "string" &&
         typeof word.polish === "string" &&
         typeof word.russian === "string" &&
+        word.examples &&
+        typeof word.examples === "object" &&
+        typeof word.examples.pl === "string" &&
+        typeof word.examples.ru === "string" &&
         typeof word.knowsPlToRu === "boolean" &&
         typeof word.knowsRuToPl === "boolean"
       );

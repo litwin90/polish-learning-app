@@ -22,13 +22,10 @@ export const WordForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (polish.trim() && russian.trim()) {
-      const examples =
-        examplePl.trim() || exampleRu.trim()
-          ? {
-              pl: examplePl.trim() || "",
-              ru: exampleRu.trim() || "",
-            }
-          : undefined;
+      const examples = {
+        pl: examplePl.trim() || "",
+        ru: exampleRu.trim() || "",
+      };
 
       onSubmit({
         polish: polish.trim(),

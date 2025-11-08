@@ -72,11 +72,6 @@ export const FlashCard = ({
                   Пример: {word.examples.pl}
                 </p>
               )}
-              {!word.examples?.pl && word.example && !isFlipped && (
-                <p className="text-lg md:text-xl italic mt-4 opacity-90">
-                  Пример: {word.example}
-                </p>
-              )}
               <p className="text-sm mt-6 opacity-70">
                 Нажмите, чтобы перевернуть
               </p>
@@ -92,11 +87,6 @@ export const FlashCard = ({
               {word.examples?.ru && (
                 <p className="text-lg md:text-xl italic mt-4 opacity-90">
                   Пример: {word.examples.ru}
-                </p>
-              )}
-              {!word.examples?.ru && word.example && (
-                <p className="text-lg md:text-xl italic mt-4 opacity-90">
-                  Пример: {word.example}
                 </p>
               )}
               <p className="text-sm mt-6 opacity-70">Нажмите, чтобы вернуть</p>
