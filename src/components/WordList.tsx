@@ -4,9 +4,13 @@ import { Word } from '../types';
 
 interface WordListProps {
   words: Word[];
-  onStartLearning: () => void;
+  onStartLearning: (filters: {
+    filterLevels: Set<0 | 1 | 2>;
+    filterLanguageLevels: Set<string>;
+  }) => void;
   onExport: () => void;
   onImport: () => void;
+  onToggleNeedsReview?: (id: string, needsReview: boolean) => void;
   onBack?: () => void;
 }
 
@@ -15,10 +19,14 @@ export const WordList = ({
   onStartLearning,
   onExport,
   onImport,
+  onToggleNeedsReview,
   onBack,
 }: WordListProps) => {
   const [filterLevels, setFilterLevels] = useState<Set<0 | 1 | 2>>(
     new Set([0, 1, 2])
+  );
+  const [filterLanguageLevels, setFilterLanguageLevels] = useState<Set<string>>(
+    new Set(["A1", "A2", "B1", "B2", "C1", "C2"])
   );
   const [sortBy, setSortBy] = useState<"level" | "lastReviewed">("level");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -65,12 +73,43 @@ export const WordList = ({
     setFilterLevels(newFilterLevels);
   };
 
-  const sortWords = (
-    wordsToSort: Word[],
-    sortBy: "level" | "lastReviewed",
-    order: "asc" | "desc"
-  ): Word[] => {
-    const sorted = [...wordsToSort].sort((a, b) => {
+  const toggleFilterLanguageLevel = (level: string) => {
+    const newFilterLanguageLevels = new Set(filterLanguageLevels);
+    if (newFilterLanguageLevels.has(level)) {
+      newFilterLanguageLevels.delete(level);
+    } else {
+      newFilterLanguageLevels.add(level);
+    }
+    setFilterLanguageLevels(newFilterLanguageLevels);
+  };
+
+  const handleStartLearning = () => {
+    onStartLearning({
+      filterLevels,
+      filterLanguageLevels,
+    });
+  };
+
+  const filteredAndSortedWords = useMemo(() => {
+    // Фильтрация по уровню знания
+    let filtered = words;
+    if (filterLevels.size > 0 && filterLevels.size < 3) {
+      filtered = words.filter((word) => {
+        const level = getLevel(word);
+        return filterLevels.has(level as 0 | 1 | 2);
+      });
+    }
+
+    // Фильтрация по уровню языка
+    if (filterLanguageLevels.size > 0 && filterLanguageLevels.size < 6) {
+      filtered = filtered.filter((word) => {
+        if (!word.level) return false; // Исключаем слова без уровня
+        return filterLanguageLevels.has(word.level);
+      });
+    }
+
+    // Сортировка
+    const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
 
       if (sortBy === "level") {
@@ -83,26 +122,11 @@ export const WordList = ({
         comparison = dateB - dateA; // По умолчанию по убыванию (недавние первыми)
       }
 
-      return order === "asc" ? comparison : -comparison;
+      return sortOrder === "asc" ? comparison : -comparison;
     });
 
     return sorted;
-  };
-
-  const filteredAndSortedWords = useMemo(() => {
-    // Фильтрация
-    let filtered = words;
-    if (filterLevels.size > 0 && filterLevels.size < 3) {
-      filtered = words.filter((word) => {
-        const level = getLevel(word);
-        return filterLevels.has(level as 0 | 1 | 2);
-      });
-    }
-    // Если filterLevels пуст или содержит все 3 уровня, показываем все слова
-
-    // Сортировка
-    return sortWords(filtered, sortBy, sortOrder);
-  }, [words, filterLevels, sortBy, sortOrder]);
+  }, [words, filterLevels, filterLanguageLevels, sortBy, sortOrder]);
 
   if (words.length === 0) {
     return (
@@ -139,7 +163,7 @@ export const WordList = ({
           </div>
           <button
             className="w-full sm:w-auto px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md active:scale-95"
-            onClick={onStartLearning}
+            onClick={handleStartLearning}
           >
             Начать изучение
           </button>
@@ -176,7 +200,7 @@ export const WordList = ({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Фильтр по уровню:
+              Фильтр по уровню знания:
             </label>
             <div className="flex flex-wrap gap-3">
               <label className="flex items-center gap-2 cursor-pointer">
@@ -206,6 +230,28 @@ export const WordList = ({
                 />
                 <span className="text-green-600 font-medium">Уровень 2</span>
               </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Фильтр по уровню языка (CEFR):
+            </label>
+            <div className="flex flex-wrap gap-3">
+              {(["A1", "A2", "B1", "B2", "C1", "C2"] as const).map((level) => (
+                <label
+                  key={level}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={filterLanguageLevels.has(level)}
+                    onChange={() => toggleFilterLanguageLevel(level)}
+                    className="w-5 h-5 text-primary-600 rounded"
+                  />
+                  <span className="text-gray-700 font-medium">{level}</span>
+                </label>
+              ))}
             </div>
           </div>
 
@@ -280,6 +326,11 @@ export const WordList = ({
                       {word.category}
                     </span>
                   )}
+                  {word.level && (
+                    <span className="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-700">
+                      {word.level}
+                    </span>
+                  )}
                   <span
                     className={`text-sm font-semibold ${getLevelColor(
                       getLevel(word)
@@ -287,7 +338,30 @@ export const WordList = ({
                   >
                     {getLevelText(getLevel(word))}
                   </span>
+                  {word.needsReview && (
+                    <span className="bg-yellow-100 px-3 py-1 rounded-full text-sm text-yellow-700">
+                      ⚠️ Требует проверки
+                    </span>
+                  )}
                 </div>
+                {onToggleNeedsReview && (
+                  <div className="mt-2">
+                    <button
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                        word.needsReview
+                          ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      }`}
+                      onClick={() =>
+                        onToggleNeedsReview(word.id, !word.needsReview)
+                      }
+                    >
+                      {word.needsReview
+                        ? "✓ Требует проверки"
+                        : "Требует проверки"}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

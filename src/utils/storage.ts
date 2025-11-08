@@ -60,7 +60,11 @@ export const getWords = async (): Promise<Word[]> => {
  */
 export const updateWordProgress = async (
   id: string,
-  updates: { knowsPlToRu?: boolean; knowsRuToPl?: boolean }
+  updates: {
+    knowsPlToRu?: boolean;
+    knowsRuToPl?: boolean;
+    needsReview?: boolean;
+  }
 ): Promise<void> => {
   try {
     const word = await db.words.get(id);
@@ -166,7 +170,9 @@ export const importProgress = async (
         typeof word.examples.pl === "string" &&
         typeof word.examples.ru === "string" &&
         typeof word.knowsPlToRu === "boolean" &&
-        typeof word.knowsRuToPl === "boolean"
+        typeof word.knowsRuToPl === "boolean" &&
+        (word.needsReview === undefined ||
+          typeof word.needsReview === "boolean")
       );
     });
 

@@ -46,9 +46,43 @@ function App() {
     init();
   }, []);
 
-  const handleStartLearning = () => {
+  const handleStartLearning = (filters?: {
+    filterLevels: Set<0 | 1 | 2>;
+    filterLanguageLevels: Set<string>;
+  }) => {
     if (words.length === 0) return;
-    const shuffled = [...words].sort(() => Math.random() - 0.5);
+
+    let filteredWords = [...words];
+
+    // Применяем фильтры, если они переданы
+    if (filters) {
+      // Фильтр по уровню знания
+      if (filters.filterLevels.size > 0 && filters.filterLevels.size < 3) {
+        filteredWords = filteredWords.filter((word) => {
+          const level =
+            word.knowsPlToRu && word.knowsRuToPl ? 2 : word.knowsPlToRu ? 1 : 0;
+          return filters.filterLevels.has(level as 0 | 1 | 2);
+        });
+      }
+
+      // Фильтр по уровню языка
+      if (
+        filters.filterLanguageLevels.size > 0 &&
+        filters.filterLanguageLevels.size < 6
+      ) {
+        filteredWords = filteredWords.filter((word) => {
+          if (!word.level) return false;
+          return filters.filterLanguageLevels.has(word.level);
+        });
+      }
+    }
+
+    if (filteredWords.length === 0) {
+      alert("Нет слов, соответствующих выбранным фильтрам");
+      return;
+    }
+
+    const shuffled = filteredWords.sort(() => Math.random() - 0.5);
     setShuffledWords(shuffled);
     setCurrentWordIndex(0);
     setCurrentView("learning");
@@ -99,6 +133,28 @@ function App() {
         console.error("Ошибка при обновлении прогресса:", error);
         alert("Ошибка при сохранении прогресса");
       }
+    }
+  };
+
+  const handleToggleNeedsReview = async (id: string, needsReview: boolean) => {
+    try {
+      await updateWordProgress(id, { needsReview });
+      // Обновляем локальное состояние
+      const updatedWords = await getWords();
+      setWords(updatedWords);
+      // Обновляем текущее слово в shuffledWords, если оно есть
+      const updatedWord = updatedWords.find((w) => w.id === id);
+      if (updatedWord) {
+        const wordIndex = shuffledWords.findIndex((w) => w.id === id);
+        if (wordIndex !== -1) {
+          const newShuffled = [...shuffledWords];
+          newShuffled[wordIndex] = updatedWord;
+          setShuffledWords(newShuffled);
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса проверки:", error);
+      alert("Ошибка при сохранении статуса проверки");
     }
   };
 
@@ -319,6 +375,7 @@ function App() {
               word={currentWord}
               onNext={handleNextCard}
               onMarkLevel={handleMarkLevel}
+              onToggleNeedsReview={handleToggleNeedsReview}
               mode={learningMode}
             />
           </div>
@@ -344,6 +401,7 @@ function App() {
             onStartLearning={handleStartLearning}
             onExport={handleExport}
             onImport={handleImport}
+            onToggleNeedsReview={handleToggleNeedsReview}
             onBack={() => setCurrentView("list")}
           />
         )}

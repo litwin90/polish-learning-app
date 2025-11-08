@@ -7,6 +7,7 @@ export interface Word {
   level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2"; // Уровень CEFR
   knowsPlToRu: boolean; // Уровень 1: знаю PL→RU
   knowsRuToPl: boolean; // Уровень 2: знаю RU→PL
+  needsReview?: boolean; // Требует проверки корректности
   lastReviewed?: number;
   createdAt?: number;
 }
