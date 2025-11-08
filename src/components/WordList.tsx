@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Word } from '../types';
+import { getCurrentVersion } from '../utils/storage';
 
 interface WordListProps {
   words: Word[];
@@ -12,6 +13,7 @@ interface WordListProps {
   onExport: () => void;
   onImport: () => void;
   onToggleNeedsReview?: (id: string, needsReview: boolean) => void;
+  onMarkKnowsPl?: (id: string) => void;
   onBack?: () => void;
 }
 
@@ -21,19 +23,90 @@ export const WordList = ({
   onExport,
   onImport,
   onToggleNeedsReview,
+  onMarkKnowsPl,
   onBack,
 }: WordListProps) => {
+  const currentVersion = getCurrentVersion();
+  const storageKey = `wordListFilters_v${currentVersion}`;
+
+  // Инициализация состояния из localStorage
+  const loadFiltersFromStorage = (): {
+    filterLevels: Set<0 | 1 | 2>;
+    filterLanguageLevels: Set<string>;
+    filterNeedsReview: boolean | null;
+    sortBy: "level" | "lastReviewed";
+    sortOrder: "asc" | "desc";
+  } => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          filterLevels: parsed.filterLevels
+            ? new Set(parsed.filterLevels as (0 | 1 | 2)[])
+            : new Set([0, 1, 2]),
+          filterLanguageLevels: parsed.filterLanguageLevels
+            ? new Set(parsed.filterLanguageLevels as string[])
+            : new Set(["A1", "A2", "B1", "B2", "C1", "C2"]),
+          filterNeedsReview:
+            parsed.filterNeedsReview !== undefined
+              ? parsed.filterNeedsReview
+              : null,
+          sortBy: parsed.sortBy || "level",
+          sortOrder: parsed.sortOrder || "asc",
+        };
+      }
+    } catch (error) {
+      console.error("Ошибка при загрузке фильтров из localStorage:", error);
+    }
+    return {
+      filterLevels: new Set([0, 1, 2]),
+      filterLanguageLevels: new Set(["A1", "A2", "B1", "B2", "C1", "C2"]),
+      filterNeedsReview: null,
+      sortBy: "level" as const,
+      sortOrder: "asc" as const,
+    };
+  };
+
+  const initialFilters = loadFiltersFromStorage();
   const [filterLevels, setFilterLevels] = useState<Set<0 | 1 | 2>>(
-    new Set([0, 1, 2])
+    initialFilters.filterLevels
   );
   const [filterLanguageLevels, setFilterLanguageLevels] = useState<Set<string>>(
-    new Set(["A1", "A2", "B1", "B2", "C1", "C2"])
+    initialFilters.filterLanguageLevels
   );
   const [filterNeedsReview, setFilterNeedsReview] = useState<boolean | null>(
-    null
+    initialFilters.filterNeedsReview
   );
-  const [sortBy, setSortBy] = useState<"level" | "lastReviewed">("level");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = useState<"level" | "lastReviewed">(
+    initialFilters.sortBy
+  );
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">(
+    initialFilters.sortOrder
+  );
+
+  // Сохранение фильтров в localStorage при изменении
+  useEffect(() => {
+    try {
+      const toSave = {
+        filterLevels: Array.from(filterLevels),
+        filterLanguageLevels: Array.from(filterLanguageLevels),
+        filterNeedsReview,
+        sortBy,
+        sortOrder,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(toSave));
+    } catch (error) {
+      console.error("Ошибка при сохранении фильтров в localStorage:", error);
+    }
+  }, [
+    filterLevels,
+    filterLanguageLevels,
+    filterNeedsReview,
+    sortBy,
+    sortOrder,
+    storageKey,
+  ]);
 
   const getLevel = (word: Word): number => {
     if (word.knowsPlToRu && word.knowsRuToPl) return 2;
@@ -412,8 +485,16 @@ export const WordList = ({
                     </span>
                   )}
                 </div>
-                {onToggleNeedsReview && (
-                  <div className="mt-2">
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {onMarkKnowsPl && !word.knowsPlToRu && (
+                    <button
+                      className="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-blue-500 text-white hover:bg-blue-600"
+                      onClick={() => onMarkKnowsPl(word.id)}
+                    >
+                      Знаю PL
+                    </button>
+                  )}
+                  {onToggleNeedsReview && (
                     <button
                       className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
                         word.needsReview
@@ -428,8 +509,8 @@ export const WordList = ({
                         ? "✓ Требует проверки"
                         : "Требует проверки"}
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>

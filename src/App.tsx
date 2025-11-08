@@ -4,7 +4,8 @@ import { FlashCard } from './components/FlashCard';
 import { WordList } from './components/WordList';
 import { Word } from './types';
 import {
-    exportProgress, getLanguageLevelStats, getStats, getWords, importProgress, initializeDatabase, updateWordProgress
+    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStats, getStats, getWords,
+    importProgress, initializeDatabase, updateWordProgress
 } from './utils/storage';
 
 type View = "list" | "learning" | "words";
@@ -34,9 +35,23 @@ function App() {
     C2: 0,
     withoutLevel: 0,
   });
-  const [statsViewMode, setStatsViewMode] = useState<"knowledge" | "language">(
-    "knowledge"
-  );
+  const [knowledgeBreakdown, setKnowledgeBreakdown] = useState({
+    level0: {
+      total: 0,
+      byLanguage: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0, withoutLevel: 0 },
+    },
+    level1: {
+      total: 0,
+      byLanguage: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0, withoutLevel: 0 },
+    },
+    level2: {
+      total: 0,
+      byLanguage: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0, withoutLevel: 0 },
+    },
+  });
+  const [statsViewMode, setStatsViewMode] = useState<
+    "knowledge" | "language" | "inverted"
+  >("knowledge");
   const [showModeSelector, setShowModeSelector] = useState(false);
   const [pendingFilters, setPendingFilters] = useState<{
     filterLevels: Set<0 | 1 | 2>;
@@ -56,6 +71,9 @@ function App() {
         setStats(loadedStats);
         const loadedLanguageStats = await getLanguageLevelStats();
         setLanguageLevelStats(loadedLanguageStats);
+        const loadedBreakdown =
+          await getKnowledgeLevelStatsWithLanguageBreakdown();
+        setKnowledgeBreakdown(loadedBreakdown);
       } catch (error) {
         console.error("Ошибка при инициализации:", error);
         alert("Ошибка при загрузке данных. Пожалуйста, обновите страницу.");
@@ -147,7 +165,16 @@ function App() {
         // Обновляем статистику
         getStats().then(setStats);
         getLanguageLevelStats().then(setLanguageLevelStats);
+        getKnowledgeLevelStatsWithLanguageBreakdown().then(
+          setKnowledgeBreakdown
+        );
       }
+    }
+  };
+
+  const handlePreviousCard = () => {
+    if (currentWordIndex > 0) {
+      setCurrentWordIndex(currentWordIndex - 1);
     }
   };
 
@@ -177,6 +204,9 @@ function App() {
         setStats(updatedStats);
         const updatedLanguageStats = await getLanguageLevelStats();
         setLanguageLevelStats(updatedLanguageStats);
+        const updatedBreakdown =
+          await getKnowledgeLevelStatsWithLanguageBreakdown();
+        setKnowledgeBreakdown(updatedBreakdown);
       } catch (error) {
         console.error("Ошибка при обновлении прогресса:", error);
         alert("Ошибка при сохранении прогресса");
@@ -200,9 +230,61 @@ function App() {
           setShuffledWords(newShuffled);
         }
       }
+      // Обновляем статистику
+      const updatedStats = await getStats();
+      setStats(updatedStats);
+      const updatedBreakdown =
+        await getKnowledgeLevelStatsWithLanguageBreakdown();
+      setKnowledgeBreakdown(updatedBreakdown);
     } catch (error) {
       console.error("Ошибка при обновлении статуса проверки:", error);
       alert("Ошибка при сохранении статуса проверки");
+    }
+  };
+
+  const handleToggleUnsure = async (id: string, isUnsure: boolean) => {
+    try {
+      await updateWordProgress(id, { isUnsure });
+      // Обновляем локальное состояние
+      const updatedWords = await getWords();
+      setWords(updatedWords);
+      // Обновляем текущее слово в shuffledWords, если оно есть
+      const updatedWord = updatedWords.find((w) => w.id === id);
+      if (updatedWord) {
+        const wordIndex = shuffledWords.findIndex((w) => w.id === id);
+        if (wordIndex !== -1) {
+          const newShuffled = [...shuffledWords];
+          newShuffled[wordIndex] = updatedWord;
+          setShuffledWords(newShuffled);
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса сомнения:", error);
+      alert("Ошибка при сохранении статуса сомнения");
+    }
+  };
+
+  const handleMarkKnowsPl = async (id: string) => {
+    try {
+      const word = words.find((w) => w.id === id);
+      if (word) {
+        await updateWordProgress(id, {
+          knowsPlToRu: true,
+          knowsRuToPl: word.knowsRuToPl,
+        });
+        // Обновляем локальное состояние
+        const updatedWords = await getWords();
+        setWords(updatedWords);
+        // Обновляем статистику
+        const updatedStats = await getStats();
+        setStats(updatedStats);
+        const updatedBreakdown =
+          await getKnowledgeLevelStatsWithLanguageBreakdown();
+        setKnowledgeBreakdown(updatedBreakdown);
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении прогресса:", error);
+      alert("Ошибка при сохранении прогресса");
     }
   };
 
@@ -252,6 +334,9 @@ function App() {
             setStats(loadedStats);
             const loadedLanguageStats = await getLanguageLevelStats();
             setLanguageLevelStats(loadedLanguageStats);
+            const loadedBreakdown =
+              await getKnowledgeLevelStatsWithLanguageBreakdown();
+            setKnowledgeBreakdown(loadedBreakdown);
             alert(
               `Импортировано ${result.count} слов(а). Всего слов: ${loadedWords.length}`
             );
@@ -285,7 +370,10 @@ function App() {
       <header className="bg-white/95 backdrop-blur-sm shadow-md sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4">
-            🇵🇱 Изучение польского языка
+            <span className="md:hidden">🇵🇱</span>
+            <span className="hidden md:inline">
+              🇵🇱 Изучение польского языка
+            </span>
           </h1>
           <nav className="flex justify-center gap-2 flex-wrap">
             {currentView === "list" && (
@@ -321,6 +409,9 @@ function App() {
                   setCurrentView("list");
                   getStats().then(setStats);
                   getLanguageLevelStats().then(setLanguageLevelStats);
+                  getKnowledgeLevelStatsWithLanguageBreakdown().then(
+                    setKnowledgeBreakdown
+                  );
                 }}
               >
                 ← Вернуться
@@ -358,39 +449,281 @@ function App() {
                   >
                     По уровню языка
                   </button>
+                  <button
+                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                      statsViewMode === "inverted"
+                        ? "bg-primary-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                    onClick={() => setStatsViewMode("inverted")}
+                  >
+                    Инвертированный
+                  </button>
                 </div>
               </div>
               {statsViewMode === "knowledge" ? (
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                  <div className="text-center">
+                <div className="space-y-4">
+                  <div className="text-center mb-4">
                     <div className="text-2xl font-bold text-primary-600">
                       {stats.totalWords}
                     </div>
                     <div className="text-sm text-gray-600">Всего слов</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">
-                      {stats.level0Words}
+                  {[
+                    {
+                      level: 0,
+                      label: "Уровень 0 - Не знаю",
+                      color: "gray",
+                      data: knowledgeBreakdown.level0,
+                    },
+                    {
+                      level: 1,
+                      label: "Уровень 1 - Знаю PL→RU",
+                      color: "blue",
+                      data: knowledgeBreakdown.level1,
+                    },
+                    {
+                      level: 2,
+                      label: "Уровень 2 - Знаю оба",
+                      color: "green",
+                      data: knowledgeBreakdown.level2,
+                    },
+                  ].map(({ level, label, color, data }) => (
+                    <div key={level} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-700">
+                          {label}
+                        </span>
+                        <span
+                          className={`text-lg font-bold ${
+                            color === "gray"
+                              ? "text-gray-600"
+                              : color === "blue"
+                              ? "text-blue-600"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {data.total}
+                        </span>
+                      </div>
+                      {data.total > 0 && (
+                        <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden flex">
+                          {[
+                            {
+                              key: "A1",
+                              count: data.byLanguage.A1,
+                              color: "bg-blue-400",
+                            },
+                            {
+                              key: "A2",
+                              count: data.byLanguage.A2,
+                              color: "bg-blue-500",
+                            },
+                            {
+                              key: "B1",
+                              count: data.byLanguage.B1,
+                              color: "bg-green-400",
+                            },
+                            {
+                              key: "B2",
+                              count: data.byLanguage.B2,
+                              color: "bg-green-500",
+                            },
+                            {
+                              key: "C1",
+                              count: data.byLanguage.C1,
+                              color: "bg-purple-400",
+                            },
+                            {
+                              key: "C2",
+                              count: data.byLanguage.C2,
+                              color: "bg-purple-500",
+                            },
+                            {
+                              key: "Без уровня",
+                              count: data.byLanguage.withoutLevel,
+                              color: "bg-gray-400",
+                            },
+                          ]
+                            .filter((item) => item.count > 0)
+                            .map((item) => (
+                              <div
+                                key={item.key}
+                                className={`${item.color} flex items-center justify-center text-white text-xs font-semibold transition-all`}
+                                style={{
+                                  width: `${(item.count / data.total) * 100}%`,
+                                }}
+                                title={`${item.key}: ${item.count}`}
+                              >
+                                {item.count > 0 &&
+                                  (item.count / data.total) * 100 > 5 &&
+                                  item.count}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-600">
+                        {[
+                          { key: "A1", count: data.byLanguage.A1 },
+                          { key: "A2", count: data.byLanguage.A2 },
+                          { key: "B1", count: data.byLanguage.B1 },
+                          { key: "B2", count: data.byLanguage.B2 },
+                          { key: "C1", count: data.byLanguage.C1 },
+                          { key: "C2", count: data.byLanguage.C2 },
+                          {
+                            key: "Без уровня",
+                            count: data.byLanguage.withoutLevel,
+                          },
+                        ]
+                          .filter((item) => item.count > 0)
+                          .map((item) => (
+                            <span key={item.key}>
+                              {item.key}: {item.count}
+                            </span>
+                          ))}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-600">Уровень 0</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">
-                      {stats.level1Words}
-                    </div>
-                    <div className="text-sm text-gray-600">Уровень 1</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
-                      {stats.level2Words}
-                    </div>
-                    <div className="text-sm text-gray-600">Уровень 2</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-600">
+                  ))}
+                  <div className="text-center pt-2 border-t">
+                    <div className="text-lg font-bold text-purple-600">
                       {stats.reviewedToday}
                     </div>
-                    <div className="text-sm text-gray-600">Сегодня</div>
+                    <div className="text-sm text-gray-600">
+                      Просмотрено сегодня
+                    </div>
+                  </div>
+                </div>
+              ) : statsViewMode === "inverted" ? (
+                <div className="space-y-4">
+                  <div className="text-center mb-4">
+                    <div className="text-2xl font-bold text-primary-600">
+                      {stats.totalWords}
+                    </div>
+                    <div className="text-sm text-gray-600">Всего слов</div>
+                  </div>
+                  {[
+                    {
+                      level: 2,
+                      label: "Уровень 2 - Знаю оба",
+                      color: "green",
+                      data: knowledgeBreakdown.level2,
+                    },
+                    {
+                      level: 1,
+                      label: "Уровень 1 - Знаю PL→RU",
+                      color: "blue",
+                      data: knowledgeBreakdown.level1,
+                    },
+                    {
+                      level: 0,
+                      label: "Уровень 0 - Не знаю",
+                      color: "gray",
+                      data: knowledgeBreakdown.level0,
+                    },
+                  ].map(({ level, label, color, data }) => (
+                    <div key={level} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-700">
+                          {label}
+                        </span>
+                        <span
+                          className={`text-lg font-bold ${
+                            color === "gray"
+                              ? "text-gray-600"
+                              : color === "blue"
+                              ? "text-blue-600"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {data.total}
+                        </span>
+                      </div>
+                      {data.total > 0 && (
+                        <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden flex flex-row-reverse">
+                          {[
+                            {
+                              key: "Без уровня",
+                              count: data.byLanguage.withoutLevel,
+                              color: "bg-gray-400",
+                            },
+                            {
+                              key: "C2",
+                              count: data.byLanguage.C2,
+                              color: "bg-purple-500",
+                            },
+                            {
+                              key: "C1",
+                              count: data.byLanguage.C1,
+                              color: "bg-purple-400",
+                            },
+                            {
+                              key: "B2",
+                              count: data.byLanguage.B2,
+                              color: "bg-green-500",
+                            },
+                            {
+                              key: "B1",
+                              count: data.byLanguage.B1,
+                              color: "bg-green-400",
+                            },
+                            {
+                              key: "A2",
+                              count: data.byLanguage.A2,
+                              color: "bg-blue-500",
+                            },
+                            {
+                              key: "A1",
+                              count: data.byLanguage.A1,
+                              color: "bg-blue-400",
+                            },
+                          ]
+                            .filter((item) => item.count > 0)
+                            .map((item) => (
+                              <div
+                                key={item.key}
+                                className={`${item.color} flex items-center justify-center text-white text-xs font-semibold transition-all`}
+                                style={{
+                                  width: `${(item.count / data.total) * 100}%`,
+                                }}
+                                title={`${item.key}: ${item.count}`}
+                              >
+                                {item.count > 0 &&
+                                  (item.count / data.total) * 100 > 5 &&
+                                  item.count}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-600 justify-end">
+                        {[
+                          {
+                            key: "Без уровня",
+                            count: data.byLanguage.withoutLevel,
+                          },
+                          { key: "C2", count: data.byLanguage.C2 },
+                          { key: "C1", count: data.byLanguage.C1 },
+                          { key: "B2", count: data.byLanguage.B2 },
+                          { key: "B1", count: data.byLanguage.B1 },
+                          { key: "A2", count: data.byLanguage.A2 },
+                          { key: "A1", count: data.byLanguage.A1 },
+                        ]
+                          .filter((item) => item.count > 0)
+                          .reverse()
+                          .map((item) => (
+                            <span key={item.key}>
+                              {item.key}: {item.count}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="text-center pt-2 border-t">
+                    <div className="text-lg font-bold text-purple-600">
+                      {stats.reviewedToday}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Просмотрено сегодня
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -440,20 +773,6 @@ function App() {
                 </div>
               )}
             </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-xl">
-              <div className="text-center space-y-4">
-                <p className="text-gray-600 text-lg">
-                  Просмотрите все слова, отсортируйте и отфильтруйте их
-                </p>
-                <button
-                  className="px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all shadow-md active:scale-95"
-                  onClick={() => setCurrentView("words")}
-                >
-                  Перейти к списку слов
-                </button>
-              </div>
-            </div>
           </div>
         )}
 
@@ -465,8 +784,10 @@ function App() {
             <FlashCard
               word={currentWord}
               onNext={handleNextCard}
+              onPrevious={handlePreviousCard}
               onMarkLevel={handleMarkLevel}
               onToggleNeedsReview={handleToggleNeedsReview}
+              onToggleUnsure={handleToggleUnsure}
               mode={learningMode}
             />
           </div>
@@ -493,6 +814,7 @@ function App() {
             onExport={handleExport}
             onImport={handleImport}
             onToggleNeedsReview={handleToggleNeedsReview}
+            onMarkKnowsPl={handleMarkKnowsPl}
             onBack={() => setCurrentView("list")}
           />
         )}

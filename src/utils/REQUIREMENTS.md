@@ -11,14 +11,15 @@
 
 ### Новый функционал
 
-1. **Поддержка поля needsReview**
+1. **Поддержка полей needsReview и isUnsure**
    - Поле `needsReview` добавлено в индексы таблицы `words`
-   - Поле опциональное (boolean)
+   - Поле `isUnsure` добавлено в индексы таблицы `words`
+   - Оба поля опциональные (boolean)
 
 ### Тестовые сценарии
 
 1. **Схема базы данных**
-   - База данных должна поддерживать поле needsReview
+   - База данных должна поддерживать поля needsReview и isUnsure
    - Индексация должна работать корректно
 
 ## Утилиты хранилища (storage.ts)
@@ -36,7 +37,7 @@
 
 3. **Обновление прогресса**
    - `updateWordProgress(id, updates)` - обновляет прогресс изучения слова
-   - Обновляет поля knowsPlToRu, knowsRuToPl
+   - Обновляет поля knowsPlToRu, knowsRuToPl, needsReview, isUnsure
    - Автоматически устанавливает lastReviewed = текущее время
 
 4. **Экспорт/Импорт**
@@ -52,30 +53,35 @@
    - `getLanguageLevelStats()` - возвращает статистику по уровням языка (CEFR)
    - Подсчитывает слова по уровням: A1, A2, B1, B2, C1, C2
    - Подсчитывает слова без уровня языка
+   - `getKnowledgeLevelStatsWithLanguageBreakdown()` - возвращает статистику по уровням знания с разбивкой по уровням языка
+   - Для каждого уровня знания (0, 1, 2) возвращает общее количество и разбивку по уровням языка (A1, A2, B1, B2, C1, C2, без уровня)
+   - `getCurrentVersion()` - возвращает текущую версию данных из WORDS.json
 
 ### Новый функционал
 
-1. **Поддержка needsReview в updateWordProgress**
-   - Функция `updateWordProgress` теперь принимает `needsReview` в параметре updates
-   - Обновление needsReview не изменяет lastReviewed (только при обновлении прогресса знания)
+1. **Поддержка needsReview и isUnsure в updateWordProgress**
+   - Функция `updateWordProgress` теперь принимает `needsReview` и `isUnsure` в параметре updates
+   - Обновление needsReview или isUnsure не изменяет lastReviewed (только при обновлении прогресса знания)
 
-2. **Валидация needsReview при импорте**
-   - При импорте проверяется, что needsReview является boolean или undefined
-   - Слова с невалидным needsReview исключаются из импорта
+2. **Валидация needsReview и isUnsure при импорте**
+   - При импорте проверяется, что needsReview и isUnsure являются boolean или undefined
+   - Слова с невалидным needsReview или isUnsure исключаются из импорта
 
 ### Тестовые сценарии
 
-1. **Обновление needsReview**
+1. **Обновление needsReview и isUnsure**
    - `updateWordProgress` должен корректно обновлять needsReview
-   - Обновление needsReview не должно изменять lastReviewed
+   - `updateWordProgress` должен корректно обновлять isUnsure
+   - Обновление needsReview или isUnsure не должно изменять lastReviewed
    - Обновление прогресса знания должно изменять lastReviewed
 
-2. **Импорт с needsReview**
+2. **Импорт с needsReview и isUnsure**
    - Импорт должен корректно обрабатывать слова с needsReview = true/false
-   - Импорт должен корректно обрабатывать слова без needsReview (undefined)
-   - Слова с невалидным needsReview должны исключаться
+   - Импорт должен корректно обрабатывать слова с isUnsure = true/false
+   - Импорт должен корректно обрабатывать слова без needsReview или isUnsure (undefined)
+   - Слова с невалидным needsReview или isUnsure должны исключаться
 
-3. **Экспорт с needsReview**
-   - Экспорт должен включать поле needsReview для всех слов
+3. **Экспорт с needsReview и isUnsure**
+   - Экспорт должен включать поля needsReview и isUnsure для всех слов
    - Экспортированные данные должны быть валидными для импорта
 

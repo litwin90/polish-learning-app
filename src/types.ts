@@ -8,6 +8,7 @@ export interface Word {
   knowsPlToRu: boolean; // Уровень 1: знаю PL→RU
   knowsRuToPl: boolean; // Уровень 2: знаю RU→PL
   needsReview?: boolean; // Требует проверки корректности
+  isUnsure?: boolean; // Сомневаюсь (для малых экранов)
   lastReviewed?: number;
   createdAt?: number;
 }

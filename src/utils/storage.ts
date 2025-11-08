@@ -64,6 +64,7 @@ export const updateWordProgress = async (
     knowsPlToRu?: boolean;
     knowsRuToPl?: boolean;
     needsReview?: boolean;
+    isUnsure?: boolean;
   }
 ): Promise<void> => {
   try {
@@ -172,7 +173,8 @@ export const importProgress = async (
         typeof word.knowsPlToRu === "boolean" &&
         typeof word.knowsRuToPl === "boolean" &&
         (word.needsReview === undefined ||
-          typeof word.needsReview === "boolean")
+          typeof word.needsReview === "boolean") &&
+        (word.isUnsure === undefined || typeof word.isUnsure === "boolean")
       );
     });
 
@@ -285,6 +287,107 @@ export const getLanguageLevelStats = async () => {
       withoutLevel: 0,
     };
   }
+};
+
+/**
+ * Получить статистику по уровням знания с разбивкой по уровням языка
+ */
+export const getKnowledgeLevelStatsWithLanguageBreakdown = async () => {
+  try {
+    const words = await db.words.toArray();
+
+    const level0Words = words.filter((w) => !w.knowsPlToRu && !w.knowsRuToPl);
+    const level1Words = words.filter((w) => w.knowsPlToRu && !w.knowsRuToPl);
+    const level2Words = words.filter((w) => w.knowsPlToRu && w.knowsRuToPl);
+
+    const breakdown = {
+      level0: {
+        total: level0Words.length,
+        byLanguage: {
+          A1: level0Words.filter((w) => w.level === "A1").length,
+          A2: level0Words.filter((w) => w.level === "A2").length,
+          B1: level0Words.filter((w) => w.level === "B1").length,
+          B2: level0Words.filter((w) => w.level === "B2").length,
+          C1: level0Words.filter((w) => w.level === "C1").length,
+          C2: level0Words.filter((w) => w.level === "C2").length,
+          withoutLevel: level0Words.filter((w) => !w.level).length,
+        },
+      },
+      level1: {
+        total: level1Words.length,
+        byLanguage: {
+          A1: level1Words.filter((w) => w.level === "A1").length,
+          A2: level1Words.filter((w) => w.level === "A2").length,
+          B1: level1Words.filter((w) => w.level === "B1").length,
+          B2: level1Words.filter((w) => w.level === "B2").length,
+          C1: level1Words.filter((w) => w.level === "C1").length,
+          C2: level1Words.filter((w) => w.level === "C2").length,
+          withoutLevel: level1Words.filter((w) => !w.level).length,
+        },
+      },
+      level2: {
+        total: level2Words.length,
+        byLanguage: {
+          A1: level2Words.filter((w) => w.level === "A1").length,
+          A2: level2Words.filter((w) => w.level === "A2").length,
+          B1: level2Words.filter((w) => w.level === "B1").length,
+          B2: level2Words.filter((w) => w.level === "B2").length,
+          C1: level2Words.filter((w) => w.level === "C1").length,
+          C2: level2Words.filter((w) => w.level === "C2").length,
+          withoutLevel: level2Words.filter((w) => !w.level).length,
+        },
+      },
+    };
+
+    return breakdown;
+  } catch (error) {
+    console.error("Ошибка при получении статистики с разбивкой:", error);
+    return {
+      level0: {
+        total: 0,
+        byLanguage: {
+          A1: 0,
+          A2: 0,
+          B1: 0,
+          B2: 0,
+          C1: 0,
+          C2: 0,
+          withoutLevel: 0,
+        },
+      },
+      level1: {
+        total: 0,
+        byLanguage: {
+          A1: 0,
+          A2: 0,
+          B1: 0,
+          B2: 0,
+          C1: 0,
+          C2: 0,
+          withoutLevel: 0,
+        },
+      },
+      level2: {
+        total: 0,
+        byLanguage: {
+          A1: 0,
+          A2: 0,
+          B1: 0,
+          B2: 0,
+          C1: 0,
+          C2: 0,
+          withoutLevel: 0,
+        },
+      },
+    };
+  }
+};
+
+/**
+ * Получить текущую версию данных
+ */
+export const getCurrentVersion = (): string => {
+  return WORDS_DATA.version;
 };
 
 /**

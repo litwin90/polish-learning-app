@@ -16,7 +16,7 @@ class PolishLearningDB extends Dexie {
 
     this.version(1).stores({
       words:
-        "id, polish, russian, category, knowsPlToRu, knowsRuToPl, needsReview, lastReviewed",
+        "id, polish, russian, category, knowsPlToRu, knowsRuToPl, needsReview, isUnsure, lastReviewed",
       metadata: "id",
     });
   }
