@@ -1,21 +1,15 @@
-import "swiper/css";
+import 'swiper/css';
 
-import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { FlashCard } from "./components/FlashCard";
-import { WordList } from "./components/WordList";
-import { Word } from "./types";
+import { FlashCard } from './components/FlashCard';
+import { WordList } from './components/WordList';
+import { Word } from './types';
 import {
-  exportProgress,
-  getKnowledgeLevelStatsWithLanguageBreakdown,
-  getLanguageLevelStatsWithKnowledgeBreakdown,
-  getStats,
-  getWords,
-  importProgress,
-  initializeDatabase,
-  updateWordProgress,
-} from "./utils/storage";
+    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStatsWithKnowledgeBreakdown, getStats,
+    getWords, importProgress, initializeDatabase, updateWordProgress
+} from './utils/storage';
 
 type View = "list" | "learning" | "words";
 
@@ -412,9 +406,9 @@ function App() {
         <div className="container mx-auto px-4 py-2 md:py-3">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-xl md:text-2xl font-bold text-gray-800">
-              <span className="md:hidden">🇵🇱</span>
+              <span className="md:hidden">🇵🇱 v2.0</span>
               <span className="hidden md:inline">
-                🇵🇱 Изучение польского языка
+                🇵🇱 Изучение польского языка v2.0
               </span>
             </h1>
             <nav className="flex gap-2 flex-wrap">
