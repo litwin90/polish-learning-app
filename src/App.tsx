@@ -1,15 +1,21 @@
-import 'swiper/css';
+import "swiper/css";
 
-import { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import { FlashCard } from './components/FlashCard';
-import { WordList } from './components/WordList';
-import { Word } from './types';
+import { FlashCard } from "./components/FlashCard";
+import { WordList } from "./components/WordList";
+import { Word } from "./types";
 import {
-    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStatsWithKnowledgeBreakdown, getStats,
-    getWords, importProgress, initializeDatabase, updateWordProgress
-} from './utils/storage';
+  exportProgress,
+  getKnowledgeLevelStatsWithLanguageBreakdown,
+  getLanguageLevelStatsWithKnowledgeBreakdown,
+  getStats,
+  getWords,
+  importProgress,
+  initializeDatabase,
+  updateWordProgress,
+} from "./utils/storage";
 
 type View = "list" | "learning" | "words";
 
