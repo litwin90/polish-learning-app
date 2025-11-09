@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react';
+import "swiper/css";
 
-import { FlashCard } from './components/FlashCard';
-import { WordList } from './components/WordList';
-import { Word } from './types';
+import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import { FlashCard } from "./components/FlashCard";
+import { WordList } from "./components/WordList";
+import { Word } from "./types";
 import {
-    exportProgress, getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStatsWithKnowledgeBreakdown, getStats,
-    getWords, importProgress, initializeDatabase, updateWordProgress
-} from './utils/storage';
+  exportProgress,
+  getKnowledgeLevelStatsWithLanguageBreakdown,
+  getLanguageLevelStatsWithKnowledgeBreakdown,
+  getStats,
+  getWords,
+  importProgress,
+  initializeDatabase,
+  updateWordProgress,
+} from "./utils/storage";
 
 type View = "list" | "learning" | "words";
 
@@ -60,6 +69,10 @@ function App() {
     filterLevels: Set<0 | 1 | 2>;
     filterLanguageLevels: Set<string>;
     filterNeedsReview?: boolean | null;
+  } | null>(null);
+  const [swiperInstance, setSwiperInstance] = useState<{
+    slideNext: () => void;
+    slidePrev: () => void;
   } | null>(null);
 
   // Инициализация базы данных при загрузке
@@ -153,35 +166,49 @@ function App() {
     setCurrentView("learning");
     setShowModeSelector(false);
     setPendingFilters(null);
+    // Сброс Swiper при новом старте обучения
+    setSwiperInstance(null);
   };
 
   const handleNextCard = () => {
-    if (currentWordIndex < shuffledWords.length - 1) {
-      setCurrentWordIndex(currentWordIndex + 1);
+    if (swiperInstance) {
+      swiperInstance.slideNext();
     } else {
-      // Все карточки пройдены
-      if (confirm("Вы прошли все карточки! Начать заново?")) {
-        const shuffled = [...words].sort(() => Math.random() - 0.5);
-        setShuffledWords(shuffled);
-        setCurrentWordIndex(0);
+      if (currentWordIndex < shuffledWords.length - 1) {
+        setCurrentWordIndex(currentWordIndex + 1);
       } else {
-        setCurrentView("list");
-        // Обновляем статистику
-        getStats().then(setStats);
-        getKnowledgeLevelStatsWithLanguageBreakdown().then(
-          setKnowledgeBreakdown
-        );
-        getLanguageLevelStatsWithKnowledgeBreakdown().then(
-          setLanguageBreakdown
-        );
+        // Все карточки пройдены
+        if (confirm("Вы прошли все карточки! Начать заново?")) {
+          const shuffled = [...words].sort(() => Math.random() - 0.5);
+          setShuffledWords(shuffled);
+          setCurrentWordIndex(0);
+        } else {
+          setCurrentView("list");
+          // Обновляем статистику
+          getStats().then(setStats);
+          getKnowledgeLevelStatsWithLanguageBreakdown().then(
+            setKnowledgeBreakdown
+          );
+          getLanguageLevelStatsWithKnowledgeBreakdown().then(
+            setLanguageBreakdown
+          );
+        }
       }
     }
   };
 
   const handlePreviousCard = () => {
-    if (currentWordIndex > 0) {
-      setCurrentWordIndex(currentWordIndex - 1);
+    if (swiperInstance) {
+      swiperInstance.slidePrev();
+    } else {
+      if (currentWordIndex > 0) {
+        setCurrentWordIndex(currentWordIndex - 1);
+      }
     }
+  };
+
+  const handleSlideChange = (swiper: { activeIndex: number }) => {
+    setCurrentWordIndex(swiper.activeIndex);
   };
 
   const handleMarkLevel = async (
@@ -382,7 +409,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-500 via-purple-600 to-pink-500">
       <header className="bg-white/95 backdrop-blur-sm shadow-md sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3">
+        <div className="container mx-auto px-4 py-2 md:py-3">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-xl md:text-2xl font-bold text-gray-800">
               <span className="md:hidden">🇵🇱</span>
@@ -439,7 +466,7 @@ function App() {
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-6 md:py-8 w-full max-w-4xl">
+      <main className="flex-1 container mx-auto px-4 py-2 md:py-6 w-full max-w-4xl">
         {currentView === "list" && (
           <div className="space-y-6">
             {/* Статистика */}
@@ -748,19 +775,36 @@ function App() {
         )}
 
         {currentView === "learning" && currentWord && (
-          <div className="flex flex-col items-center gap-4 w-full">
-            <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full font-semibold text-gray-800 shadow-lg">
+          <div className="flex flex-col items-center gap-1 md:gap-4 w-full">
+            <div className="bg-white/90 backdrop-blur-sm px-3 py-1 md:px-6 md:py-3 rounded-full font-semibold text-gray-800 shadow-lg text-xs md:text-base">
               Карточка {currentWordIndex + 1} из {shuffledWords.length}
             </div>
-            <FlashCard
-              word={currentWord}
-              onNext={handleNextCard}
-              onPrevious={handlePreviousCard}
-              onMarkLevel={handleMarkLevel}
-              onToggleNeedsReview={handleToggleNeedsReview}
-              onToggleUnsure={handleToggleUnsure}
-              mode={learningMode}
-            />
+            {/* Карусель с Swiper для всех экранов */}
+            <div className="w-full max-w-md relative">
+              <Swiper
+                spaceBetween={0}
+                slidesPerView={1}
+                onSwiper={setSwiperInstance}
+                onSlideChange={handleSlideChange}
+                initialSlide={currentWordIndex}
+                key={shuffledWords.length}
+                className="w-full"
+              >
+                {shuffledWords.map((word) => (
+                  <SwiperSlide key={word.id}>
+                    <FlashCard
+                      word={word}
+                      onNext={handleNextCard}
+                      onPrevious={handlePreviousCard}
+                      onMarkLevel={handleMarkLevel}
+                      onToggleNeedsReview={handleToggleNeedsReview}
+                      onToggleUnsure={handleToggleUnsure}
+                      mode={learningMode}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           </div>
         )}
 
@@ -840,7 +884,7 @@ function App() {
         )}
       </main>
 
-      <footer className="bg-white/95 backdrop-blur-sm py-4 text-center text-gray-600 text-sm">
+      <footer className="bg-white/95 backdrop-blur-sm py-2 md:py-4 text-center text-gray-600 text-sm">
         <p>Создано для подготовки к экзамену TELC B1</p>
       </footer>
     </div>
