@@ -1,3 +1,9 @@
+export interface ReviewRecord {
+  date: number; // timestamp просмотра
+  mode: "pl-to-ru" | "ru-to-pl"; // режим обучения
+  result: "correct" | "incorrect" | "unsure"; // результат (правильно/неправильно/сомневаюсь)
+}
+
 export interface Word {
   id: string;
   polish: string;
@@ -11,6 +17,7 @@ export interface Word {
   isUnsure?: boolean; // Сомневаюсь (для малых экранов)
   lastReviewed?: number;
   createdAt?: number;
+  reviewHistory?: ReviewRecord[]; // История просмотров карточки
 }
 
 export interface WordsData {

@@ -19,6 +19,25 @@ class PolishLearningDB extends Dexie {
         "id, polish, russian, category, knowsPlToRu, knowsRuToPl, needsReview, isUnsure, lastReviewed",
       metadata: "id",
     });
+
+    // Версия 2: добавляем поддержку истории просмотров
+    this.version(2)
+      .stores({
+        words:
+          "id, polish, russian, category, knowsPlToRu, knowsRuToPl, needsReview, isUnsure, lastReviewed",
+        metadata: "id",
+      })
+      .upgrade(async (tx) => {
+        // Миграция данных: добавляем пустые массивы reviewHistory для существующих слов
+        await tx
+          .table("words")
+          .toCollection()
+          .modify((word) => {
+            if (!word.reviewHistory) {
+              word.reviewHistory = [];
+            }
+          });
+      });
   }
 }
 

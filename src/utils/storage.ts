@@ -1,6 +1,6 @@
-import wordsData from '../../data/WORDS.json';
-import { Word, WordsData } from '../types';
-import { db } from './db';
+import wordsData from "../../data/WORDS.json";
+import { ReviewRecord, Word, WordsData } from "../types";
+import { db } from "./db";
 
 const WORDS_DATA = wordsData as WordsData;
 
@@ -83,6 +83,117 @@ export const updateWordProgress = async (
     console.error("Ошибка при обновлении прогресса:", error);
     throw error;
   }
+};
+
+/**
+ * Записать просмотр карточки
+ */
+export const recordCardReview = async (
+  id: string,
+  mode: "pl-to-ru" | "ru-to-pl",
+  result: "correct" | "incorrect" | "unsure"
+): Promise<void> => {
+  try {
+    const word = await db.words.get(id);
+    if (!word) {
+      throw new Error(`Слово с id ${id} не найдено`);
+    }
+
+    const reviewRecord: ReviewRecord = {
+      date: Date.now(),
+      mode,
+      result,
+    };
+
+    const reviewHistory = word.reviewHistory || [];
+    reviewHistory.push(reviewRecord);
+
+    // Ограничиваем историю последними 100 записями для оптимизации
+    const limitedHistory = reviewHistory.slice(-100);
+
+    await db.words.update(id, {
+      reviewHistory: limitedHistory,
+      lastReviewed: Date.now(),
+    });
+  } catch (error) {
+    console.error("Ошибка при записи просмотра карточки:", error);
+    throw error;
+  }
+};
+
+/**
+ * Получить количество просмотров карточки
+ */
+export const getCardReviewCount = (word: Word): number => {
+  return word.reviewHistory?.length || 0;
+};
+
+/**
+ * Получить последний просмотр карточки
+ */
+export const getLastReviewDate = (word: Word): number | null => {
+  const history = word.reviewHistory;
+  if (!history || history.length === 0) {
+    return null;
+  }
+  return history[history.length - 1].date;
+};
+
+/**
+ * Сохранить прогресс сессии обучения
+ */
+export const saveLearningSession = async (
+  mode: "pl-to-ru" | "ru-to-pl",
+  wordIds: string[],
+  currentIndex: number
+): Promise<void> => {
+  try {
+    const sessionData = {
+      mode,
+      wordIds,
+      currentIndex,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem("learningSession", JSON.stringify(sessionData));
+  } catch (error) {
+    console.error("Ошибка при сохранении сессии:", error);
+  }
+};
+
+/**
+ * Загрузить прогресс сессии обучения
+ */
+export const loadLearningSession = (): {
+  mode: "pl-to-ru" | "ru-to-pl";
+  wordIds: string[];
+  currentIndex: number;
+  timestamp: number;
+} | null => {
+  try {
+    const sessionData = localStorage.getItem("learningSession");
+    if (!sessionData) {
+      return null;
+    }
+    const parsed = JSON.parse(sessionData);
+    // Проверяем, что сессия не старше 24 часов
+    const hoursSinceSession =
+      (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
+    if (hoursSinceSession > 24) {
+      localStorage.removeItem("learningSession");
+      return null;
+    }
+    return parsed;
+  } catch (error) {
+    console.error("Ошибка при загрузке сессии:", error);
+    return null;
+  }
+};
+
+/**
+ * Очистить прогресс сессии обучения
+ */
+export const clearLearningSession = (): void => {
+  localStorage.removeItem("learningSession");
 };
 
 /**
@@ -517,6 +628,51 @@ export const getKnowledgeLevelStatsWithLanguageBreakdown = async () => {
  */
 export const getCurrentVersion = (): string => {
   return WORDS_DATA.version;
+};
+
+/**
+ * Проверить, есть ли локальные изменения в базе данных по сравнению с исходными данными
+ */
+export const hasLocalChanges = async (): Promise<boolean> => {
+  try {
+    const dbWords = await db.words.toArray();
+    const originalWords = WORDS_DATA.words;
+
+    // Создаем карту исходных слов по ID
+    const originalWordsMap = new Map(originalWords.map((w) => [w.id, w]));
+
+    // Проверяем каждое слово в базе данных
+    for (const dbWord of dbWords) {
+      const originalWord = originalWordsMap.get(dbWord.id);
+
+      if (!originalWord) {
+        // Слово есть в БД, но нет в исходных данных - это изменение
+        return true;
+      }
+
+      // Проверяем изменения в основных полях (не прогресс обучения)
+      if (
+        dbWord.polish !== originalWord.polish ||
+        dbWord.russian !== originalWord.russian ||
+        JSON.stringify(dbWord.examples) !==
+          JSON.stringify(originalWord.examples) ||
+        dbWord.category !== originalWord.category ||
+        dbWord.level !== originalWord.level
+      ) {
+        return true;
+      }
+    }
+
+    // Проверяем, есть ли слова в исходных данных, которых нет в БД
+    if (dbWords.length !== originalWords.length) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("Ошибка при проверке локальных изменений:", error);
+    return false;
+  }
 };
 
 /**

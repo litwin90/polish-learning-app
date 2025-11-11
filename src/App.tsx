@@ -1,21 +1,19 @@
-import "swiper/css";
+import 'swiper/css';
 
-import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { FlashCard } from "./components/FlashCard";
-import { WordList } from "./components/WordList";
-import { Word } from "./types";
+import { FlashCard } from './components/FlashCard';
+import { WordList } from './components/WordList';
+import { Word } from './types';
+import { db } from './utils/db';
 import {
-  exportProgress,
-  getKnowledgeLevelStatsWithLanguageBreakdown,
-  getLanguageLevelStatsWithKnowledgeBreakdown,
-  getStats,
-  getWords,
-  importProgress,
-  initializeDatabase,
-  updateWordProgress,
-} from "./utils/storage";
+    clearLearningSession, exportProgress, getCardReviewCount, getCurrentVersion,
+    getKnowledgeLevelStatsWithLanguageBreakdown, getLanguageLevelStatsWithKnowledgeBreakdown, getStats, getWords,
+    hasLocalChanges as checkLocalChanges, importProgress, initializeDatabase, loadLearningSession, recordCardReview,
+    saveLearningSession, updateWordProgress
+} from './utils/storage';
+import { validateTranslation } from './utils/translation';
 
 type View = "list" | "learning" | "words";
 
@@ -74,6 +72,9 @@ function App() {
     slideNext: () => void;
     slidePrev: () => void;
   } | null>(null);
+  const [hasSavedSession, setHasSavedSession] = useState(false);
+  const [wordsVersion, setWordsVersion] = useState<string>("");
+  const [hasLocalChanges, setHasLocalChanges] = useState(false);
 
   // Инициализация базы данных при загрузке
   useEffect(() => {
@@ -91,6 +92,16 @@ function App() {
         const loadedLanguageBreakdown =
           await getLanguageLevelStatsWithKnowledgeBreakdown();
         setLanguageBreakdown(loadedLanguageBreakdown);
+
+        // Проверяем наличие сохраненной сессии
+        const savedSession = loadLearningSession();
+        setHasSavedSession(savedSession !== null);
+
+        // Получаем версию словаря и проверяем локальные изменения
+        const version = getCurrentVersion();
+        const hasChanges = await checkLocalChanges();
+        setHasLocalChanges(hasChanges);
+        setWordsVersion(version);
       } catch (error) {
         console.error("Ошибка при инициализации:", error);
         alert("Ошибка при загрузке данных. Пожалуйста, обновите страницу.");
@@ -111,6 +122,141 @@ function App() {
     // Сохраняем фильтры и показываем выбор режима
     setPendingFilters(filters || null);
     setShowModeSelector(true);
+  };
+
+  const handleAutoValidateWords = async () => {
+    const wordsToReview = words.filter((w) => w.needsReview === true);
+    if (wordsToReview.length === 0) {
+      alert("Нет слов, требующих проверки");
+      return;
+    }
+
+    if (
+      !confirm(
+        `Найдено ${wordsToReview.length} слов(а) для проверки. Начать автоматическую валидацию через API перевода?`
+      )
+    ) {
+      return;
+    }
+
+    let correctedCount = 0;
+    let validatedCount = 0;
+    let errorCount = 0;
+
+    // Показываем прогресс
+    const progressMessage = document.createElement("div");
+    progressMessage.style.cssText =
+      "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10000;";
+    progressMessage.innerHTML = `<p>Проверка переводов... 0/${wordsToReview.length}</p>`;
+    document.body.appendChild(progressMessage);
+
+    for (let i = 0; i < wordsToReview.length; i++) {
+      const word = wordsToReview[i];
+      try {
+        progressMessage.innerHTML = `<p>Проверка переводов... ${i + 1}/${
+          wordsToReview.length
+        }</p><p>${word.polish} -> ${word.russian}</p>`;
+
+        // Проверяем перевод через API
+        const validation = await validateTranslation(word.polish, word.russian);
+
+        if (!validation.isValid && validation.suggestedTranslation) {
+          // Если перевод неверный и есть предложенный вариант
+          const useSuggested = confirm(
+            `Перевод для "${word.polish}" может быть неверным.\n` +
+              `Текущий: ${word.russian}\n` +
+              `Предложенный: ${validation.suggestedTranslation}\n` +
+              `Использовать предложенный перевод?`
+          );
+
+          if (useSuggested) {
+            await db.words.update(word.id, {
+              russian: validation.suggestedTranslation,
+              needsReview: false,
+            });
+            correctedCount++;
+          } else {
+            // Пользователь решил оставить текущий перевод
+            await updateWordProgress(word.id, { needsReview: false });
+          }
+        } else {
+          // Перевод валиден, просто убираем флаг
+          await updateWordProgress(word.id, { needsReview: false });
+        }
+
+        validatedCount++;
+
+        // Небольшая задержка, чтобы не перегружать API
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } catch (error) {
+        console.error(`Ошибка при проверке слова ${word.id}:`, error);
+        errorCount++;
+        // При ошибке просто убираем флаг needsReview
+        try {
+          await updateWordProgress(word.id, { needsReview: false });
+          validatedCount++;
+        } catch (e) {
+          console.error(`Ошибка при обновлении слова ${word.id}:`, e);
+        }
+      }
+    }
+
+    document.body.removeChild(progressMessage);
+
+    // Обновляем локальное состояние
+    const updatedWords = await getWords();
+    setWords(updatedWords);
+
+    // Проверяем локальные изменения
+    const hasChanges = await checkLocalChanges();
+    setHasLocalChanges(hasChanges);
+
+    // Обновляем статистику
+    const updatedStats = await getStats();
+    setStats(updatedStats);
+    const updatedBreakdown =
+      await getKnowledgeLevelStatsWithLanguageBreakdown();
+    setKnowledgeBreakdown(updatedBreakdown);
+    const updatedLanguageBreakdown =
+      await getLanguageLevelStatsWithKnowledgeBreakdown();
+    setLanguageBreakdown(updatedLanguageBreakdown);
+
+    alert(
+      `Валидация завершена!\nПроверено: ${validatedCount} слов(а)\nИсправлено: ${correctedCount} слов(а)${
+        errorCount > 0 ? `\nОшибок: ${errorCount}` : ""
+      }`
+    );
+  };
+
+  const handleContinueFromSaved = async () => {
+    const savedSession = loadLearningSession();
+    if (!savedSession) {
+      alert("Нет сохраненной сессии");
+      return;
+    }
+
+    // Загружаем слова из базы данных
+    const allWords = await getWords();
+
+    // Восстанавливаем слова из сохраненной сессии
+    const sessionWords = savedSession.wordIds
+      .map((id) => allWords.find((w) => w.id === id))
+      .filter((w): w is Word => w !== undefined);
+
+    if (sessionWords.length === 0) {
+      alert("Не удалось восстановить слова из сохраненной сессии");
+      clearLearningSession();
+      setHasSavedSession(false);
+      return;
+    }
+
+    setShuffledWords(sessionWords);
+    setCurrentWordIndex(savedSession.currentIndex);
+    setLearningMode(savedSession.mode);
+    setCurrentView("learning");
+    setShowModeSelector(false);
+    setPendingFilters(null);
+    setSwiperInstance(null);
   };
 
   const confirmStartLearning = () => {
@@ -160,14 +306,31 @@ function App() {
       return;
     }
 
-    const shuffled = filteredWords.sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
+    // Сортируем по частоте просмотров (сначала наименее просматриваемые)
+    const sorted = filteredWords.sort((a, b) => {
+      const countA = getCardReviewCount(a);
+      const countB = getCardReviewCount(b);
+      if (countA !== countB) {
+        return countA - countB; // Меньше просмотров = выше в списке
+      }
+      // Если количество просмотров одинаковое, случайный порядок
+      return Math.random() - 0.5;
+    });
+
+    setShuffledWords(sorted);
     setCurrentWordIndex(0);
     setCurrentView("learning");
     setShowModeSelector(false);
     setPendingFilters(null);
     // Сброс Swiper при новом старте обучения
     setSwiperInstance(null);
+
+    // Сохраняем сессию
+    saveLearningSession(
+      learningMode,
+      sorted.map((w) => w.id),
+      0
+    );
   };
 
   const handleNextCard = () => {
@@ -175,9 +338,18 @@ function App() {
       swiperInstance.slideNext();
     } else {
       if (currentWordIndex < shuffledWords.length - 1) {
-        setCurrentWordIndex(currentWordIndex + 1);
+        const newIndex = currentWordIndex + 1;
+        setCurrentWordIndex(newIndex);
+        // Обновляем сохраненную сессию
+        saveLearningSession(
+          learningMode,
+          shuffledWords.map((w) => w.id),
+          newIndex
+        );
       } else {
         // Все карточки пройдены
+        clearLearningSession();
+        setHasSavedSession(false);
         if (confirm("Вы прошли все карточки! Начать заново?")) {
           const shuffled = [...words].sort(() => Math.random() - 0.5);
           setShuffledWords(shuffled);
@@ -208,7 +380,37 @@ function App() {
   };
 
   const handleSlideChange = (swiper: { activeIndex: number }) => {
-    setCurrentWordIndex(swiper.activeIndex);
+    const newIndex = swiper.activeIndex;
+    setCurrentWordIndex(newIndex);
+    // Обновляем сохраненную сессию при изменении слайда
+    if (shuffledWords.length > 0) {
+      saveLearningSession(
+        learningMode,
+        shuffledWords.map((w) => w.id),
+        newIndex
+      );
+    }
+  };
+
+  const handleCardFlip = async () => {
+    const currentWord = shuffledWords[currentWordIndex];
+    if (currentWord) {
+      try {
+        // Записываем просмотр карточки при перевороте (результат пока неизвестен - "unsure")
+        await recordCardReview(currentWord.id, learningMode, "unsure");
+        // Обновляем локальное состояние
+        const updatedWords = await getWords();
+        setWords(updatedWords);
+        const updatedWord = updatedWords.find((w) => w.id === currentWord.id);
+        if (updatedWord) {
+          const newShuffled = [...shuffledWords];
+          newShuffled[currentWordIndex] = updatedWord;
+          setShuffledWords(newShuffled);
+        }
+      } catch (error) {
+        console.error("Ошибка при записи просмотра:", error);
+      }
+    }
   };
 
   const handleMarkLevel = async (
@@ -222,6 +424,15 @@ function App() {
           knowsPlToRu,
           knowsRuToPl,
         });
+
+        // Записываем просмотр карточки
+        const result: "correct" | "incorrect" | "unsure" =
+          (knowsPlToRu && learningMode === "pl-to-ru") ||
+          (knowsRuToPl && learningMode === "ru-to-pl")
+            ? "correct"
+            : "incorrect";
+        await recordCardReview(currentWord.id, learningMode, result);
+
         // Обновляем локальное состояние
         const updatedWords = await getWords();
         setWords(updatedWords);
@@ -417,6 +628,12 @@ function App() {
                 🇵🇱 Изучение польского языка v2.0
               </span>
             </h1>
+            {wordsVersion && (
+              <div className="text-xs md:text-sm text-gray-600">
+                Словарь: v{wordsVersion}
+                {hasLocalChanges ? "+" : ""}
+              </div>
+            )}
             <nav className="flex gap-2 flex-wrap">
               {currentView === "list" && (
                 <>
@@ -771,6 +988,30 @@ function App() {
                 </div>
               ) : null}
             </div>
+
+            {/* Кнопка автоматической валидации слов через API */}
+            {words.filter((w) => w.needsReview === true).length > 0 && (
+              <div className="bg-white rounded-xl p-6 shadow-xl">
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    Автоматическая валидация переводов
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Есть {words.filter((w) => w.needsReview === true).length}{" "}
+                    слов(а), требующих проверки корректности перевода
+                  </p>
+                  <p className="text-xs text-gray-500 mb-4">
+                    Проверка выполняется через API перевода MyMemory
+                  </p>
+                  <button
+                    className="px-6 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-all shadow-lg"
+                    onClick={handleAutoValidateWords}
+                  >
+                    Проверить переводы через API
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -794,6 +1035,7 @@ function App() {
                   <SwiperSlide key={word.id}>
                     <FlashCard
                       word={word}
+                      onFlip={handleCardFlip}
                       onNext={handleNextCard}
                       onPrevious={handlePreviousCard}
                       onMarkLevel={handleMarkLevel}
@@ -840,6 +1082,19 @@ function App() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Выберите режим обучения
               </h3>
+              {hasSavedSession && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-gray-700 mb-2">
+                    Есть сохраненная сессия обучения
+                  </p>
+                  <button
+                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all text-sm"
+                    onClick={handleContinueFromSaved}
+                  >
+                    Продолжить с предыдущего места
+                  </button>
+                </div>
+              )}
               <div className="space-y-3 mb-6">
                 <button
                   className={`w-full px-4 py-3 rounded-lg font-semibold transition-all ${
@@ -876,7 +1131,7 @@ function App() {
                   className="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-all"
                   onClick={confirmStartLearning}
                 >
-                  Начать
+                  Начать заново
                 </button>
               </div>
             </div>
