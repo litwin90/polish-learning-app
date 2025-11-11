@@ -1,5 +1,5 @@
 {
-  "version": "1.1.4",
+  "version": "1.1.5",
   "words": [
     {
       "id": "word-1",
@@ -147,13 +147,13 @@
     {
       "id": "word-12",
       "polish": "płynąć",
-      "russian": "влиять, воздействовать",
+      "russian": "вытекать, проистекать",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "nie tylko możesz postawić właściwą diagnozę ale także w płyniesz na gotowość pacjenta do polegania na twoich zaleceniach",
-        "ru": "не только ты можешь поставить правильный диагноз, но и влиять на готовность пациента полагаться на твои рекомендации"
+        "pl": "Tekst informuje o korzyściach płynących z nauki języków obcych.",
+        "ru": "Текст информирует о преимуществах, вытекающих из изучения иностранных языков."
       },
       "reviewHistory": []
     },
@@ -172,59 +172,59 @@
     },
     {
       "id": "word-14",
-      "polish": "autor",
+      "polish": "Autor sugeruje, że...",
       "russian": "Автор предполагает, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Autor sugeruje, że...",
-        "ru": "Автор предполагает, что..."
+        "pl": "Autor sugeruje, że warto inwestować w edukację.",
+        "ru": "Автор предполагает, что стоит инвестировать в образование."
       },
       "reviewHistory": []
     },
     {
       "id": "word-15",
-      "polish": "według",
+      "polish": "Według autora... ",
       "russian": "Согласно автору...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Według autora...",
-        "ru": "Согласно автору..."
+        "pl": "Według autora, podróże rozwijają naszą osobowość.",
+        "ru": "Согласно автору, путешествия развивают нашу личность."
       },
       "reviewHistory": []
     },
     {
       "id": "word-16",
-      "polish": "tekst",
+      "polish": "Tekst informuje o...",
       "russian": "Текст информирует о...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Tekst informuje o...",
-        "ru": "Текст информирует о..."
+        "pl": "Tekst informuje o korzyściach płynących z nauki języków obcych.",
+        "ru": "Текст информирует о преимуществах изучения иностранных языков."
       },
       "reviewHistory": []
     },
     {
       "id": "word-17",
-      "polish": "główna",
+      "polish": "Główna myśl tekstu to...",
       "russian": "Главная мысль текста...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Główna myśl tekstu to...",
-        "ru": "Главная мысль текста..."
+        "pl": "Główna myśl tekstu to znaczenie edukacji w dzisiejszym świecie.",
+        "ru": "Главная мысль текста - это значение образования в современном мире."
       },
       "reviewHistory": []
     },
     {
       "id": "word-18",
-      "polish": "pierwsza",
+      "polish": "Pierwsza część dotyczy...",
       "russian": "Первая часть касается...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -237,7 +237,7 @@
     },
     {
       "id": "word-19",
-      "polish": "druga",
+      "polish": "Druga część omawia...",
       "russian": "Вторая часть обсуждает...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -250,131 +250,131 @@
     },
     {
       "id": "word-20",
-      "polish": "wnioski",
+      "polish": "Wnioski znajdują się w...",
       "russian": "Выводы находятся в...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Wnioski znajdują się w...",
-        "ru": "Выводы находятся в..."
+        "pl": "Wnioski znajdują się w ostatnim akapicie tekstu.",
+        "ru": "Выводы находятся в последнем абзаце текста."
       },
       "reviewHistory": []
     },
     {
       "id": "word-21",
-      "polish": "nagranie",
+      "polish": "Nagranie dotyczy...",
       "russian": "Запись касается...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Nagranie dotyczy...",
-        "ru": "Запись касается..."
+        "pl": "Nagranie dotyczy przygotowania do egzaminu TELC.",
+        "ru": "Запись касается подготовки к экзамену TELC."
       },
       "reviewHistory": []
     },
     {
       "id": "word-22",
-      "polish": "główny",
+      "polish": "Główny temat to..",
       "russian": "Главная тема...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Główny temat to...",
-        "ru": "Главная тема..."
+        "pl": "Główny temat to znaczenie regularnej praktyki w nauce języków.",
+        "ru": "Главная тема - это значение регулярной практики в изучении языков."
       },
       "reviewHistory": []
     },
     {
       "id": "word-23",
-      "polish": "mówca",
+      "polish": "Mówca opowiada o...",
       "russian": "Говорящий рассказывает о...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Mówca opowiada o...",
-        "ru": "Говорящий рассказывает о..."
+        "pl": "Mówca opowiada o swoich doświadczeniach z nauką polskiego.",
+        "ru": "Говорящий рассказывает о своем опыте изучения польского."
       },
       "reviewHistory": []
     },
     {
       "id": "word-24",
-      "polish": "chodzi",
+      "polish": "Chodzi o...",
       "russian": "Речь идет о...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Chodzi o...",
-        "ru": "Речь идет о..."
+        "pl": "Chodzi o korzyści płynące z nauki języków obcych.",
+        "ru": "Речь идет о преимуществах изучения иностранных языков."
       },
       "reviewHistory": []
     },
     {
       "id": "word-25",
-      "polish": "celem",
+      "polish": "Celem mówcy jest...",
       "russian": "Целью говорящего является...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Celem mówcy jest...",
-        "ru": "Целью говорящего является..."
+        "pl": "Celem mówcy jest przekonanie słuchaczy o znaczeniu edukacji.",
+        "ru": "Целью говорящего является убеждение слушателей в значении образования."
       },
       "reviewHistory": []
     },
     {
       "id": "word-26",
-      "polish": "intencją",
+      "polish": "Intencją mówcy jest...",
       "russian": "Намерением говорящего является...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Intencją mówcy jest...",
-        "ru": "Намерением говорящего является..."
+        "pl": "Intencją mówcy jest pokazanie korzyści płynących z nauki języków.",
+        "ru": "Намерением говорящего является показать преимущества изучения языков."
       },
       "reviewHistory": []
     },
     {
       "id": "word-27",
-      "polish": "rozmowa",
+      "polish": "Rozmowa odbywa się w...",
       "russian": "Разговор происходит в...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Rozmowa odbywa się w...",
-        "ru": "Разговор происходит в..."
+        "pl": "Rozmowa odbywa się w szkole językowej w Krakowie.",
+        "ru": "Разговор происходит в языковой школе в Кракове."
       },
       "reviewHistory": []
     },
     {
       "id": "word-28",
-      "polish": "sytuacja",
+      "polish": "Sytuacja dotyczy...",
       "russian": "Ситуация касается...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Sytuacja dotyczy...",
-        "ru": "Ситуация касается..."
+        "pl": "Sytuacja dotyczy rezerwacji miejsca na egzamin TELC.",
+        "ru": "Ситуация касается бронирования места на экзамен TELC."
       },
       "reviewHistory": []
     },
     {
       "id": "word-29",
-      "polish": "kontekst",
+      "polish": "Kontekst wskazuje na...",
       "russian": "Контекст указывает на...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Kontekst wskazuje na...",
-        "ru": "Контекст указывает на..."
+        "pl": "Kontekst wskazuje na to, że mówca przygotowuje się do egzaminu.",
+        "ru": "Контекст указывает на то, что говорящий готовится к экзамену."
       },
       "reviewHistory": []
     },
@@ -393,7 +393,7 @@
     },
     {
       "id": "word-31",
-      "polish": "dzień",
+      "polish": "Dzień dobry,",
       "russian": "Добрый день,",
       "level": "B1",
       "knowsPlToRu": false,
@@ -445,66 +445,66 @@
     },
     {
       "id": "word-35",
-      "polish": "piszę",
+      "polish": "Piszę do Ciebie, ponieważ...",
       "russian": "Пишу тебе, потому что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Piszę do Ciebie, ponieważ...",
-        "ru": "Пишу тебе, потому что..."
+        "pl": "Piszę do Ciebie, ponieważ chciałbym zaprosić Cię na spotkanie.",
+        "ru": "Пишу тебе, потому что хотел бы пригласить тебя на встречу."
       },
       "reviewHistory": []
     },
     {
       "id": "word-36",
-      "polish": "chciałbym",
+      "polish": "Chciałbym/chciałabym...",
       "russian": "Хотел/а бы...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Chciałbym/chciałabym...",
-        "ru": "Хотел/а бы..."
+        "pl": "Chciałbym podziękować za Twoją pomoc w przygotowaniu do egzaminu.",
+        "ru": "Хотел бы поблагодарить за твою помощь в подготовке к экзамену."
       },
       "reviewHistory": []
     },
     {
       "id": "word-37",
-      "polish": "zwracam",
+      "polish": "Zwracam się z prośbą...",
       "russian": "Обращаюсь с просьбой...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zwracam się z prośbą...",
-        "ru": "Обращаюсь с просьбой..."
+        "pl": "Zwracam się z prośbą o informację dotyczącą kursu języka polskiego.",
+        "ru": "Обращаюсь с просьбой об информации, касающейся курса польского языка."
       },
       "reviewHistory": []
     },
     {
       "id": "word-38",
-      "polish": "dziękuję",
+      "polish": "Dziękuję za...",
       "russian": "Спасибо за...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Dziękuję za...",
-        "ru": "Спасибо за..."
+        "pl": "Dziękuję za szybką odpowiedź na moje pytanie.",
+        "ru": "Спасибо за быстрый ответ на мой вопрос."
       },
       "reviewHistory": []
     },
     {
       "id": "word-39",
-      "polish": "ponadto",
+      "polish": "Ponadto...",
       "russian": "Кроме того...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Ponadto...",
-        "ru": "Кроме того..."
+        "pl": "Ponadto, mogę zapewnić, że wszystkie materiały będą dostępne.",
+        "ru": "Кроме того, могу заверить, что все материалы будут доступны."
       },
       "reviewHistory": []
     },
@@ -516,21 +516,21 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Dodatkowo...",
-        "ru": "Дополнительно..."
+        "pl": "Dodatkowo, warto rozważyć możliwość spotkania online.",
+        "ru": "Дополнительно, стоит рассмотреть возможность встречи онлайн."
       },
       "reviewHistory": []
     },
     {
       "id": "word-41",
-      "polish": "warto",
+      "polish": "Warto również wspomnieć, że...",
       "russian": "Стоит также упомянуть, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Warto również wspomnieć, że...",
-        "ru": "Стоит также упомянуть, что..."
+        "pl": "Warto również wspomnieć, że spotkanie odbędzie się w sobotę.",
+        "ru": "Стоит также упомянуть, что встреча состоится в субботу."
       },
       "reviewHistory": []
     },
@@ -542,60 +542,60 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Przede wszystkim...",
-        "ru": "Прежде всего..."
+        "pl": "Przede wszystkim, chciałbym podkreślić wagę tego projektu.",
+        "ru": "Прежде всего, хотел бы подчеркнуть важность этого проекта."
       },
       "reviewHistory": []
     },
     {
       "id": "word-43",
-      "polish": "bardzo",
+      "polish": "Bardzo proszę o...",
       "russian": "Очень прошу о...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Bardzo proszę o...",
-        "ru": "Очень прошу о..."
+        "pl": "Bardzo proszę o szybką odpowiedź na moje pytanie.",
+        "ru": "Очень прошу о быстром ответе на мой вопрос."
       },
       "reviewHistory": []
     },
     {
       "id": "word-44",
-      "polish": "byłbym",
+      "polish": "Byłbym wdzięczny, gdybyś...",
       "russian": "Был бы благодарен, если бы ты...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Byłbym wdzięczny, gdybyś...",
-        "ru": "Был бы благодарен, если бы ты..."
+        "pl": "Byłbym wdzięczny, gdybyś mógł przesłać mi materiały do nauki.",
+        "ru": "Был бы благодарен, если бы ты мог прислать мне материалы для учебы."
       },
       "reviewHistory": []
     },
     {
       "id": "word-45",
-      "polish": "proponuję",
+      "polish": "Proponuję, żeby..",
       "russian": "Предлагаю, чтобы...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Proponuję, żeby...",
-        "ru": "Предлагаю, чтобы..."
+        "pl": "Proponuję, żebyśmy spotkali się w sobotę o godzinie 14:00.",
+        "ru": "Предлагаю, чтобы мы встретились в субботу в 14:00."
       },
       "reviewHistory": []
     },
     {
       "id": "word-46",
-      "polish": "moglibyśmy",
+      "polish": "Moglibyśmy...",
       "russian": "Мы могли бы...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Moglibyśmy...",
-        "ru": "Мы могли бы..."
+        "pl": "Moglibyśmy omówić szczegóły podczas spotkania.",
+        "ru": "Мы могли бы обсудить детали во время встречи."
       },
       "reviewHistory": []
     },
@@ -607,27 +607,27 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Sugeruję...",
-        "ru": "Предлагаю..."
+        "pl": "Sugeruję spotkanie w kawiarni na Rynku Głównym.",
+        "ru": "Предлагаю встречу в кафе на Главной площади."
       },
       "reviewHistory": []
     },
     {
       "id": "word-48",
-      "polish": "może",
+      "polish": "Może powinniśmy...",
       "russian": "Может быть, нам следует...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Może powinniśmy...",
-        "ru": "Может быть, нам следует..."
+        "pl": "Może powinniśmy najpierw ustalić datę spotkania?",
+        "ru": "Может быть, нам следует сначала установить дату встречи?"
       },
       "reviewHistory": []
     },
     {
       "id": "word-49",
-      "polish": "czekam",
+      "polish": "Czekam na Twoją odpowiedź",
       "russian": "Жду твоего ответа.",
       "level": "B1",
       "knowsPlToRu": false,
@@ -640,7 +640,7 @@
     },
     {
       "id": "word-50",
-      "polish": "proszę",
+      "polish": "Proszę o szybką odpowiedź.",
       "russian": "Прошу быстрого ответа.",
       "level": "B1",
       "knowsPlToRu": false,
@@ -679,7 +679,7 @@
     },
     {
       "id": "word-53",
-      "polish": "trzymaj",
+      "polish": "Trzymaj się!",
       "russian": "Держись!",
       "level": "B1",
       "knowsPlToRu": false,
@@ -692,53 +692,53 @@
     },
     {
       "id": "word-54",
-      "polish": "obrazek",
+      "polish": "Obrazek przedstawia...",
       "russian": "Картинка изображает...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Obrazek przedstawia...",
-        "ru": "Картинка изображает..."
+        "pl": "Obrazek przedstawia grupę ludzi spacerujących po parku.",
+        "ru": "Картинка изображает группу людей, гуляющих по парку."
       },
       "reviewHistory": []
     },
     {
       "id": "word-55",
-      "polish": "widzę",
+      "polish": "Widzę, że...",
       "russian": "Вижу, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Widzę, że...",
-        "ru": "Вижу, что..."
+        "pl": "Widzę, że ludzie na obrazku są bardzo szczęśliwi.",
+        "ru": "Вижу, что люди на картинке очень счастливы."
       },
       "reviewHistory": []
     },
     {
       "id": "word-56",
-      "polish": "można",
+      "polish": "Można zauważyć, że..",
       "russian": "Можно заметить, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Można zauważyć, że...",
-        "ru": "Можно заметить, что..."
+        "pl": "Można zauważyć, że scena rozgrywa się w słoneczny dzień.",
+        "ru": "Можно заметить, что сцена происходит в солнечный день."
       },
       "reviewHistory": []
     },
     {
       "id": "word-57",
-      "polish": "wygląda",
+      "polish": "Wygląda na to, że...",
       "russian": "Похоже, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Wygląda na to, że...",
-        "ru": "Похоже, что..."
+        "pl": "Wygląda na to, że jest to miejsce turystyczne.",
+        "ru": "Похоже, что это туристическое место."
       },
       "reviewHistory": []
     },
@@ -750,105 +750,105 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Prawdopodobnie...",
-        "ru": "Вероятно..."
+        "pl": "Prawdopodobnie zdjęcie zostało zrobione latem.",
+        "ru": "Вероятно, фотография была сделана летом."
       },
       "reviewHistory": []
     },
     {
       "id": "word-59",
-      "polish": "myślę",
+      "polish": "Myślę, że...",
       "russian": "Думаю, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Myślę, że...",
-        "ru": "Думаю, что..."
+        "pl": "Myślę, że to miejsce jest bardzo popularne wśród turystów.",
+        "ru": "Думаю, что это место очень популярно среди туристов."
       },
       "reviewHistory": []
     },
     {
       "id": "word-60",
-      "polish": "sądzę",
+      "polish": "Sądzę, że...",
       "russian": "Полагаю, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Sądzę, że...",
-        "ru": "Полагаю, что..."
+        "pl": "Sądzę, że scena przedstawia typowy dzień w mieście.",
+        "ru": "Полагаю, что сцена изображает типичный день в городе."
       },
       "reviewHistory": []
     },
     {
       "id": "word-61",
-      "polish": "możliwe",
+      "polish": "Możliwe, że...",
       "russian": "Возможно, что...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Możliwe, że...",
-        "ru": "Возможно, что..."
+        "pl": "Możliwe, że ludzie czekają na autobus.",
+        "ru": "Возможно, что люди ждут автобус."
       },
       "reviewHistory": []
     },
     {
       "id": "word-62",
-      "polish": "podsumowując",
+      "polish": "Podsumowując..",
       "russian": "Подводя итог...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Podsumowując...",
-        "ru": "Подводя итог..."
+        "pl": "Podsumowując, obrazek przedstawia piękną scenerię, która wywołuje pozytywne emocje.",
+        "ru": "Подводя итог, картинка изображает красивую сцену, которая вызывает положительные эмоции."
       },
       "reviewHistory": []
     },
     {
       "id": "word-63",
-      "polish": "ogólnie",
+      "polish": "Ogólnie rzecz biorąc...",
       "russian": "Вообще говоря...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Ogólnie rzecz biorąc...",
-        "ru": "Вообще говоря..."
+        "pl": "Ogólnie rzecz biorąc, jest to bardzo interesujący obrazek.",
+        "ru": "Вообще говоря, это очень интересная картинка."
       },
       "reviewHistory": []
     },
     {
       "id": "word-64",
-      "polish": "wnioskując",
+      "polish": "Wnioskując z obrazka..",
       "russian": "Делая вывод из картинки...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Wnioskując z obrazka...",
-        "ru": "Делая вывод из картинки..."
+        "pl": "Wnioskując z obrazka, można powiedzieć, że jest to miejsce warte odwiedzenia.",
+        "ru": "Делая вывод из картинки, можно сказать, что это место стоит посетить."
       },
       "reviewHistory": []
     },
     {
       "id": "word-65",
-      "polish": "moim",
+      "polish": "Moim zdaniem...",
       "russian": "По моему мнению...",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Moim zdaniem...",
-        "ru": "По моему мнению..."
+        "pl": "Moim zdaniem, nauka języków obcych jest bardzo ważna.",
+        "ru": "По моему мнению, изучение иностранных языков очень важно."
       },
       "reviewHistory": []
     },
     {
       "id": "word-66",
-      "polish": "uważam",
+      "polish": "Uważam, że...",
       "russian": "Я считаю, что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -861,7 +861,7 @@
     },
     {
       "id": "word-67",
-      "polish": "zgadzam",
+      "polish": "Zgadzam się z tym, że..",
       "russian": "Согласен с тем, что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -874,7 +874,7 @@
     },
     {
       "id": "word-68",
-      "polish": "również",
+      "polish": "Również tak myślę..",
       "russian": "Я тоже так думаю...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -887,7 +887,7 @@
     },
     {
       "id": "word-69",
-      "polish": "przykładowo",
+      "polish": "Przykładowo...",
       "russian": "Например...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -900,7 +900,7 @@
     },
     {
       "id": "word-70",
-      "polish": "weźmy",
+      "polish": "Weźmy przykład..",
       "russian": "Возьмем пример...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -913,7 +913,7 @@
     },
     {
       "id": "word-71",
-      "polish": "mogę",
+      "polish": "Mogę podać przykład...",
       "russian": "Могу привести пример...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -926,7 +926,7 @@
     },
     {
       "id": "word-72",
-      "polish": "dlatego",
+      "polish": "Dlatego..",
       "russian": "Поэтому...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -952,7 +952,7 @@
     },
     {
       "id": "word-74",
-      "polish": "zacznijmy",
+      "polish": "Zacznijmy od...",
       "russian": "Начнем с...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -965,7 +965,7 @@
     },
     {
       "id": "word-75",
-      "polish": "możemy",
+      "polish": "Możemy zacząć od tego, że...",
       "russian": "Мы можем начать с того, что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -978,7 +978,7 @@
     },
     {
       "id": "word-76",
-      "polish": "jakie",
+      "polish": "Jakie jest twoje zdanie na temat...?",
       "russian": "Какое твое мнение по поводу...?",
       "level": "B1",
       "knowsPlToRu": false,
@@ -991,7 +991,7 @@
     },
     {
       "id": "word-77",
-      "polish": "masz",
+      "polish": "Masz rację",
       "russian": "Ты прав",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1017,7 +1017,7 @@
     },
     {
       "id": "word-79",
-      "polish": "częściowo",
+      "polish": "Częściowo się zgadzam, ale..",
       "russian": "Частично согласен, но...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1030,7 +1030,7 @@
     },
     {
       "id": "word-80",
-      "polish": "rozumiem",
+      "polish": "Rozumiem twój punkt widzenia, jednak...",
       "russian": "Понимаю твою точку зрения, однако...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1043,7 +1043,7 @@
     },
     {
       "id": "word-81",
-      "polish": "zgadzasz",
+      "polish": "Zgadzasz się ze mną?",
       "russian": "Согласен со мной?",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1056,7 +1056,7 @@
     },
     {
       "id": "word-82",
-      "polish": "więc",
+      "polish": "Więc zgadzamy się, że...",
       "russian": "Итак, мы согласны, что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1069,7 +1069,7 @@
     },
     {
       "id": "word-83",
-      "polish": "podsumujmy",
+      "polish": "Podsumujmy: oboje uważamy, że..",
       "russian": "Подведем итог: оба мы считаем, что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1082,7 +1082,7 @@
     },
     {
       "id": "word-84",
-      "polish": "dobrze",
+      "polish": "Dobrze, więc..",
       "russian": "Хорошо, итак...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1095,7 +1095,7 @@
     },
     {
       "id": "word-85",
-      "polish": "przepraszam",
+      "polish": "Przepraszam, ale...",
       "russian": "Извините, но...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1108,7 +1108,7 @@
     },
     {
       "id": "word-86",
-      "polish": "moment",
+      "polish": "Moment, proszę...",
       "russian": "Момент, пожалуйста...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1160,7 +1160,7 @@
     },
     {
       "id": "word-90",
-      "polish": "ostatnio",
+      "polish": "Недавно...",
       "russian": "Недавно...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1277,7 +1277,7 @@
     },
     {
       "id": "word-99",
-      "polish": "ponieważ",
+      "polish": "Ponieważ...",
       "russian": "Потому что...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1303,7 +1303,7 @@
     },
     {
       "id": "word-101",
-      "polish": "gdyby",
+      "polish": "Gdyby...",
       "russian": "Если бы...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1316,7 +1316,7 @@
     },
     {
       "id": "word-102",
-      "polish": "jednak",
+      "polish": "Jednak..",
       "russian": "Однако...",
       "level": "B1",
       "knowsPlToRu": false,
@@ -1329,7 +1329,7 @@
     },
     {
       "id": "word-103",
-      "polish": "mimo",
+      "polish": "Mimo to...",
       "russian": "Несмотря на это...",
       "level": "B1",
       "knowsPlToRu": false,
