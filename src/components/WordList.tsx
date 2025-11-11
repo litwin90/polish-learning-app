@@ -29,11 +29,23 @@ export const WordList = ({
   const currentVersion = getCurrentVersion();
   const storageKey = `wordListFilters_v${currentVersion}`;
 
+  // Получение всех уникальных категорий из слов
+  const availableCategories = useMemo(() => {
+    const categories = new Set<string>();
+    words.forEach((word) => {
+      if (word.category) {
+        categories.add(word.category);
+      }
+    });
+    return Array.from(categories).sort();
+  }, [words]);
+
   // Инициализация состояния из localStorage
   const loadFiltersFromStorage = (): {
     filterLevels: Set<0 | 1 | 2>;
     filterLanguageLevels: Set<string>;
     filterNeedsReview: boolean | null;
+    filterCategories: Set<string>;
     sortBy: "level" | "lastReviewed";
     sortOrder: "asc" | "desc";
   } => {
@@ -52,6 +64,9 @@ export const WordList = ({
             parsed.filterNeedsReview !== undefined
               ? parsed.filterNeedsReview
               : null,
+          filterCategories: parsed.filterCategories
+            ? new Set(parsed.filterCategories as string[])
+            : new Set<string>(),
           sortBy: parsed.sortBy || "level",
           sortOrder: parsed.sortOrder || "asc",
         };
@@ -63,6 +78,7 @@ export const WordList = ({
       filterLevels: new Set([0, 1, 2]),
       filterLanguageLevels: new Set(["A1", "A2", "B1", "B2", "C1", "C2"]),
       filterNeedsReview: null,
+      filterCategories: new Set<string>(),
       sortBy: "level" as const,
       sortOrder: "asc" as const,
     };
@@ -77,6 +93,9 @@ export const WordList = ({
   );
   const [filterNeedsReview, setFilterNeedsReview] = useState<boolean | null>(
     initialFilters.filterNeedsReview
+  );
+  const [filterCategories, setFilterCategories] = useState<Set<string>>(
+    initialFilters.filterCategories
   );
   const [sortBy, setSortBy] = useState<"level" | "lastReviewed">(
     initialFilters.sortBy
@@ -94,6 +113,7 @@ export const WordList = ({
         filterLevels: Array.from(filterLevels),
         filterLanguageLevels: Array.from(filterLanguageLevels),
         filterNeedsReview,
+        filterCategories: Array.from(filterCategories),
         sortBy,
         sortOrder,
       };
@@ -105,6 +125,7 @@ export const WordList = ({
     filterLevels,
     filterLanguageLevels,
     filterNeedsReview,
+    filterCategories,
     sortBy,
     sortOrder,
     storageKey,
@@ -162,6 +183,16 @@ export const WordList = ({
     setFilterLanguageLevels(newFilterLanguageLevels);
   };
 
+  const toggleFilterCategory = (category: string) => {
+    const newFilterCategories = new Set(filterCategories);
+    if (newFilterCategories.has(category)) {
+      newFilterCategories.delete(category);
+    } else {
+      newFilterCategories.add(category);
+    }
+    setFilterCategories(newFilterCategories);
+  };
+
   const handleStartLearning = () => {
     onStartLearning({
       filterLevels,
@@ -198,6 +229,14 @@ export const WordList = ({
       });
     }
 
+    // Фильтрация по категориям
+    if (filterCategories.size > 0) {
+      filtered = filtered.filter((word) => {
+        if (!word.category) return false; // Исключаем слова без категории
+        return filterCategories.has(word.category);
+      });
+    }
+
     // Сортировка
     const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
@@ -221,6 +260,7 @@ export const WordList = ({
     filterLevels,
     filterLanguageLevels,
     filterNeedsReview,
+    filterCategories,
     sortBy,
     sortOrder,
   ]);
@@ -447,6 +487,37 @@ export const WordList = ({
                 </div>
               </div>
 
+              {availableCategories.length > 0 && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Фильтр по категориям:
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {availableCategories.map((category) => {
+                      const count = words.filter(
+                        (w) => w.category === category
+                      ).length;
+                      return (
+                        <label
+                          key={category}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={filterCategories.has(category)}
+                            onChange={() => toggleFilterCategory(category)}
+                            className="w-5 h-5 text-purple-600 rounded"
+                          />
+                          <span className="text-gray-700 font-medium">
+                            {category} ({count})
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -581,6 +652,37 @@ export const WordList = ({
               </label>
             </div>
           </div>
+
+          {availableCategories.length > 0 && (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Фильтр по категориям:
+              </label>
+              <div className="flex flex-wrap gap-3">
+                {availableCategories.map((category) => {
+                  const count = words.filter(
+                    (w) => w.category === category
+                  ).length;
+                  return (
+                    <label
+                      key={category}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={filterCategories.has(category)}
+                        onChange={() => toggleFilterCategory(category)}
+                        className="w-5 h-5 text-purple-600 rounded"
+                      />
+                      <span className="text-gray-700 font-medium">
+                        {category} ({count})
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">

@@ -1,5 +1,5 @@
 {
-  "version": "1.1.5",
+  "version": "1.1.6",
   "words": [
     {
       "id": "word-1",
@@ -181,6 +181,7 @@
         "pl": "Autor sugeruje, że warto inwestować w edukację.",
         "ru": "Автор предполагает, что стоит инвестировать в образование."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -194,6 +195,7 @@
         "pl": "Według autora, podróże rozwijają naszą osobowość.",
         "ru": "Согласно автору, путешествия развивают нашу личность."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -207,6 +209,7 @@
         "pl": "Tekst informuje o korzyściach płynących z nauki języków obcych.",
         "ru": "Текст информирует о преимуществах изучения иностранных языков."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -220,6 +223,7 @@
         "pl": "Główna myśl tekstu to znaczenie edukacji w dzisiejszym świecie.",
         "ru": "Главная мысль текста - это значение образования в современном мире."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -230,9 +234,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Pierwsza część dotyczy...",
-        "ru": "Первая часть касается..."
+        "pl": "Pierwsza część dotyczy historii języka polskiego.",
+        "ru": "Первая часть касается истории польского языка."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -243,10 +248,11 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Druga część omawia...",
-        "ru": "Вторая часть обсуждает..."
+        "pl": "Druga część omawia współczesne trendy w nauce języków.",
+        "ru": "Вторая часть обсуждает современные тенденции в изучении языков."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Czytanie"
     },
     {
       "id": "word-20",
@@ -259,6 +265,7 @@
         "pl": "Wnioski znajdują się w ostatnim akapicie tekstu.",
         "ru": "Выводы находятся в последнем абзаце текста."
       },
+      "category": "Czytanie",
       "reviewHistory": []
     },
     {
@@ -272,6 +279,7 @@
         "pl": "Nagranie dotyczy przygotowania do egzaminu TELC.",
         "ru": "Запись касается подготовки к экзамену TELC."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -285,6 +293,7 @@
         "pl": "Główny temat to znaczenie regularnej praktyki w nauce języków.",
         "ru": "Главная тема - это значение регулярной практики в изучении языков."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -298,6 +307,7 @@
         "pl": "Mówca opowiada o swoich doświadczeniach z nauką polskiego.",
         "ru": "Говорящий рассказывает о своем опыте изучения польского."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -311,6 +321,7 @@
         "pl": "Chodzi o korzyści płynące z nauki języków obcych.",
         "ru": "Речь идет о преимуществах изучения иностранных языков."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -324,6 +335,7 @@
         "pl": "Celem mówcy jest przekonanie słuchaczy o znaczeniu edukacji.",
         "ru": "Целью говорящего является убеждение слушателей в значении образования."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -337,6 +349,7 @@
         "pl": "Intencją mówcy jest pokazanie korzyści płynących z nauki języków.",
         "ru": "Намерением говорящего является показать преимущества изучения языков."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -350,6 +363,7 @@
         "pl": "Rozmowa odbywa się w szkole językowej w Krakowie.",
         "ru": "Разговор происходит в языковой школе в Кракове."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -363,6 +377,7 @@
         "pl": "Sytuacja dotyczy rezerwacji miejsca na egzamin TELC.",
         "ru": "Ситуация касается бронирования места на экзамен TELC."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -376,6 +391,7 @@
         "pl": "Kontekst wskazuje na to, że mówca przygotowuje się do egzaminu.",
         "ru": "Контекст указывает на то, что говорящий готовится к экзамену."
       },
+      "category": "Słuchanie",
       "reviewHistory": []
     },
     {
@@ -389,7 +405,8 @@
         "pl": "Szanowny Panie/Pani [Imię],",
         "ru": "Уважаемый/ая [Имя],"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-31",
@@ -402,7 +419,8 @@
         "pl": "Dzień dobry,",
         "ru": "Добрый день,"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-32",
@@ -415,7 +433,8 @@
         "pl": "Witam Pana/Panią,",
         "ru": "Здравствуйте,"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-33",
@@ -428,7 +447,8 @@
         "pl": "Drogi/Droga [Imię],",
         "ru": "Дорогой/ая [Имя],"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-34",
@@ -441,7 +461,8 @@
         "pl": "Cześć [Imię],",
         "ru": "Привет [Имя],"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-35",
@@ -454,7 +475,8 @@
         "pl": "Piszę do Ciebie, ponieważ chciałbym zaprosić Cię na spotkanie.",
         "ru": "Пишу тебе, потому что хотел бы пригласить тебя на встречу."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-36",
@@ -467,7 +489,8 @@
         "pl": "Chciałbym podziękować za Twoją pomoc w przygotowaniu do egzaminu.",
         "ru": "Хотел бы поблагодарить за твою помощь в подготовке к экзамену."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-37",
@@ -480,7 +503,8 @@
         "pl": "Zwracam się z prośbą o informację dotyczącą kursu języka polskiego.",
         "ru": "Обращаюсь с просьбой об информации, касающейся курса польского языка."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-38",
@@ -493,7 +517,8 @@
         "pl": "Dziękuję za szybką odpowiedź na moje pytanie.",
         "ru": "Спасибо за быстрый ответ на мой вопрос."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-39",
@@ -506,7 +531,8 @@
         "pl": "Ponadto, mogę zapewnić, że wszystkie materiały będą dostępne.",
         "ru": "Кроме того, могу заверить, что все материалы будут доступны."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-40",
@@ -519,7 +545,8 @@
         "pl": "Dodatkowo, warto rozważyć możliwość spotkania online.",
         "ru": "Дополнительно, стоит рассмотреть возможность встречи онлайн."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-41",
@@ -532,7 +559,8 @@
         "pl": "Warto również wspomnieć, że spotkanie odbędzie się w sobotę.",
         "ru": "Стоит также упомянуть, что встреча состоится в субботу."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-42",
@@ -545,7 +573,8 @@
         "pl": "Przede wszystkim, chciałbym podkreślić wagę tego projektu.",
         "ru": "Прежде всего, хотел бы подчеркнуть важность этого проекта."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-43",
@@ -558,7 +587,8 @@
         "pl": "Bardzo proszę o szybką odpowiedź na moje pytanie.",
         "ru": "Очень прошу о быстром ответе на мой вопрос."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-44",
@@ -571,7 +601,8 @@
         "pl": "Byłbym wdzięczny, gdybyś mógł przesłać mi materiały do nauki.",
         "ru": "Был бы благодарен, если бы ты мог прислать мне материалы для учебы."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-45",
@@ -584,7 +615,8 @@
         "pl": "Proponuję, żebyśmy spotkali się w sobotę o godzinie 14:00.",
         "ru": "Предлагаю, чтобы мы встретились в субботу в 14:00."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-46",
@@ -597,7 +629,8 @@
         "pl": "Moglibyśmy omówić szczegóły podczas spotkania.",
         "ru": "Мы могли бы обсудить детали во время встречи."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-47",
@@ -610,7 +643,8 @@
         "pl": "Sugeruję spotkanie w kawiarni na Rynku Głównym.",
         "ru": "Предлагаю встречу в кафе на Главной площади."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-48",
@@ -623,7 +657,8 @@
         "pl": "Może powinniśmy najpierw ustalić datę spotkania?",
         "ru": "Может быть, нам следует сначала установить дату встречи?"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-49",
@@ -636,7 +671,8 @@
         "pl": "Czekam na Twoją odpowiedź.",
         "ru": "Жду твоего ответа."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-50",
@@ -649,7 +685,8 @@
         "pl": "Proszę o szybką odpowiedź.",
         "ru": "Прошу быстрого ответа."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-51",
@@ -662,7 +699,8 @@
         "pl": "Pozdrawiam serdecznie!",
         "ru": "Сердечно приветствую! (в конце письма)"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-52",
@@ -675,7 +713,8 @@
         "pl": "Serdecznie pozdrawiam,",
         "ru": "Сердечно приветствую, (в конце письма, подпись)"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-53",
@@ -688,7 +727,8 @@
         "pl": "Trzymaj się!",
         "ru": "Держись!"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Pisanie"
     },
     {
       "id": "word-54",
@@ -701,7 +741,8 @@
         "pl": "Obrazek przedstawia grupę ludzi spacerujących po parku.",
         "ru": "Картинка изображает группу людей, гуляющих по парку."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-55",
@@ -714,7 +755,8 @@
         "pl": "Widzę, że ludzie na obrazku są bardzo szczęśliwi.",
         "ru": "Вижу, что люди на картинке очень счастливы."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-56",
@@ -727,7 +769,8 @@
         "pl": "Można zauważyć, że scena rozgrywa się w słoneczny dzień.",
         "ru": "Можно заметить, что сцена происходит в солнечный день."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-57",
@@ -740,7 +783,8 @@
         "pl": "Wygląda na to, że jest to miejsce turystyczne.",
         "ru": "Похоже, что это туристическое место."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-58",
@@ -753,7 +797,8 @@
         "pl": "Prawdopodobnie zdjęcie zostało zrobione latem.",
         "ru": "Вероятно, фотография была сделана летом."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-59",
@@ -766,7 +811,8 @@
         "pl": "Myślę, że to miejsce jest bardzo popularne wśród turystów.",
         "ru": "Думаю, что это место очень популярно среди туристов."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-60",
@@ -779,7 +825,8 @@
         "pl": "Sądzę, że scena przedstawia typowy dzień w mieście.",
         "ru": "Полагаю, что сцена изображает типичный день в городе."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-61",
@@ -792,7 +839,8 @@
         "pl": "Możliwe, że ludzie czekają na autobus.",
         "ru": "Возможно, что люди ждут автобус."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-62",
@@ -805,7 +853,8 @@
         "pl": "Podsumowując, obrazek przedstawia piękną scenerię, która wywołuje pozytywne emocje.",
         "ru": "Подводя итог, картинка изображает красивую сцену, которая вызывает положительные эмоции."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-63",
@@ -818,7 +867,8 @@
         "pl": "Ogólnie rzecz biorąc, jest to bardzo interesujący obrazek.",
         "ru": "Вообще говоря, это очень интересная картинка."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-64",
@@ -831,7 +881,8 @@
         "pl": "Wnioskując z obrazka, można powiedzieć, że jest to miejsce warte odwiedzenia.",
         "ru": "Делая вывод из картинки, можно сказать, что это место стоит посетить."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-65",
@@ -844,7 +895,8 @@
         "pl": "Moim zdaniem, nauka języków obcych jest bardzo ważna.",
         "ru": "По моему мнению, изучение иностранных языков очень важно."
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie"
     },
     {
       "id": "word-66",
@@ -854,9 +906,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Uważam, że...",
-        "ru": "Я считаю, что..."
+        "pl": "Uważam, że podróże rozwijają naszą osobowość.",
+        "ru": "Я считаю, что путешествия развивают нашу личность."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -867,9 +920,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zgadzam się z tym, że...",
-        "ru": "Согласен с тем, что..."
+        "pl": "Zgadzam się z tym, że nauka języków jest bardzo ważna.",
+        "ru": "Согласен с тем, что изучение языков очень важно."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -880,9 +934,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Również tak myślę...",
-        "ru": "Я тоже так думаю..."
+        "pl": "Również tak myślę o korzyściach płynących z nauki języków.",
+        "ru": "Я тоже так думаю о преимуществах изучения языков."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -893,9 +948,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Przykładowo...",
-        "ru": "Например..."
+        "pl": "Przykładowo, wiele osób uczy się polskiego, żeby studiować w Polsce.",
+        "ru": "Например, многие люди учат польский, чтобы учиться в Польше."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -906,9 +962,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Weźmy przykład...",
-        "ru": "Возьмем пример..."
+        "pl": "Weźmy przykład osoby, która nauczyła się polskiego i znalazła dobrą pracę.",
+        "ru": "Возьмем пример человека, который выучил польский и нашел хорошую работу."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -919,9 +976,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Mogę podać przykład...",
-        "ru": "Могу привести пример..."
+        "pl": "Mogę podać przykład mojego przyjaciela, który zdał egzamin TELC.",
+        "ru": "Могу привести пример моего друга, который сдал экзамен TELC."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -932,9 +990,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Dlatego...",
-        "ru": "Поэтому..."
+        "pl": "Dlatego uważam, że warto uczyć się języków obcych.",
+        "ru": "Поэтому я считаю, что стоит изучать иностранные языки."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -945,9 +1004,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Reasumując...",
-        "ru": "Резюмируя..."
+        "pl": "Reasumując, możemy stwierdzić, że projekt był sukcesem.",
+        "ru": "Резюмируя, мы можем констатировать, что проект был успешным."
       },
+      "category": "Mówienie",
       "reviewHistory": []
     },
     {
@@ -958,9 +1018,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zacznijmy od...",
-        "ru": "Начнем с..."
+        "pl": "Zacznijmy od omówienia głównych problemów.",
+        "ru": "Начнем с обсуждения основных проблем."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -971,9 +1032,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Możemy zacząć od tego, że...",
-        "ru": "Мы можем начать с того, что..."
+        "pl": "Możemy zacząć od tego, że nauka języków wymaga systematycznej pracy.",
+        "ru": "Мы можем начать с того, что изучение языков требует систематической работы."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -984,9 +1046,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Jakie jest twoje zdanie na temat...?",
-        "ru": "Какое твое мнение по поводу...?"
+        "pl": "Jakie jest twoje zdanie na temat przygotowania do egzaminu TELC?",
+        "ru": "Какое твое мнение по поводу подготовки к экзамену TELC?"
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1000,7 +1063,8 @@
         "pl": "Masz rację",
         "ru": "Ты прав"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie - Dyskusja"
     },
     {
       "id": "word-78",
@@ -1013,7 +1077,8 @@
         "pl": "Dokładnie!",
         "ru": "Точно!"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie - Dyskusja"
     },
     {
       "id": "word-79",
@@ -1023,9 +1088,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Częściowo się zgadzam, ale...",
-        "ru": "Частично согласен, но..."
+        "pl": "Częściowo się zgadzam, ale uważam, że są też inne rozwiązania.",
+        "ru": "Частично согласен, но считаю, что есть и другие решения."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1036,9 +1102,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Rozumiem twój punkt widzenia, jednak...",
-        "ru": "Понимаю твою точку зрения, однако..."
+        "pl": "Rozumiem twój punkt widzenia, jednak mam inne zdanie na ten temat.",
+        "ru": "Понимаю твою точку зрения, однако у меня другое мнение по этому вопросу."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1052,7 +1119,8 @@
         "pl": "Zgadzasz się ze mną?",
         "ru": "Согласен со мной?"
       },
-      "reviewHistory": []
+      "reviewHistory": [],
+      "category": "Mówienie - Dyskusja"
     },
     {
       "id": "word-82",
@@ -1062,9 +1130,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Więc zgadzamy się, że...",
-        "ru": "Итак, мы согласны, что..."
+        "pl": "Więc zgadzamy się, że spotkamy się w przyszłym tygodniu.",
+        "ru": "Итак, мы согласны, что встретимся на следующей неделе."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1075,9 +1144,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Podsumujmy: oboje uważamy, że...",
-        "ru": "Подведем итог: оба мы считаем, что..."
+        "pl": "Podsumujmy: oboje uważamy, że to rozwiązanie jest najlepsze.",
+        "ru": "Подведем итог: оба мы считаем, что это решение лучшее."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1088,9 +1158,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Dobrze, więc...",
-        "ru": "Хорошо, итак..."
+        "pl": "Dobrze, więc ustalmy konkretną datę i godzinę spotkania.",
+        "ru": "Хорошо, итак установим конкретную дату и время встречи."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1101,9 +1172,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Przepraszam, ale...",
-        "ru": "Извините, но..."
+        "pl": "Przepraszam, ale chciałbym dodać coś ważnego do naszej dyskusji.",
+        "ru": "Извините, но хотел бы добавить что-то важное к нашей дискуссии."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1114,9 +1186,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Moment, proszę...",
-        "ru": "Момент, пожалуйста..."
+        "pl": "Moment, proszę, chciałbym wyjaśnić jedną rzecz.",
+        "ru": "Момент, пожалуйста, хотел бы объяснить одну вещь."
       },
+      "category": "Mówienie - Dyskusja",
       "reviewHistory": []
     },
     {
@@ -1127,9 +1200,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Wczoraj...",
-        "ru": "Вчера..."
+        "pl": "Wczoraj spotkałem się z moim przyjacielem w kawiarni.",
+        "ru": "Вчера я встретился с моим другом в кафе."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1140,9 +1214,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Dzisiaj...",
-        "ru": "Сегодня..."
+        "pl": "Dzisiaj mam egzamin z języka polskiego.",
+        "ru": "Сегодня у меня экзамен по польскому языку."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1153,9 +1228,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Jutro...",
-        "ru": "Завтра..."
+        "pl": "Jutro jadę do Warszawy na spotkanie.",
+        "ru": "Завтра я еду в Варшаву на встречу."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1166,9 +1242,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Ostatnio...",
-        "ru": "Недавно..."
+        "pl": "Ostatnio dużo ćwiczyłem gramatykę polską.",
+        "ru": "Недавно я много практиковал польскую грамматику."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1179,9 +1256,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Niedawno...",
-        "ru": "Недавно..."
+        "pl": "Niedawno zdałem egzamin TELC na poziomie B1.",
+        "ru": "Недавно я сдал экзамен TELC на уровне B1."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1192,9 +1270,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zawsze...",
-        "ru": "Всегда..."
+        "pl": "Zawsze uczę się polskiego rano przed pracą.",
+        "ru": "Всегда учу польский утром перед работой."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1205,9 +1284,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Często...",
-        "ru": "Часто..."
+        "pl": "Często spotykam się z moimi polskimi przyjaciółmi.",
+        "ru": "Часто встречаюсь с моими польскими друзьями."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1218,9 +1298,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Czasami...",
-        "ru": "Иногда..."
+        "pl": "Czasami oglądam polskie filmy, żeby ćwiczyć język.",
+        "ru": "Иногда смотрю польские фильмы, чтобы практиковать язык."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1231,9 +1312,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Rzadko...",
-        "ru": "Редко..."
+        "pl": "Rzadko mam okazję rozmawiać po polsku w pracy.",
+        "ru": "Редко у меня есть возможность говорить по-польски на работе."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1244,9 +1326,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Nigdy...",
-        "ru": "Никогда..."
+        "pl": "Nigdy nie byłem w Polsce, ale chciałbym pojechać.",
+        "ru": "Никогда не был в Польше, но хотел бы поехать."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1257,9 +1340,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zwykle...",
-        "ru": "Обычно..."
+        "pl": "Zwykle uczę się nowych słów wieczorem.",
+        "ru": "Обычно учу новые слова вечером."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1270,9 +1354,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Zazwyczaj...",
-        "ru": "Обычно..."
+        "pl": "Zazwyczaj czytam polskie książki w weekendy.",
+        "ru": "Обычно читаю польские книги в выходные."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1283,9 +1368,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Ponieważ...",
-        "ru": "Потому что..."
+        "pl": "Ponieważ chcę studiować w Polsce, uczę się polskiego.",
+        "ru": "Потому что хочу учиться в Польше, я учу польский."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1296,9 +1382,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Jeśli...",
-        "ru": "Если..."
+        "pl": "Jeśli będę dużo ćwiczyć, zdam egzamin TELC.",
+        "ru": "Если я буду много практиковаться, я сдам экзамен TELC."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1309,9 +1396,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Gdyby...",
-        "ru": "Если бы..."
+        "pl": "Gdyby miał więcej czasu, uczyłby się polskiego codziennie.",
+        "ru": "Если бы у него было больше времени, он бы учил польский каждый день."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1322,9 +1410,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Jednak...",
-        "ru": "Однако..."
+        "pl": "Jednak uważam, że to nie jest najlepsze rozwiązanie.",
+        "ru": "Однако я считаю, что это не лучшее решение."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1335,9 +1424,10 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Mimo to...",
-        "ru": "Несмотря на это..."
+        "pl": "Mimo to, uważam, że warto kontynuować naszą współpracę.",
+        "ru": "Несмотря на это, я считаю, что стоит продолжить наше сотрудничество."
       },
+      "category": "Общие фразы",
       "reviewHistory": []
     },
     {
@@ -1348,9 +1438,178 @@
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
-        "pl": "Także...",
-        "ru": "Также..."
+        "pl": "Także mogę zapewnić, że wszystkie materiały będą dostępne.",
+        "ru": "Также могу заверить, что все материалы будут доступны."
       },
+      "category": "Общие фразы",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-105",
+      "polish": "styczeń",
+      "russian": "январь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W styczniu zaczynam nowy kurs języka polskiego.",
+        "ru": "В январе я начинаю новый курс польского языка."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-106",
+      "polish": "luty",
+      "russian": "февраль",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W lutym będę zdawać egzamin TELC.",
+        "ru": "В феврале я буду сдавать экзамен TELC."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-107",
+      "polish": "marzec",
+      "russian": "март",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W marcu planuję wyjazd do Polski.",
+        "ru": "В марте я планирую поездку в Польшу."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-108",
+      "polish": "kwiecień",
+      "russian": "апрель",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W kwietniu zaczyna się wiosna w Polsce.",
+        "ru": "В апреле в Польше начинается весна."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-109",
+      "polish": "maj",
+      "russian": "май",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W maju obchodzimy Święto Konstytucji 3 Maja.",
+        "ru": "В мае мы отмечаем Праздник Конституции 3 мая."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-110",
+      "polish": "czerwiec",
+      "russian": "июнь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W czerwcu zaczynają się wakacje szkolne.",
+        "ru": "В июне начинаются школьные каникулы."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-111",
+      "polish": "lipiec",
+      "russian": "июль",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W lipcu jest najcieplej w Polsce.",
+        "ru": "В июле в Польше самая теплая погода."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-112",
+      "polish": "sierpień",
+      "russian": "август",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W sierpniu wiele osób wyjeżdża na wakacje.",
+        "ru": "В августе многие люди уезжают в отпуск."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-113",
+      "polish": "wrzesień",
+      "russian": "сентябрь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "We wrześniu zaczyna się nowy rok szkolny.",
+        "ru": "В сентябре начинается новый учебный год."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-114",
+      "polish": "październik",
+      "russian": "октябрь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W październiku liście zmieniają kolor na żółty i czerwony.",
+        "ru": "В октябре листья меняют цвет на желтый и красный."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-115",
+      "polish": "listopad",
+      "russian": "ноябрь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W listopadzie obchodzimy Święto Niepodległości.",
+        "ru": "В ноябре мы отмечаем День независимости."
+      },
+      "category": "Miesiące",
+      "reviewHistory": []
+    },
+    {
+      "id": "word-116",
+      "polish": "grudzień",
+      "russian": "декабрь",
+      "level": "B1",
+      "knowsPlToRu": false,
+      "knowsRuToPl": false,
+      "examples": {
+        "pl": "W grudniu przygotowujemy się do Świąt Bożego Narodzenia.",
+        "ru": "В декабре мы готовимся к Рождеству."
+      },
+      "category": "Miesiące",
       "reviewHistory": []
     }
   ]
