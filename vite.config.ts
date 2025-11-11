@@ -10,12 +10,12 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "icon-192.png", "icon-512.png"],
-        manifest: {
-          name: "Изучение польского языка - Карточки",
-          short_name: "Польский язык",
-          description: "Приложение для изучения польского языка с карточками",
-          theme_color: "#8B5CF6",
-          background_color: "#ffffff",
+      manifest: {
+        name: "Изучение польского языка - Карточки",
+        short_name: "Польский язык",
+        description: "Приложение для изучения польского языка с карточками",
+        theme_color: "#8B5CF6",
+        background_color: "#ffffff",
         display: "standalone",
         orientation: "portrait",
         scope: "/polish-learning-app/",
