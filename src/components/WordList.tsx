@@ -14,6 +14,7 @@ interface WordListProps {
   onImport: () => void;
   onToggleNeedsReview?: (id: string, needsReview: boolean) => void;
   onMarkKnowsPl?: (id: string) => void;
+  compact?: boolean; // Если true, скрывает список слов, показывает только фильтры
 }
 
 export const WordList = ({
@@ -23,6 +24,7 @@ export const WordList = ({
   onImport,
   onToggleNeedsReview,
   onMarkKnowsPl,
+  compact = false,
 }: WordListProps) => {
   const currentVersion = getCurrentVersion();
   const storageKey = `wordListFilters_v${currentVersion}`;
@@ -614,96 +616,98 @@ export const WordList = ({
       </div>
 
       {/* Список слов */}
-      <div className="space-y-4">
-        {filteredAndSortedWords.map((word) => (
-          <div
-            key={word.id}
-            className={`rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-shadow ${
-              word.needsReview
-                ? "bg-yellow-50 border-2 border-yellow-300"
-                : "bg-white"
-            }`}
-          >
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className="text-2xl md:text-3xl font-bold text-primary-500">
-                    {word.polish}
-                  </span>
-                  <span className="text-xl text-gray-400">→</span>
-                  <span className="text-2xl md:text-3xl font-bold text-gray-800">
-                    {word.russian}
-                  </span>
-                </div>
-                {(word.examples?.pl || word.examples?.ru) && (
-                  <div className="mb-3 space-y-1">
-                    {word.examples?.pl && (
-                      <p className="text-gray-600 italic text-sm md:text-base">
-                        PL: {word.examples.pl}
-                      </p>
+      {!compact && (
+        <div className="space-y-4">
+          {filteredAndSortedWords.map((word) => (
+            <div
+              key={word.id}
+              className={`rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-shadow ${
+                word.needsReview
+                  ? "bg-yellow-50 border-2 border-yellow-300"
+                  : "bg-white"
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="text-2xl md:text-3xl font-bold text-primary-500">
+                      {word.polish}
+                    </span>
+                    <span className="text-xl text-gray-400">→</span>
+                    <span className="text-2xl md:text-3xl font-bold text-gray-800">
+                      {word.russian}
+                    </span>
+                  </div>
+                  {(word.examples?.pl || word.examples?.ru) && (
+                    <div className="mb-3 space-y-1">
+                      {word.examples?.pl && (
+                        <p className="text-gray-600 italic text-sm md:text-base">
+                          PL: {word.examples.pl}
+                        </p>
+                      )}
+                      {word.examples?.ru && (
+                        <p className="text-gray-600 italic text-sm md:text-base">
+                          RU: {word.examples.ru}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  <div className="flex flex-wrap items-center gap-3">
+                    {word.category && (
+                      <span className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700">
+                        {word.category}
+                      </span>
                     )}
-                    {word.examples?.ru && (
-                      <p className="text-gray-600 italic text-sm md:text-base">
-                        RU: {word.examples.ru}
-                      </p>
+                    {word.level && (
+                      <span className="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-700">
+                        {word.level}
+                      </span>
+                    )}
+                    <span
+                      className={`text-sm font-semibold ${getLevelColor(
+                        getLevel(word)
+                      )}`}
+                    >
+                      {getLevelText(getLevel(word))}
+                    </span>
+                    {word.needsReview && (
+                      <span className="bg-yellow-100 px-3 py-1 rounded-full text-sm text-yellow-700">
+                        ⚠️ Требует проверки
+                      </span>
                     )}
                   </div>
-                )}
-                <div className="flex flex-wrap items-center gap-3">
-                  {word.category && (
-                    <span className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700">
-                      {word.category}
-                    </span>
-                  )}
-                  {word.level && (
-                    <span className="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-700">
-                      {word.level}
-                    </span>
-                  )}
-                  <span
-                    className={`text-sm font-semibold ${getLevelColor(
-                      getLevel(word)
-                    )}`}
-                  >
-                    {getLevelText(getLevel(word))}
-                  </span>
-                  {word.needsReview && (
-                    <span className="bg-yellow-100 px-3 py-1 rounded-full text-sm text-yellow-700">
-                      ⚠️ Требует проверки
-                    </span>
-                  )}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {onMarkKnowsPl && !word.knowsPlToRu && (
-                    <button
-                      className="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-blue-500 text-white hover:bg-blue-600"
-                      onClick={() => onMarkKnowsPl(word.id)}
-                    >
-                      Знаю PL
-                    </button>
-                  )}
-                  {onToggleNeedsReview && (
-                    <button
-                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                        word.needsReview
-                          ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                      }`}
-                      onClick={() =>
-                        onToggleNeedsReview(word.id, !word.needsReview)
-                      }
-                    >
-                      {word.needsReview
-                        ? "✓ Требует проверки"
-                        : "Требует проверки"}
-                    </button>
-                  )}
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {onMarkKnowsPl && !word.knowsPlToRu && (
+                      <button
+                        className="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-blue-500 text-white hover:bg-blue-600"
+                        onClick={() => onMarkKnowsPl(word.id)}
+                      >
+                        Знаю PL
+                      </button>
+                    )}
+                    {onToggleNeedsReview && (
+                      <button
+                        className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                          word.needsReview
+                            ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                        onClick={() =>
+                          onToggleNeedsReview(word.id, !word.needsReview)
+                        }
+                      >
+                        {word.needsReview
+                          ? "✓ Требует проверки"
+                          : "Требует проверки"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -686,6 +686,17 @@ function App() {
       <main className="flex-1 container mx-auto px-4 py-2 md:py-6 w-full max-w-4xl">
         {currentView === "list" && (
           <div className="space-y-6">
+            {/* Все слова - компактная версия */}
+            <WordList
+              words={words}
+              onStartLearning={handleStartLearning}
+              onExport={handleExport}
+              onImport={handleImport}
+              onToggleNeedsReview={handleToggleNeedsReview}
+              onMarkKnowsPl={handleMarkKnowsPl}
+              compact={true}
+            />
+
             {/* Статистика */}
             <div className="bg-white rounded-xl p-6 shadow-xl">
               <div className="flex justify-between items-center mb-4">
