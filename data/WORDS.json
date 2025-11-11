@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.4",
   "words": [
     {
       "id": "word-1",
@@ -654,26 +654,26 @@
     {
       "id": "word-51",
       "polish": "pozdrawiam",
-      "russian": "Приветствую сердечно!",
+      "russian": "Приветствую (в конце письма, подпись)",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
         "pl": "Pozdrawiam serdecznie!",
-        "ru": "Приветствую сердечно!"
+        "ru": "Сердечно приветствую! (в конце письма)"
       },
       "reviewHistory": []
     },
     {
       "id": "word-52",
       "polish": "serdecznie",
-      "russian": "Сердечно приветствую,",
+      "russian": "Сердечно (приветствую)",
       "level": "B1",
       "knowsPlToRu": false,
       "knowsRuToPl": false,
       "examples": {
         "pl": "Serdecznie pozdrawiam,",
-        "ru": "Сердечно приветствую,"
+        "ru": "Сердечно приветствую, (в конце письма, подпись)"
       },
       "reviewHistory": []
     },
